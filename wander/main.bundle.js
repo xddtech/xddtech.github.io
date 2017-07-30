@@ -78,11 +78,13 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__("../../../forms/@angular/forms.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_router__ = __webpack_require__("../../../router/@angular/router.es5.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_navbar_navbar__ = __webpack_require__("../../../../../src/app/components/navbar/navbar.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_footer_footer__ = __webpack_require__("../../../../../src/app/components/footer/footer.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_home_home__ = __webpack_require__("../../../../../src/app/components/home/home.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__app_component__ = __webpack_require__("../../../../../src/app/app.component.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__ = __webpack_require__("../../../../../src/app/components/navbar/navbar.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__ = __webpack_require__("../../../../../src/app/components/footer/footer.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_home_home__ = __webpack_require__("../../../../../src/app/components/home/home.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -90,6 +92,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -108,25 +112,27 @@ var AppModule = (function () {
 AppModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
         declarations: [
-            __WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */],
-            __WEBPACK_IMPORTED_MODULE_6__components_navbar_navbar__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_7__components_footer_footer__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_8__components_home_home__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_9__components_about_about__["a" /* default */]
+            __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
+            __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* ReactiveFormsModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
-                { path: '', component: __WEBPACK_IMPORTED_MODULE_8__components_home_home__["a" /* default */] },
-                { path: 'about', component: __WEBPACK_IMPORTED_MODULE_9__components_about_about__["a" /* default */] }
+                { path: '', component: __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */] },
+                { path: 'about', component: __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */] }
             ])
         ],
         providers: [
-            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* HashLocationStrategy */] }
+            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* HashLocationStrategy */] },
+            __WEBPACK_IMPORTED_MODULE_11__services_wander_service__["a" /* WanderService */]
         ],
-        bootstrap: [__WEBPACK_IMPORTED_MODULE_5__app_component__["a" /* AppComponent */]]
+        bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
 
@@ -139,6 +145,7 @@ AppModule = __decorate([
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -149,20 +156,25 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var AboutComponent = (function () {
-    function AboutComponent() {
-        ;
+    function AboutComponent(wanderService) {
+        this.wanderService = wanderService;
+        this.aboutDescription = this.wanderService.getAboutDescription().text;
+        this.mainText = this.wanderService.getMainText();
     }
     return AboutComponent;
 }());
 AboutComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'about-page',
-        template: "\n    <div class=\"row text-center\">\n      Developing with Angular 4 and Three.js\n    </div>\n  "
+        providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]],
+        template: "\n    <div class=\"row text-center\">\n      {{aboutDescription}}\n    </div>\n    <div class=\"row\">\n      {{mainText}}\n    </div>\n  "
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]) === "function" && _a || Object])
 ], AboutComponent);
 /* harmony default export */ __webpack_exports__["a"] = (AboutComponent);
+var _a;
 //# sourceMappingURL=about.js.map
 
 /***/ }),
@@ -274,6 +286,62 @@ NavbarComponent = __decorate([
 ], NavbarComponent);
 /* harmony default export */ __webpack_exports__["a"] = (NavbarComponent);
 //# sourceMappingURL=navbar.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/services/wander-service.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
+/* unused harmony export NamedDescription */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WanderService; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var NamedDescription = (function () {
+    function NamedDescription(name, text) {
+        this.name = name;
+        this.text = text;
+    }
+    return NamedDescription;
+}());
+
+var WanderService = (function () {
+    function WanderService(http) {
+        this.http = http;
+    }
+    WanderService.prototype.getAboutDescription = function () {
+        return new NamedDescription("about", descriptions.about);
+    };
+    WanderService.prototype.getMainText = function () {
+        return this.http.get('/index.html')
+            .map(function (response) { return response.text(); });
+    };
+    return WanderService;
+}());
+WanderService = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object])
+], WanderService);
+
+var descriptions = {
+    "about": "Fun with Angular and Three.js"
+};
+var _a;
+//# sourceMappingURL=wander-service.js.map
 
 /***/ }),
 
