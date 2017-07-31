@@ -289,11 +289,36 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var WanderLandComponent = WanderLandComponent_1 = (function () {
     function WanderLandComponent() {
-        if (!WanderLandComponent_1.wanderLandInitialized) {
+        //if (!WanderLandComponent.wanderLandInitialized ) {
+        //  WanderLandComponent.wanderLandInitialized = true;
+        //  initWanderLand();
+        //}
+        this.initSetup();
+    }
+    WanderLandComponent.prototype.initSetup = function () {
+        //if (!WanderLandComponent.wanderLandInitialized ) {
+        this.setupDelayed().then(function () {
             WanderLandComponent_1.wanderLandInitialized = true;
             initWanderLand();
-        }
-    }
+        });
+        //}
+    };
+    WanderLandComponent.prototype.setupDelayed = function () {
+        return new Promise(function (resolve, reject) {
+            function afterWait() {
+                var showElement = document.getElementById("wander-land-show");
+                if (showElement == null) {
+                    setTimeout(afterWait, 200);
+                    console.log("waiting showElement ....");
+                }
+                else {
+                    console.log("call resolve");
+                    resolve();
+                }
+            }
+            afterWait();
+        });
+    };
     return WanderLandComponent;
 }());
 WanderLandComponent.wanderLandInitialized = false;
@@ -311,7 +336,7 @@ function initWanderLand() {
     var renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
     //document.body.appendChild( renderer.domElement );
-    document.getElementById("wander-land-show-1").appendChild(renderer.domElement);
+    document.getElementById("wander-land-show").appendChild(renderer.domElement);
     var geometry = new THREE.BoxGeometry(1, 1, 1);
     var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
