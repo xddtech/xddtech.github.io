@@ -84,7 +84,8 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__ = __webpack_require__("../../../../../src/app/components/footer/footer.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_home_home__ = __webpack_require__("../../../../../src/app/components/home/home.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_home_wander_land__ = __webpack_require__("../../../../../src/app/components/home/wander-land.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -92,6 +93,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -116,7 +118,8 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__["a" /* default */],
             __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__["a" /* default */],
             __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */]
+            __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_11__components_home_wander_land__["a" /* default */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -130,7 +133,7 @@ AppModule = __decorate([
         ],
         providers: [
             { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* HashLocationStrategy */] },
-            __WEBPACK_IMPORTED_MODULE_11__services_wander_service__["a" /* WanderService */]
+            __WEBPACK_IMPORTED_MODULE_12__services_wander_service__["a" /* WanderService */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
@@ -217,7 +220,7 @@ FooterComponent = __decorate([
 /***/ "../../../../../src/app/components/home/home.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    Home\r\n  </div>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row\">\r\n    Home\r\n  </div>\r\n  <wander-land></wander-land>\r\n</div>"
 
 /***/ }),
 
@@ -254,10 +257,70 @@ HomeComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/home/wander-land.html":
+/***/ (function(module, exports) {
+
+module.exports = "wander land here"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/home/wander-land.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/// <reference path="../../../typings/three-local.d.ts" />
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+var WanderLandComponent = (function () {
+    function WanderLandComponent() {
+        initWanderLand();
+    }
+    return WanderLandComponent;
+}());
+WanderLandComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+        selector: 'wander-land',
+        template: __webpack_require__("../../../../../src/app/components/home/wander-land.html")
+    }),
+    __metadata("design:paramtypes", [])
+], WanderLandComponent);
+/* harmony default export */ __webpack_exports__["a"] = (WanderLandComponent);
+function initWanderLand() {
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    var geometry = new THREE.BoxGeometry(1, 1, 1);
+    var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    camera.position.z = 5;
+    var animate = function () {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.1;
+        cube.rotation.y += 0.1;
+        renderer.render(scene, camera);
+    };
+    animate();
+}
+//# sourceMappingURL=wander-land.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/navbar/navbar.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-inverse\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n        <li><a href=\"#\">Services</a></li>\r\n        <li><a href=\"#\">Contact</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
+module.exports = "<nav class=\"navbar navbar-inverse\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
 
 /***/ }),
 
