@@ -305,10 +305,14 @@ function initWanderLand() {
     var cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
     camera.position.z = 5;
+    var loops = 0;
     var animate = function () {
-        requestAnimationFrame(animate);
+        if (loops < 500) {
+            requestAnimationFrame(animate);
+        }
         cube.rotation.x += 0.1;
         cube.rotation.y += 0.1;
+        loops = loops + 1;
         renderer.render(scene, camera);
     };
     animate();
