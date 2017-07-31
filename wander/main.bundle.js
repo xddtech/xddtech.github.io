@@ -260,7 +260,7 @@ HomeComponent = __decorate([
 /***/ "../../../../../src/app/components/home/wander-land.html":
 /***/ (function(module, exports) {
 
-module.exports = "wander land here"
+module.exports = "wander land here\r\n<div id=\"wander-land-show\"></div>"
 
 /***/ }),
 
@@ -269,7 +269,12 @@ module.exports = "wander land here"
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/*
+/// <reference path="../../../../node_modules/@types/three/index.d.ts" />
+*/
+/*
 /// <reference path="../../../typings/three-local.d.ts" />
+*/
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -279,14 +284,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+/// <reference path="../../../typings/_reference-three.d.ts" />
+//import * as THREE from "../../../../node_modules/@types/three/index.d";
 
-var WanderLandComponent = (function () {
+var WanderLandComponent = WanderLandComponent_1 = (function () {
     function WanderLandComponent() {
-        initWanderLand();
+        if (!WanderLandComponent_1.wanderLandInitialized) {
+            WanderLandComponent_1.wanderLandInitialized = true;
+            initWanderLand();
+        }
     }
     return WanderLandComponent;
 }());
-WanderLandComponent = __decorate([
+WanderLandComponent.wanderLandInitialized = false;
+WanderLandComponent = WanderLandComponent_1 = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
         selector: 'wander-land',
         template: __webpack_require__("../../../../../src/app/components/home/wander-land.html")
@@ -298,8 +309,9 @@ function initWanderLand() {
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+    renderer.setSize(window.innerWidth / 2, window.innerHeight / 2);
+    //document.body.appendChild( renderer.domElement );
+    document.getElementById("wander-land-show-1").appendChild(renderer.domElement);
     var geometry = new THREE.BoxGeometry(1, 1, 1);
     var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
     var cube = new THREE.Mesh(geometry, material);
@@ -317,6 +329,7 @@ function initWanderLand() {
     };
     animate();
 }
+var WanderLandComponent_1;
 //# sourceMappingURL=wander-land.js.map
 
 /***/ }),
