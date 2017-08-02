@@ -34,7 +34,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<wander-navbar></wander-navbar>\n\n<div class=\"container\">\n  <router-outlet></router-outlet>\n</div>\n\n<wander-footer></wander-footer>\n"
+module.exports = "<wander-navbar></wander-navbar>\n\n<router-outlet></router-outlet>\n"
 
 /***/ }),
 
@@ -58,7 +58,7 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
@@ -146,7 +146,7 @@ AppModule = __decorate([
 /***/ "../../../../../src/app/components/about/about.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row text-center\">\r\n  <h1>{{aboutDescription}}</h1>\r\n</div>\r\n<div class=\"well\">\r\n  <div class=\"row text-info bg-info small\">\r\n    {{mainText}}\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div class=\"container\">\r\n  <div class=\"row text-center\">\r\n    <h1>{{aboutDescription}}</h1>\r\n  </div>\r\n  <div class=\"well\">\r\n    <div class=\"row text-info bg-info small\">\r\n      {{mainText}}\r\n    </div>\r\n  </div>\r\n\r\n  <wander-footer></wander-footer>\r\n</div>\r\n\r\n"
 
 /***/ }),
 
@@ -180,7 +180,7 @@ var AboutComponent = (function () {
     return AboutComponent;
 }());
 AboutComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'about-page',
         providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]],
         template: __webpack_require__("../../../../../src/app/components/about/about.html")
@@ -196,7 +196,7 @@ var _a;
 /***/ "../../../../../src/app/components/footer/footer.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <hr>\r\n  <footer>\r\n    <div class=\"row\">\r\n      <div class=\"col-lg-12\">\r\n        <p>Copyright &copy; XDD Tech 2017</p>\r\n      </div>\r\n    </div>\r\n  </footer>\r\n</div>"
+module.exports = "<hr>\r\n<footer>\r\n  <div class=\"row\">\r\n    <div class=\"col-lg-12\">\r\n      <p>Copyright &copy; XDD Tech 2017</p>\r\n    </div>\r\n  </div>\r\n</footer>\r\n"
 
 /***/ }),
 
@@ -218,7 +218,7 @@ var FooterComponent = (function () {
     return FooterComponent;
 }());
 FooterComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'wander-footer',
         template: __webpack_require__("../../../../../src/app/components/footer/footer.html")
     })
@@ -231,7 +231,7 @@ FooterComponent = __decorate([
 /***/ "../../../../../src/app/components/home/home.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <wander-land></wander-land>\r\n</div>\r\n"
+module.exports = "  <wander-land></wander-land>\r\n\r\n"
 
 /***/ }),
 
@@ -257,7 +257,7 @@ var HomeComponent = (function () {
     return HomeComponent;
 }());
 HomeComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'wander-home',
         template: __webpack_require__("../../../../../src/app/components/home/home.html")
     }),
@@ -271,7 +271,7 @@ HomeComponent = __decorate([
 /***/ "../../../../../src/app/components/home/wander-land.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"wander-land-show\" class=\"row\"></div>"
+module.exports = "\r\n<div id=\"wander-land-show\"></div>\r\n"
 
 /***/ }),
 
@@ -280,9 +280,11 @@ module.exports = "<div id=\"wander-land-show\" class=\"row\"></div>"
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 // /// <reference path="../../../../node_modules/@types/three/index.d.ts" />
 // /// <reference path="../../../typings/three-local.d.ts" />
 /// <reference path="../../../typings/_reference-three.d.ts" />
+/// <reference path="../../../typings/_reference-jquery.d.ts" />
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -293,14 +295,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
 var wanderLandShowElemntId = "wander-land-show";
 function getShowElement() {
     return document.getElementById(wanderLandShowElemntId);
 }
 var WanderLandComponent = WanderLandComponent_1 = (function () {
-    function WanderLandComponent() {
-        this.initSetup();
+    function WanderLandComponent(wanderService) {
+        this.wanderService = wanderService;
+        WanderLandComponent_1.wanderServiceRef = wanderService;
+        //this.initSetup();
     }
+    WanderLandComponent.prototype.ngAfterViewInit = function () {
+        /*
+        $(this.el.nativeElement)
+        .chosen()
+        .on('change', (e, args) => {
+          this.selectedValue = args.selected;
+        });
+        */
+        if (getShowElement() != null) {
+            console.log("get showElement inside ngAfterViewInit");
+        }
+        this.initSetup();
+    };
     WanderLandComponent.prototype.initSetup = function () {
         this.showElementReady().then(function () {
             if (WanderLandComponent_1.wanderLandRenderer == null) {
@@ -336,12 +354,17 @@ var WanderLandComponent = WanderLandComponent_1 = (function () {
     };
     return WanderLandComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* ViewChild */])('selectElem'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
+], WanderLandComponent.prototype, "el", void 0);
 WanderLandComponent = WanderLandComponent_1 = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'wander-land',
-        template: __webpack_require__("../../../../../src/app/components/home/wander-land.html")
+        template: __webpack_require__("../../../../../src/app/components/home/wander-land.html"),
+        providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]]
     }),
-    __metadata("design:paramtypes", [])
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]) === "function" && _b || Object])
 ], WanderLandComponent);
 /* harmony default export */ __webpack_exports__["a"] = (WanderLandComponent);
 function resizeWindow() {
@@ -351,8 +374,10 @@ function resizeShowWindow(renderer) {
     if (renderer == null) {
         return;
     }
-    var width = window.innerWidth * 0.9;
-    var height = window.innerHeight * 0.7;
+    var width = window.innerWidth;
+    var navbarHeight = WanderLandComponent.wanderServiceRef.getNavbarHeight();
+    console.log("navbarHeight=" + navbarHeight);
+    var height = window.innerHeight - navbarHeight;
     renderer.setSize(width, height);
 }
 function initWanderLandShow() {
@@ -380,15 +405,33 @@ function initWanderLandShow() {
     animate();
     return renderer;
 }
-var WanderLandComponent_1;
+var WanderLandComponent_1, _a, _b;
 //# sourceMappingURL=wander-land.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/navbar/navbar.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")();
+// imports
+
+
+// module
+exports.push([module.i, "\r\n.navbar-margin-bottom-0 {\r\n  margin-bottom: 0px;\r\n  border-radius: 0px;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
 
 /***/ }),
 
 /***/ "../../../../../src/app/components/navbar/navbar.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav class=\"navbar navbar-inverse\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
+module.exports = "<nav #wanderNavbar class=\"navbar navbar-inverse navbar-margin-bottom-0\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
 
 /***/ }),
 
@@ -397,25 +440,42 @@ module.exports = "<nav class=\"navbar navbar-inverse\" role=\"navigation\">\r\n 
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
 
 var NavbarComponent = (function () {
-    function NavbarComponent() {
+    function NavbarComponent(wanderService) {
+        this.wanderService = wanderService;
     }
+    NavbarComponent.prototype.ngAfterViewInit = function () {
+        this.wanderService.navbarElement = this.navbarElement;
+    };
     return NavbarComponent;
 }());
+__decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* ViewChild */])('wanderNavbar'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
+], NavbarComponent.prototype, "navbarElement", void 0);
 NavbarComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'wander-navbar',
-        template: __webpack_require__("../../../../../src/app/components/navbar/navbar.html")
-    })
+        template: __webpack_require__("../../../../../src/app/components/navbar/navbar.html"),
+        styles: [__webpack_require__("../../../../../src/app/components/navbar/navbar.css")],
+        providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]) === "function" && _b || Object])
 ], NavbarComponent);
 /* harmony default export */ __webpack_exports__["a"] = (NavbarComponent);
+var _a, _b;
 //# sourceMappingURL=navbar.js.map
 
 /***/ }),
@@ -461,6 +521,12 @@ var WanderService = (function () {
         return this.http.get('/index.html')
             .map(function (response) { return response.text(); });
     };
+    WanderService.prototype.getNavbarHeight = function () {
+        if (this.navbarElement == null) {
+            return 0;
+        }
+        return this.navbarElement.nativeElement.offsetHeight;
+    };
     return WanderService;
 }());
 WanderService = __decorate([
@@ -469,7 +535,7 @@ WanderService = __decorate([
 ], WanderService);
 
 var descriptions = {
-    "about": "Fun with Angular and Three.js"
+    "about": "Fun with Angular, Three.js and Typescript"
 };
 var _a;
 //# sourceMappingURL=wander-service.js.map
