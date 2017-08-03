@@ -268,10 +268,28 @@ HomeComponent = __decorate([
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/home/wander-land.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")();
+// imports
+
+
+// module
+exports.push([module.i, ".wander-land-margin {\r\n  margin: 0px;\r\n  border: 0px;\r\n  padding: 0px;\r\n}\r\n\r\n#wander-land-show>canvas {\r\n  margin: 0px;\r\n  border: 0px;\r\n  padding: 0px;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/home/wander-land.html":
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<div id=\"wander-land-show\"></div>\r\n"
+module.exports = "\r\n<div id=\"wander-land-show\" class=\"container-fluid, wander-land-margin\"></div>\r\n"
 
 /***/ }),
 
@@ -304,20 +322,18 @@ var WanderLandComponent = WanderLandComponent_1 = (function () {
     function WanderLandComponent(wanderService) {
         this.wanderService = wanderService;
         WanderLandComponent_1.wanderServiceRef = wanderService;
-        //this.initSetup();
     }
     WanderLandComponent.prototype.ngAfterViewInit = function () {
-        /*
-        $(this.el.nativeElement)
-        .chosen()
-        .on('change', (e, args) => {
-          this.selectedValue = args.selected;
-        });
-        */
+        // hide scrollbar
+        $("body").css("overflow", "hidden");
         if (getShowElement() != null) {
             console.log("get showElement inside ngAfterViewInit");
         }
         this.initSetup();
+    };
+    WanderLandComponent.prototype.ngOnDestroy = function () {
+        // show scrollbar for other routes
+        $("body").css("overflow", "auto");
     };
     WanderLandComponent.prototype.initSetup = function () {
         this.showElementReady().then(function () {
@@ -362,6 +378,7 @@ WanderLandComponent = WanderLandComponent_1 = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
         selector: 'wander-land',
         template: __webpack_require__("../../../../../src/app/components/home/wander-land.html"),
+        styles: [__webpack_require__("../../../../../src/app/components/home/wander-land.css")],
         providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]]
     }),
     __metadata("design:paramtypes", [typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]) === "function" && _b || Object])
@@ -374,10 +391,11 @@ function resizeShowWindow(renderer) {
     if (renderer == null) {
         return;
     }
-    var width = window.innerWidth;
+    //var width = window.innerWidth;
+    var width = $(document).innerWidth();
     var navbarHeight = WanderLandComponent.wanderServiceRef.getNavbarHeight();
-    console.log("navbarHeight=" + navbarHeight);
     var height = window.innerHeight - navbarHeight;
+    console.log("width=" + width + ", height=" + height + ", navbarHeight=" + navbarHeight);
     renderer.setSize(width, height);
 }
 function initWanderLandShow() {
@@ -457,7 +475,7 @@ var NavbarComponent = (function () {
         this.wanderService = wanderService;
     }
     NavbarComponent.prototype.ngAfterViewInit = function () {
-        this.wanderService.navbarElement = this.navbarElement;
+        __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */].navbarElement = this.navbarElement;
     };
     return NavbarComponent;
 }());
@@ -510,7 +528,7 @@ var NamedDescription = (function () {
     return NamedDescription;
 }());
 
-var WanderService = (function () {
+var WanderService = WanderService_1 = (function () {
     function WanderService(http) {
         this.http = http;
     }
@@ -522,14 +540,14 @@ var WanderService = (function () {
             .map(function (response) { return response.text(); });
     };
     WanderService.prototype.getNavbarHeight = function () {
-        if (this.navbarElement == null) {
+        if (WanderService_1.navbarElement == null) {
             return 0;
         }
-        return this.navbarElement.nativeElement.offsetHeight;
+        return WanderService_1.navbarElement.nativeElement.offsetHeight;
     };
     return WanderService;
 }());
-WanderService = __decorate([
+WanderService = WanderService_1 = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object])
 ], WanderService);
@@ -537,7 +555,7 @@ WanderService = __decorate([
 var descriptions = {
     "about": "Fun with Angular, Three.js and Typescript"
 };
-var _a;
+var WanderService_1, _a;
 //# sourceMappingURL=wander-service.js.map
 
 /***/ }),
