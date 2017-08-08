@@ -299,6 +299,7 @@ module.exports = "\r\n<div id=\"wander-land-show\" class=\"container-fluid, wand
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sleeping_bear_sleeping_bear_show__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/sleeping-bear-show.ts");
 // /// <reference path="../../../../node_modules/@types/three/index.d.ts" />
 // /// <reference path="../../../typings/three-local.d.ts" />
 /// <reference path="../../../typings/_reference-three.d.ts" />
@@ -312,6 +313,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 var wanderLandShowElemntId = "wander-land-show";
@@ -329,11 +331,27 @@ var WanderLandComponent = WanderLandComponent_1 = (function () {
         if (getShowElement() != null) {
             console.log("get showElement inside ngAfterViewInit");
         }
-        this.initSetup();
+        //this.initSetup();
+        this.initSleepingBear();
     };
     WanderLandComponent.prototype.ngOnDestroy = function () {
         // show scrollbar for other routes
         $("body").css("overflow", "auto");
+    };
+    WanderLandComponent.prototype.initSleepingBear = function () {
+        var _this = this;
+        this.showElementReady().then(function () {
+            if (__WEBPACK_IMPORTED_MODULE_2__sleeping_bear_sleeping_bear_show__["a" /* SleepingBearShow */].appRender == null) {
+                var sleepingBearShow = new __WEBPACK_IMPORTED_MODULE_2__sleeping_bear_sleeping_bear_show__["a" /* SleepingBearShow */](_this.wanderService);
+                sleepingBearShow.create(getShowElement());
+            }
+            else {
+                getShowElement().appendChild(__WEBPACK_IMPORTED_MODULE_2__sleeping_bear_sleeping_bear_show__["a" /* SleepingBearShow */].appRender.domElement);
+                console.log("load the existing show renderer");
+            }
+        }).catch(function (error) {
+            console.error("failed to init sleeping bear: " + error);
+        });
     };
     WanderLandComponent.prototype.initSetup = function () {
         this.showElementReady().then(function () {
@@ -495,6 +513,111 @@ NavbarComponent = __decorate([
 /* harmony default export */ __webpack_exports__["a"] = (NavbarComponent);
 var _a, _b;
 //# sourceMappingURL=navbar.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/sleeping-bear/lake-michigan.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LakeMichigan; });
+/// <reference path="../../../typings/_reference-three.d.ts" />
+/// <reference path="../../../typings/_reference-jquery.d.ts" />
+var LakeMichigan = (function () {
+    function LakeMichigan(wanderService) {
+        this.wanderService = wanderService;
+    }
+    LakeMichigan.prototype.create = function (appScene) {
+        var planeGeometry = new THREE.PlaneGeometry(60, 20);
+        var planeMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
+        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 15;
+        plane.position.y = 0;
+        plane.position.z = 0;
+        // add the plane to the scene
+        appScene.add(plane);
+    };
+    return LakeMichigan;
+}());
+
+//# sourceMappingURL=lake-michigan.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/sleeping-bear/sleeping-bear-show.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lake_michigan__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/lake-michigan.ts");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SleepingBearShow; });
+/// <reference path="../../../typings/_reference-three.d.ts" />
+/// <reference path="../../../typings/_reference-jquery.d.ts" />
+
+var SleepingBearShow = (function () {
+    function SleepingBearShow(wanderService) {
+        this.wanderService = wanderService;
+        SleepingBearShow.wanderServiceRef = wanderService;
+    }
+    SleepingBearShow.prototype.create = function (showElement) {
+        SleepingBearShow.appScene = new THREE.Scene();
+        var fov = 50;
+        var aspect = this.getCameraAspect();
+        var near = 0.1;
+        var far = 1000;
+        SleepingBearShow.appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        //SleepingBearShow.appCamera.position.z = 5;
+        SleepingBearShow.appCamera.position.x = -30;
+        SleepingBearShow.appCamera.position.y = 40;
+        SleepingBearShow.appCamera.position.z = 30;
+        SleepingBearShow.appCamera.lookAt(SleepingBearShow.appScene.position);
+        SleepingBearShow.appRender = new THREE.WebGLRenderer();
+        //SleepingBearShow.appRender.setClearColorHex();
+        SleepingBearShow.appRender.setClearColor(new THREE.Color(0xEEEEEE));
+        SleepingBearShow_onWindowResize();
+        showElement.appendChild(SleepingBearShow.appRender.domElement);
+        window.addEventListener("resize", SleepingBearShow_onWindowResize);
+        this.addShowObjects();
+        //SleepingBearShow.appRender.render(SleepingBearShow.appScene, SleepingBearShow.appCamera);
+    };
+    SleepingBearShow.prototype.addShowObjects = function () {
+        var geometry = new THREE.BoxGeometry(1, 1, 1);
+        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var cube = new THREE.Mesh(geometry, material);
+        SleepingBearShow.appScene.add(cube);
+        var lakeMichigan = new __WEBPACK_IMPORTED_MODULE_0__lake_michigan__["a" /* LakeMichigan */](SleepingBearShow.wanderServiceRef);
+        lakeMichigan.create(SleepingBearShow.appScene);
+    };
+    SleepingBearShow.prototype.getCameraAspect = function () {
+        var navbarHeight = this.wanderService.getNavbarHeight();
+        var height = window.innerHeight - navbarHeight;
+        return window.innerWidth / height;
+    };
+    return SleepingBearShow;
+}());
+
+var SleepingBearShow_animate = function () {
+    requestAnimationFrame(SleepingBearShow_animate);
+    if (SleepingBearShow.appRender != null) {
+        try {
+            SleepingBearShow.appRender.render(SleepingBearShow.appScene, SleepingBearShow.appCamera);
+        }
+        catch (error) {
+            console.error("render error " + error);
+        }
+    }
+    else {
+        console.error("appRender is null");
+    }
+};
+function SleepingBearShow_onWindowResize() {
+    var navbarHeight = SleepingBearShow.wanderServiceRef.getNavbarHeight();
+    var height = window.innerHeight - navbarHeight;
+    SleepingBearShow.appRender.setSize(window.innerWidth, height);
+}
+SleepingBearShow_animate();
+//# sourceMappingURL=sleeping-bear-show.js.map
 
 /***/ }),
 
