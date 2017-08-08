@@ -528,16 +528,33 @@ var LakeMichigan = (function () {
         this.wanderService = wanderService;
     }
     LakeMichigan.prototype.create = function (appScene) {
+        /*
         var planeGeometry = new THREE.PlaneGeometry(60, 20);
-        var planeMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc });
+        var planeMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc});
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+    
         // rotate and position the plane
         plane.rotation.x = -0.5 * Math.PI;
         plane.position.x = 15;
         plane.position.y = 0;
         plane.position.z = 0;
+    
         // add the plane to the scene
         appScene.add(plane);
+        */
+        var ground = new THREE.PlaneGeometry(100, 100, 50, 50);
+        var meshParams = {
+            wireframe: true,
+            overdraw: 1,
+            color: '000000'
+        };
+        var groundMesh = THREE.SceneUtils.createMultiMaterialObject(ground, 
+        //[new THREE.MeshBasicMaterial({wireframe: true, overdraw: true, color: 000000}),
+        [new THREE.MeshBasicMaterial(meshParams),
+            new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5 })
+        ]);
+        groundMesh.rotation.x = -0.5 * Math.PI;
+        appScene.add(groundMesh);
     };
     return LakeMichigan;
 }());
@@ -567,25 +584,31 @@ var SleepingBearShow = (function () {
         var near = 0.1;
         var far = 1000;
         SleepingBearShow.appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-        //SleepingBearShow.appCamera.position.z = 5;
-        SleepingBearShow.appCamera.position.x = -30;
-        SleepingBearShow.appCamera.position.y = 40;
-        SleepingBearShow.appCamera.position.z = 30;
-        SleepingBearShow.appCamera.lookAt(SleepingBearShow.appScene.position);
+        var camera = SleepingBearShow.appCamera;
+        //SleepingBearShow.appCamera.position.x = -30;
+        //SleepingBearShow.appCamera.position.y = 40;
+        //SleepingBearShow.appCamera.position.z = 30;
+        camera.position.x = 0;
+        camera.position.y = 30;
+        camera.position.z = 100;
+        camera.lookAt(SleepingBearShow.appScene.position);
         SleepingBearShow.appRender = new THREE.WebGLRenderer();
-        //SleepingBearShow.appRender.setClearColorHex();
         SleepingBearShow.appRender.setClearColor(new THREE.Color(0xEEEEEE));
         SleepingBearShow_onWindowResize();
         showElement.appendChild(SleepingBearShow.appRender.domElement);
         window.addEventListener("resize", SleepingBearShow_onWindowResize);
         this.addShowObjects();
-        //SleepingBearShow.appRender.render(SleepingBearShow.appScene, SleepingBearShow.appCamera);
+        SleepingBearShow_animate();
     };
     SleepingBearShow.prototype.addShowObjects = function () {
+        /*
         var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
         var cube = new THREE.Mesh(geometry, material);
-        SleepingBearShow.appScene.add(cube);
+        SleepingBearShow.appScene.add( cube );
+        */
+        var axisHelper = new THREE.AxisHelper(200);
+        SleepingBearShow.appScene.add(axisHelper);
         var lakeMichigan = new __WEBPACK_IMPORTED_MODULE_0__lake_michigan__["a" /* LakeMichigan */](SleepingBearShow.wanderServiceRef);
         lakeMichigan.create(SleepingBearShow.appScene);
     };
@@ -616,7 +639,6 @@ function SleepingBearShow_onWindowResize() {
     var height = window.innerHeight - navbarHeight;
     SleepingBearShow.appRender.setSize(window.innerWidth, height);
 }
-SleepingBearShow_animate();
 //# sourceMappingURL=sleeping-bear-show.js.map
 
 /***/ }),
