@@ -528,33 +528,31 @@ var LakeMichigan = (function () {
         this.wanderService = wanderService;
     }
     LakeMichigan.prototype.create = function (appScene) {
-        /*
-        var planeGeometry = new THREE.PlaneGeometry(60, 20);
-        var planeMaterial = new THREE.MeshBasicMaterial({color: 0xcccccc});
-        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
-    
-        // rotate and position the plane
-        plane.rotation.x = -0.5 * Math.PI;
-        plane.position.x = 15;
-        plane.position.y = 0;
-        plane.position.z = 0;
-    
-        // add the plane to the scene
-        appScene.add(plane);
-        */
-        var ground = new THREE.PlaneGeometry(100, 100, 50, 50);
+        var width = 100;
+        var length = 100;
+        var widthSegments = 50;
+        var lengthSegments = 50;
+        this.lakeGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
+        for (var i = 0, l = this.lakeGeometry.vertices.length; i < l; i++) {
+            //this.lakeGeometry.vertices[ i ].y = 35 * Math.sin( i / 2 );
+        }
         var meshParams = {
             wireframe: true,
             overdraw: 1,
             color: '000000'
         };
-        var groundMesh = THREE.SceneUtils.createMultiMaterialObject(ground, 
-        //[new THREE.MeshBasicMaterial({wireframe: true, overdraw: true, color: 000000}),
-        [new THREE.MeshBasicMaterial(meshParams),
+        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams),
             new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5 })
         ]);
-        groundMesh.rotation.x = -0.5 * Math.PI;
-        appScene.add(groundMesh);
+        lakeMesh.rotation.x = -0.5 * Math.PI;
+        lakeMesh.position.z = length / 2;
+        appScene.add(lakeMesh);
+    };
+    LakeMichigan.prototype.animate = function (deltaTime, elapsedTime) {
+        for (var i = 0, l = this.lakeGeometry.vertices.length; i < l; i++) {
+            this.lakeGeometry.vertices[i].y = 35 * Math.sin(i / 5 + (elapsedTime + i) / 7);
+        }
+        this.lakeGeometry.verticesNeedUpdate = true;
     };
     return LakeMichigan;
 }());
@@ -563,14 +561,52 @@ var LakeMichigan = (function () {
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/sleeping-bear/sand-dune.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SandDune; });
+/// <reference path="../../../typings/_reference-three.d.ts" />
+/// <reference path="../../../typings/_reference-jquery.d.ts" />
+var SandDune = (function () {
+    function SandDune(wanderService) {
+        this.wanderService = wanderService;
+    }
+    SandDune.prototype.create = function (appScene) {
+        var width = 100;
+        var length = 100;
+        var widthSegments = 50;
+        var lengthSegments = 50;
+        var ground = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
+        var meshParams = {
+            wireframe: true,
+            overdraw: 1,
+            color: '000000'
+        };
+        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(ground, [new THREE.MeshBasicMaterial(meshParams),
+            new THREE.MeshBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.5 })
+        ]);
+        lakeMesh.rotation.x = -0.0 * Math.PI;
+        lakeMesh.position.y = length / 2;
+        appScene.add(lakeMesh);
+    };
+    return SandDune;
+}());
+
+//# sourceMappingURL=sand-dune.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/sleeping-bear/sleeping-bear-show.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lake_michigan__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/lake-michigan.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sand_dune__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/sand-dune.ts");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SleepingBearShow; });
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
+
 
 var SleepingBearShow = (function () {
     function SleepingBearShow(wanderService) {
@@ -585,13 +621,32 @@ var SleepingBearShow = (function () {
         var far = 1000;
         SleepingBearShow.appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         var camera = SleepingBearShow.appCamera;
-        //SleepingBearShow.appCamera.position.x = -30;
-        //SleepingBearShow.appCamera.position.y = 40;
-        //SleepingBearShow.appCamera.position.z = 30;
         camera.position.x = 0;
         camera.position.y = 30;
         camera.position.z = 100;
         camera.lookAt(SleepingBearShow.appScene.position);
+        /*
+        var camControls = new THREE.FirstPersonControls(camera, document);
+            camControls.lookSpeed = 0.4;
+            camControls.movementSpeed = 20;
+            camControls.noFly = true;
+            camControls.lookVertical = true;
+            camControls.constrainVertical = true;
+            camControls.verticalMin = 1.0;
+            camControls.verticalMax = 2.0;
+            camControls.lon = -150;
+            camControls.lat = 120;
+        SleepingBearShow.appCamControl = camControls;
+        */
+        var trackballControls = new THREE.TrackballControls(camera, document);
+        trackballControls.rotateSpeed = 1.0;
+        trackballControls.zoomSpeed = 1.0;
+        trackballControls.panSpeed = 1.0;
+        //trackballControls.noZoom=false;
+        //trackballControls.noPan=false;
+        trackballControls.staticMoving = true;
+        //trackballControls.dynamicDampingFactor=0.3;
+        SleepingBearShow.trackballControl = trackballControls;
         SleepingBearShow.appRender = new THREE.WebGLRenderer();
         SleepingBearShow.appRender.setClearColor(new THREE.Color(0xEEEEEE));
         SleepingBearShow_onWindowResize();
@@ -609,8 +664,10 @@ var SleepingBearShow = (function () {
         */
         var axisHelper = new THREE.AxisHelper(200);
         SleepingBearShow.appScene.add(axisHelper);
-        var lakeMichigan = new __WEBPACK_IMPORTED_MODULE_0__lake_michigan__["a" /* LakeMichigan */](SleepingBearShow.wanderServiceRef);
-        lakeMichigan.create(SleepingBearShow.appScene);
+        SleepingBearShow.lakeMichigan = new __WEBPACK_IMPORTED_MODULE_0__lake_michigan__["a" /* LakeMichigan */](SleepingBearShow.wanderServiceRef);
+        SleepingBearShow.lakeMichigan.create(SleepingBearShow.appScene);
+        var sandDune = new __WEBPACK_IMPORTED_MODULE_1__sand_dune__["a" /* SandDune */](SleepingBearShow.wanderServiceRef);
+        sandDune.create(SleepingBearShow.appScene);
     };
     SleepingBearShow.prototype.getCameraAspect = function () {
         var navbarHeight = this.wanderService.getNavbarHeight();
@@ -620,11 +677,16 @@ var SleepingBearShow = (function () {
     return SleepingBearShow;
 }());
 
+SleepingBearShow.showClock = new THREE.Clock();
 var SleepingBearShow_animate = function () {
     requestAnimationFrame(SleepingBearShow_animate);
+    var deltaTime = SleepingBearShow.showClock.getDelta(), elapsedTime = SleepingBearShow.showClock.getElapsedTime() * 10;
+    //SleepingBearShow.lakeMichigan.animate(deltaTime, elapsedTime);
     if (SleepingBearShow.appRender != null) {
         try {
             SleepingBearShow.appRender.render(SleepingBearShow.appScene, SleepingBearShow.appCamera);
+            //SleepingBearShow.appCamControl.update(deltaTime);
+            SleepingBearShow.trackballControl.update();
         }
         catch (error) {
             console.error("render error " + error);
