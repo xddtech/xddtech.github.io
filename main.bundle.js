@@ -1,22 +1,22 @@
-webpackJsonp([1],{
+webpackJsonp(["main"],{
 
-/***/ "../../../../../src async recursive":
+/***/ "../../../../../src lazy recursive":
 /***/ (function(module, exports) {
 
-function webpackEmptyContext(req) {
-	throw new Error("Cannot find module '" + req + "'.");
+function webpackEmptyAsyncContext(req) {
+	return new Promise(function(resolve, reject) { reject(new Error("Cannot find module '" + req + "'.")); });
 }
-webpackEmptyContext.keys = function() { return []; };
-webpackEmptyContext.resolve = webpackEmptyContext;
-module.exports = webpackEmptyContext;
-webpackEmptyContext.id = "../../../../../src async recursive";
+webpackEmptyAsyncContext.keys = function() { return []; };
+webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
+module.exports = webpackEmptyAsyncContext;
+webpackEmptyAsyncContext.id = "../../../../../src lazy recursive";
 
 /***/ }),
 
 /***/ "../../../../../src/app/app.component.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")();
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
 // imports
 
 
@@ -42,8 +42,8 @@ module.exports = "<wander-navbar></wander-navbar>\n\n<router-outlet></router-out
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -58,7 +58,7 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__("../../../../../src/app/app.component.html"),
         styles: [__webpack_require__("../../../../../src/app/app.component.css")]
@@ -73,6 +73,7 @@ AppComponent = __decorate([
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__("../../../platform-browser/@angular/platform-browser.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_common__ = __webpack_require__("../../../common/@angular/common.es5.js");
@@ -86,7 +87,6 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_home_wander_land__ = __webpack_require__("../../../../../src/app/components/home/wander-land.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -112,7 +112,7 @@ var AppModule = (function () {
     return AppModule;
 }());
 AppModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
+    Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["M" /* NgModule */])({
         declarations: [
             __WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */],
             __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__["a" /* default */],
@@ -124,7 +124,7 @@ AppModule = __decorate([
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */],
-            __WEBPACK_IMPORTED_MODULE_5__angular_http__["a" /* HttpModule */],
+            __WEBPACK_IMPORTED_MODULE_5__angular_http__["b" /* HttpModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* ReactiveFormsModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */] },
@@ -132,7 +132,7 @@ AppModule = __decorate([
             ])
         ],
         providers: [
-            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["a" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["b" /* HashLocationStrategy */] },
+            { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */] },
             __WEBPACK_IMPORTED_MODULE_12__services_wander_service__["a" /* WanderService */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
@@ -180,7 +180,7 @@ var AboutComponent = (function () {
     return AboutComponent;
 }());
 AboutComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'about-page',
         providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]],
         template: __webpack_require__("../../../../../src/app/components/about/about.html")
@@ -218,7 +218,7 @@ var FooterComponent = (function () {
     return FooterComponent;
 }());
 FooterComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'wander-footer',
         template: __webpack_require__("../../../../../src/app/components/footer/footer.html")
     })
@@ -257,7 +257,7 @@ var HomeComponent = (function () {
     return HomeComponent;
 }());
 HomeComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'wander-home',
         template: __webpack_require__("../../../../../src/app/components/home/home.html")
     }),
@@ -271,7 +271,7 @@ HomeComponent = __decorate([
 /***/ "../../../../../src/app/components/home/wander-land.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")();
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
 // imports
 
 
@@ -389,11 +389,11 @@ var WanderLandComponent = WanderLandComponent_1 = (function () {
     return WanderLandComponent;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* ViewChild */])('selectElem'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('selectElem'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _a || Object)
 ], WanderLandComponent.prototype, "el", void 0);
 WanderLandComponent = WanderLandComponent_1 = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'wander-land',
         template: __webpack_require__("../../../../../src/app/components/home/wander-land.html"),
         styles: [__webpack_require__("../../../../../src/app/components/home/wander-land.css")],
@@ -449,7 +449,7 @@ var WanderLandComponent_1, _a, _b;
 /***/ "../../../../../src/app/components/navbar/navbar.css":
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")();
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
 // imports
 
 
@@ -498,11 +498,11 @@ var NavbarComponent = (function () {
     return NavbarComponent;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_14" /* ViewChild */])('wanderNavbar'),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["M" /* ElementRef */]) === "function" && _a || Object)
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_16" /* ViewChild */])('wanderNavbar'),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* ElementRef */]) === "function" && _a || Object)
 ], NavbarComponent.prototype, "navbarElement", void 0);
 NavbarComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_15" /* Component */])({
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
         selector: 'wander-navbar',
         template: __webpack_require__("../../../../../src/app/components/navbar/navbar.html"),
         styles: [__webpack_require__("../../../../../src/app/components/navbar/navbar.css")],
@@ -516,18 +516,40 @@ var _a, _b;
 
 /***/ }),
 
+/***/ "../../../../../src/app/components/sleeping-bear/appsb-params.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppSbParams; });
+var AppSbParams = (function () {
+    function AppSbParams() {
+    }
+    return AppSbParams;
+}());
+
+AppSbParams.beachHeight = 5;
+//# sourceMappingURL=appsb-params.js.map
+
+/***/ }),
+
 /***/ "../../../../../src/app/components/sleeping-bear/lake-michigan.ts":
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LakeMichigan; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__appsb_params__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/appsb-params.ts");
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
+
 var LakeMichigan = (function () {
     function LakeMichigan(wanderService) {
         this.wanderService = wanderService;
     }
     LakeMichigan.prototype.create = function (appScene) {
+        this.createBeach(appScene);
+        this.createDeepWater(appScene);
+    };
+    LakeMichigan.prototype.createBeach = function (appScene) {
         var width = 100;
         var length = 100;
         var widthSegments = 50;
@@ -552,51 +574,64 @@ var LakeMichigan = (function () {
             else {
                 xyz.y = xyz.y - fy * r / 3;
             }
+            xyz.z = xyz.z + fy * __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachHeight;
         }
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load("assets/textures/beach-1.png");
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        texture.repeat.set(2, 1);
+        texture.flipY = false;
+        //texture.anisotropy = 16;
+        //var lakeMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: texture } );
+        var lakeMaterial = new THREE.MeshPhongMaterial({ map: texture });
+        lakeMaterial.opacity = 0.8;
+        lakeMaterial.transparent = true;
+        var mat = new THREE.MeshPhongMaterial();
+        mat.map = texture;
         var meshParams = {
             wireframe: true,
             overdraw: 1,
             color: 0x00ffff
         };
         var lakeMesh1 = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams),
-            new THREE.MeshBasicMaterial({ color: 0x00ff00, transparent: true, opacity: 0.5 })
+            lakeMaterial
         ]);
-        //var texture = THREE.ImageUtils.loadTexture("/assets/textures/lake-water.jpg");
-        var loader = new THREE.TextureLoader();
-        var texture = loader.load("assets/textures/lake-water.jpg");
-        //var mat = new THREE.MeshPhongMaterial();
-        //mat.map = texture;
-        var mat1 = new THREE.MeshPhongMaterial({
-            specular: 0x444444,
-            color: 0xffffff,
-            map: texture,
-            normalScale: new THREE.Vector2(1, 1),
-            shininess: 30,
-            transparent: true,
-            depthTest: true,
-            depthWrite: false,
-            polygonOffset: true,
-            polygonOffsetFactor: -4,
-            wireframe: false
-        });
-        var mat = new THREE.MeshPhongMaterial({
-            color: 0xffffff
-        });
-        //var lakeMesh = new THREE.Mesh(this.lakeGeometry, mat);
-        var lakeMesh2 = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams),
-            mat
-        ]);
-        var meshParams2 = {
-            wireframe: true,
-            overdraw: 1,
-            map: texture,
-            color: 0x00ffff
-        };
-        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams2)
-        ]);
+        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [lakeMaterial]);
         lakeMesh.rotation.x = -0.5 * Math.PI;
         lakeMesh.position.z = length / 2;
         appScene.add(lakeMesh);
+    };
+    LakeMichigan.prototype.createDeepWater = function (appScene) {
+        var width = 100;
+        var length = 100;
+        var widthSegments = 20;
+        var lengthSegments = 10;
+        var waterGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
+        var y0;
+        for (var i = 0, l = waterGeometry.vertices.length; i < l; i++) {
+            var xyz = waterGeometry.vertices[i];
+            if (i === 0) {
+                y0 = xyz.y;
+                console.info("createDeepWater-y0=" + y0);
+            }
+            if (xyz.y === y0) {
+                var d = (0.5 - Math.random()) * 4;
+                xyz.y = xyz.y + d;
+            }
+        }
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load("assets/textures/lake-water-1.png");
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        texture.repeat.set(1, 1);
+        texture.flipY = false;
+        var waterMaterial = new THREE.MeshPhongMaterial({ map: texture });
+        var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
+        waterMesh.rotation.x = -0.5 * Math.PI;
+        waterMesh.position.z = length / 2 + 100 - 4;
+        waterMesh.position.y = -0.1;
+        appScene.add(waterMesh);
     };
     LakeMichigan.prototype.animate = function (deltaTime, elapsedTime) {
         for (var i = 0, l = this.lakeGeometry.vertices.length; i < l; i++) {
@@ -616,8 +651,10 @@ var LakeMichigan = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SandDune; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__appsb_params__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/appsb-params.ts");
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
+
 var SandDune = (function () {
     function SandDune(wanderService) {
         this.wanderService = wanderService;
@@ -627,18 +664,53 @@ var SandDune = (function () {
         var length = 100;
         var widthSegments = 50;
         var lengthSegments = 50;
-        var ground = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
+        var sandGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
+        var xmiddle = width / 2;
+        var r = 20;
+        var y0;
+        var ym = length / 2;
+        var len = sandGeometry.vertices.length;
+        for (var i = len - 1; i >= 0; i--) {
+            var xyz = sandGeometry.vertices[i];
+            if (i === (len - 1)) {
+                y0 = xyz.y;
+                console.info("sand-y0=" + y0);
+            }
+            var fy = 1 - (xyz.y - y0) / (ym - y0);
+            if (Math.abs(xyz.x) < r) {
+                var d = r - Math.sqrt(r * r - xyz.x * xyz.x);
+                var f = 1 + 2 * d / r;
+                xyz.z = xyz.z + fy * d / f;
+            }
+            else {
+                xyz.z = xyz.z + fy * r / 3;
+            }
+            xyz.y = xyz.y + __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachHeight;
+            xyz.z = xyz.z - 50 * (1 - fy);
+        }
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load("assets/textures/sand.png");
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        texture.repeat.set(2, 2);
+        texture.flipY = false;
+        //texture.anisotropy = 16;
+        //var lakeMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: texture } );
+        var sandMaterial = new THREE.MeshPhongMaterial({ map: texture });
+        //sandMaterial.opacity = 0.8;
+        //sandMaterial.transparent = true;
         var meshParams = {
             wireframe: true,
             overdraw: 1,
-            color: '000000'
+            color: 0x00ffff
         };
-        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(ground, [new THREE.MeshBasicMaterial(meshParams),
-            new THREE.MeshBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.5 })
+        var sandMesh1 = THREE.SceneUtils.createMultiMaterialObject(sandGeometry, [new THREE.MeshBasicMaterial(meshParams),
+            sandMaterial
         ]);
-        lakeMesh.rotation.x = -0.0 * Math.PI;
-        lakeMesh.position.y = length / 2;
-        appScene.add(lakeMesh);
+        var sandMesh = THREE.SceneUtils.createMultiMaterialObject(sandGeometry, [sandMaterial]);
+        sandMesh.rotation.x = -0.0 * Math.PI;
+        sandMesh.position.y = length / 2;
+        appScene.add(sandMesh);
     };
     return SandDune;
 }());
@@ -651,9 +723,9 @@ var SandDune = (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SleepingBearShow; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lake_michigan__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/lake-michigan.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__sand_dune__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/sand-dune.ts");
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SleepingBearShow; });
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
 
@@ -665,6 +737,17 @@ var SleepingBearShow = (function () {
     }
     SleepingBearShow.prototype.create = function (showElement) {
         SleepingBearShow.appScene = new THREE.Scene();
+        this.addCameraAndControls();
+        SleepingBearShow.appRender = new THREE.WebGLRenderer({ antialias: true });
+        SleepingBearShow.appRender.setClearColor(new THREE.Color(0xEEEEEE));
+        SleepingBearShow_onWindowResize();
+        showElement.appendChild(SleepingBearShow.appRender.domElement);
+        window.addEventListener("resize", SleepingBearShow_onWindowResize);
+        this.addShowObjects();
+        this.addShowLights();
+        SleepingBearShow_animate();
+    };
+    SleepingBearShow.prototype.addCameraAndControls = function () {
         var fov = 50;
         var aspect = this.getCameraAspect();
         var near = 0.1;
@@ -673,7 +756,7 @@ var SleepingBearShow = (function () {
         var camera = SleepingBearShow.appCamera;
         camera.position.x = 0;
         camera.position.y = 30;
-        camera.position.z = 100;
+        camera.position.z = 200;
         camera.lookAt(SleepingBearShow.appScene.position);
         /*
         var camControls = new THREE.FirstPersonControls(camera, document);
@@ -697,13 +780,6 @@ var SleepingBearShow = (function () {
         trackballControls.staticMoving = true;
         //trackballControls.dynamicDampingFactor=0.3;
         SleepingBearShow.trackballControl = trackballControls;
-        SleepingBearShow.appRender = new THREE.WebGLRenderer({ antialias: true });
-        SleepingBearShow.appRender.setClearColor(new THREE.Color(0xEEEEEE));
-        SleepingBearShow_onWindowResize();
-        showElement.appendChild(SleepingBearShow.appRender.domElement);
-        window.addEventListener("resize", SleepingBearShow_onWindowResize);
-        this.addShowObjects();
-        SleepingBearShow_animate();
     };
     SleepingBearShow.prototype.addShowObjects = function () {
         /*
@@ -718,19 +794,14 @@ var SleepingBearShow = (function () {
         SleepingBearShow.lakeMichigan.create(SleepingBearShow.appScene);
         var sandDune = new __WEBPACK_IMPORTED_MODULE_1__sand_dune__["a" /* SandDune */](SleepingBearShow.wanderServiceRef);
         sandDune.create(SleepingBearShow.appScene);
-        var loader = new THREE.TextureLoader();
-        var groundTexture = loader.load("assets/textures/lake-water.jpg");
-        //var groundTexture = loader.load("lake-water.jpg");
-        groundTexture.wrapS = THREE.RepeatWrapping;
-        groundTexture.wrapT = THREE.RepeatWrapping;
-        groundTexture.repeat.set(25, 25);
-        groundTexture.anisotropy = 16;
-        var groundMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x111111, map: groundTexture });
-        var mesh = new THREE.Mesh(new THREE.PlaneBufferGeometry(20000, 20000), groundMaterial);
-        mesh.position.y = -250;
-        mesh.rotation.x = -Math.PI / 2;
-        mesh.receiveShadow = true;
-        //SleepingBearShow.appScene.add( mesh );
+    };
+    SleepingBearShow.prototype.addShowLights = function () {
+        SleepingBearShow.appScene.add(new THREE.AmbientLight(0xffffff));
+        var light = new THREE.DirectionalLight(0xdfebff, 1.75);
+        light.position.set(50, 200, 100);
+        light.position.multiplyScalar(1.3);
+        light.castShadow = false;
+        //SleepingBearShow.appScene.add( light );
     };
     SleepingBearShow.prototype.getCameraAspect = function () {
         var navbarHeight = this.wanderService.getNavbarHeight();
@@ -772,12 +843,12 @@ function SleepingBearShow_onWindowResize() {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export NamedDescription */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WanderService; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/add/operator/map.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_rxjs_add_operator_map__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_http__ = __webpack_require__("../../../http/@angular/http.es5.js");
-/* unused harmony export NamedDescription */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return WanderService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -818,8 +889,8 @@ var WanderService = WanderService_1 = (function () {
     return WanderService;
 }());
 WanderService = WanderService_1 = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
-    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["b" /* Http */]) === "function" && _a || Object])
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["C" /* Injectable */])(),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["a" /* Http */]) === "function" && _a || Object])
 ], WanderService);
 
 var descriptions = {
@@ -861,9 +932,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 if (__WEBPACK_IMPORTED_MODULE_3__environments_environment__["a" /* environment */].production) {
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* enableProdMode */])();
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_23" /* enableProdMode */])();
 }
-__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */]);
+Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */]);
 //# sourceMappingURL=main.js.map
 
 /***/ }),
