@@ -651,66 +651,73 @@ var LakeMichigan = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SandDune; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__appsb_params__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/appsb-params.ts");
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
-
 var SandDune = (function () {
     function SandDune(wanderService) {
         this.wanderService = wanderService;
+        this.duneWidth = 100;
+        this.duneLength = 100;
+        this.widthSegments = 50;
+        this.lengthSegments = 50;
     }
     SandDune.prototype.create = function (appScene) {
-        var width = 100;
-        var length = 100;
-        var widthSegments = 50;
-        var lengthSegments = 50;
-        var sandGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
-        var xmiddle = width / 2;
-        var r = 20;
-        var y0;
-        var ym = length / 2;
-        var len = sandGeometry.vertices.length;
-        for (var i = len - 1; i >= 0; i--) {
-            var xyz = sandGeometry.vertices[i];
-            if (i === (len - 1)) {
-                y0 = xyz.y;
-                console.info("sand-y0=" + y0);
-            }
-            var fy = 1 - (xyz.y - y0) / (ym - y0);
-            if (Math.abs(xyz.x) < r) {
-                var d = r - Math.sqrt(r * r - xyz.x * xyz.x);
-                var f = 1 + 2 * d / r;
-                xyz.z = xyz.z + fy * d / f;
-            }
-            else {
-                xyz.z = xyz.z + fy * r / 3;
-            }
-            xyz.y = xyz.y + __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachHeight;
-            xyz.z = xyz.z - 50 * (1 - fy);
-        }
-        var loader = new THREE.TextureLoader();
-        var texture = loader.load("assets/textures/sand.png");
-        texture.wrapS = THREE.MirroredRepeatWrapping;
-        texture.wrapT = THREE.MirroredRepeatWrapping;
-        texture.repeat.set(2, 2);
-        texture.flipY = false;
-        //texture.anisotropy = 16;
-        //var lakeMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: texture } );
-        var sandMaterial = new THREE.MeshPhongMaterial({ map: texture });
-        //sandMaterial.opacity = 0.8;
-        //sandMaterial.transparent = true;
+        this.duneGeometry = new THREE.PlaneGeometry(this.duneWidth, this.duneLength, this.widthSegments, this.lengthSegments);
+        this.createCurve();
         var meshParams = {
             wireframe: true,
             overdraw: 1,
             color: 0x00ffff
         };
-        var sandMesh1 = THREE.SceneUtils.createMultiMaterialObject(sandGeometry, [new THREE.MeshBasicMaterial(meshParams),
-            sandMaterial
+        var duneMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x111111 });
+        var duneMesh = THREE.SceneUtils.createMultiMaterialObject(this.duneGeometry, [new THREE.MeshBasicMaterial(meshParams),
+            duneMaterial
         ]);
-        var sandMesh = THREE.SceneUtils.createMultiMaterialObject(sandGeometry, [sandMaterial]);
-        sandMesh.rotation.x = -0.0 * Math.PI;
-        sandMesh.position.y = length / 2;
-        appScene.add(sandMesh);
+        //duneMesh.rotation.x = 0;
+        duneMesh.position.y = this.duneLength / 2;
+        appScene.add(duneMesh);
+    };
+    SandDune.prototype.createCurve = function () {
+        var depthTop = 20;
+        var depthBottom = 10;
+        var xcenter = 0;
+        var zreduce = 0.5;
+        var dLength = this.duneLength / this.lengthSegments;
+        for (var ih = 0; ih <= this.lengthSegments; ih++) {
+            var y0 = this.duneLength / 2;
+            var dy = y0 - ih * dLength;
+            var yrate = 1 - ih / this.lengthSegments;
+            var depth = depthTop * yrate + (1 - yrate) * depthBottom;
+            var depth2 = depth * depth;
+            for (var iw = 0; iw <= this.widthSegments; iw++) {
+                var ivertex = iw + ih * (this.widthSegments + 1);
+                var vert = this.duneGeometry.vertices[ivertex];
+                var dx = vert.x - xcenter;
+                var dx2 = dx * dx;
+                var dz = 0;
+                if (dx2 <= depth2) {
+                    dz = Math.sqrt(depth2 - dx2);
+                    var zf = (1 - dx2 / depth2) * zreduce;
+                    dz = zf * dz;
+                    vert.z = vert.z - dz;
+                }
+            }
+        }
+        /*
+        var indexLen = this.duneGeometry.vertices.length;
+        for ( var i = 0; i < indexLen; i ++ ) {
+          var vert = this.duneGeometry.vertices[i];
+          var dx = vert.x - xcenter;
+          var dx2 = dx * dx;
+          var dz = 0;
+          if (dx2 <= depth2) {
+            dz = Math.sqrt(depth2 - dx2);
+            var zf = (1 - dx2 / depth2) * zreduce;
+            dz = zf * dz;
+            vert.z = vert.z - dz;
+          }
+        }
+        */
     };
     return SandDune;
 }());
@@ -755,8 +762,8 @@ var SleepingBearShow = (function () {
         SleepingBearShow.appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         var camera = SleepingBearShow.appCamera;
         camera.position.x = 0;
-        camera.position.y = 30;
-        camera.position.z = 200;
+        camera.position.y = 30 + 100;
+        camera.position.z = -200 + 150;
         camera.lookAt(SleepingBearShow.appScene.position);
         /*
         var camControls = new THREE.FirstPersonControls(camera, document);
@@ -797,10 +804,17 @@ var SleepingBearShow = (function () {
     };
     SleepingBearShow.prototype.addShowLights = function () {
         SleepingBearShow.appScene.add(new THREE.AmbientLight(0xffffff));
-        var light = new THREE.DirectionalLight(0xdfebff, 1.75);
-        light.position.set(50, 200, 100);
-        light.position.multiplyScalar(1.3);
+        /*
+        var light = new THREE.DirectionalLight( 0xdfebff, 1.75 );
+        light.position.set( 50, 200, 100 );
+        light.position.multiplyScalar( 1.3 );
         light.castShadow = false;
+        //SleepingBearShow.appScene.add( light );
+        */
+        var light = new THREE.DirectionalLight(0xdfebff, 0.5);
+        light.position.set(50, -200, 100);
+        //light.position.multiplyScalar( 1.3 );
+        light.castShadow = true;
         //SleepingBearShow.appScene.add( light );
     };
     SleepingBearShow.prototype.getCameraAspect = function () {
