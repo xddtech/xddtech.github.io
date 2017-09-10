@@ -527,7 +527,21 @@ var AppSbParams = (function () {
     return AppSbParams;
 }());
 
-AppSbParams.beachHeight = 5;
+AppSbParams.beachWidth = 400;
+AppSbParams.beachLength = 50;
+AppSbParams.beachWidthSegments = 50;
+AppSbParams.beachLengthSegments = 50;
+AppSbParams.beachHeight = 0.5;
+AppSbParams.beachShift = 10;
+AppSbParams.waterWidth = 400;
+AppSbParams.waterLength = 400;
+AppSbParams.waterWidthSegments = 20;
+AppSbParams.waterLengthSegments = 10;
+AppSbParams.waterShift = AppSbParams.beachShift;
+AppSbParams.duneWidth = 400;
+AppSbParams.duneLength = 100;
+AppSbParams.duneWidthSegments = 50;
+AppSbParams.duneLengthSegments = 50;
 //# sourceMappingURL=appsb-params.js.map
 
 /***/ }),
@@ -550,37 +564,37 @@ var LakeMichigan = (function () {
         this.createDeepWater(appScene);
     };
     LakeMichigan.prototype.createBeach = function (appScene) {
-        var width = 100;
-        var length = 100;
-        var widthSegments = 50;
-        var lengthSegments = 50;
-        this.lakeGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
-        var xmiddle = width / 2;
+        //var width = 100;
+        //var length = 100;
+        //var widthSegments = 50;
+        //var lengthSegments = 50;
+        this.lakeGeometry = new THREE.PlaneGeometry(__WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidth, __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLength, __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidthSegments, __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLengthSegments);
+        var xmiddle = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidth / 2;
         var r = 20;
         var y0;
-        var ym = -length / 2;
+        var ym = -__WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLength / 2;
         for (var i = 0, l = this.lakeGeometry.vertices.length; i < l; i++) {
             var xyz = this.lakeGeometry.vertices[i];
             if (i === 0) {
                 y0 = xyz.y;
-                console.info("y0=" + y0);
             }
             var fy = 1 - (xyz.y - y0) / (ym - y0);
+            /*
             if (Math.abs(xyz.x) < r) {
-                var d = r - Math.sqrt(r * r - xyz.x * xyz.x);
-                var f = 1 + 2 * d / r;
-                xyz.y = xyz.y - fy * d / f;
+              var d = r - Math.sqrt(r*r - xyz.x * xyz.x);
+              var f = 1 + 2*d/r;
+              xyz.y = xyz.y - fy* d/f;
+            } else {
+              xyz.y = xyz.y - fy* r/3;
             }
-            else {
-                xyz.y = xyz.y - fy * r / 3;
-            }
+            */
             xyz.z = xyz.z + fy * __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachHeight;
         }
         var loader = new THREE.TextureLoader();
         var texture = loader.load("assets/textures/beach-1.png");
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;
-        texture.repeat.set(2, 1);
+        texture.repeat.set(8, 1);
         texture.flipY = false;
         //texture.anisotropy = 16;
         //var lakeMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: texture } );
@@ -594,26 +608,26 @@ var LakeMichigan = (function () {
             overdraw: 1,
             color: 0x00ffff
         };
-        var lakeMesh1 = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams),
+        var beachMesh1 = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [new THREE.MeshBasicMaterial(meshParams),
             lakeMaterial
         ]);
-        var lakeMesh = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [lakeMaterial]);
-        lakeMesh.rotation.x = -0.5 * Math.PI;
-        lakeMesh.position.z = length / 2;
-        appScene.add(lakeMesh);
+        var beachMesh = THREE.SceneUtils.createMultiMaterialObject(this.lakeGeometry, [lakeMaterial]);
+        beachMesh.rotation.x = -0.5 * Math.PI;
+        beachMesh.position.z = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLength / 2 - __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachShift;
+        appScene.add(beachMesh);
     };
     LakeMichigan.prototype.createDeepWater = function (appScene) {
-        var width = 100;
-        var length = 100;
-        var widthSegments = 20;
-        var lengthSegments = 10;
+        var width = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterWidth;
+        var length = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLength;
+        var widthSegments = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterWidthSegments;
+        var lengthSegments = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLengthSegments;
         var waterGeometry = new THREE.PlaneGeometry(width, length, widthSegments, lengthSegments);
         var y0;
         for (var i = 0, l = waterGeometry.vertices.length; i < l; i++) {
             var xyz = waterGeometry.vertices[i];
             if (i === 0) {
                 y0 = xyz.y;
-                console.info("createDeepWater-y0=" + y0);
+                //console.info("createDeepWater-y0=" + y0);
             }
             if (xyz.y === y0) {
                 var d = (0.5 - Math.random()) * 4;
@@ -624,12 +638,13 @@ var LakeMichigan = (function () {
         var texture = loader.load("assets/textures/lake-water-1.png");
         texture.wrapS = THREE.MirroredRepeatWrapping;
         texture.wrapT = THREE.MirroredRepeatWrapping;
-        texture.repeat.set(1, 1);
+        texture.repeat.set(4, 1);
         texture.flipY = false;
         var waterMaterial = new THREE.MeshPhongMaterial({ map: texture });
         var waterMesh = new THREE.Mesh(waterGeometry, waterMaterial);
         waterMesh.rotation.x = -0.5 * Math.PI;
-        waterMesh.position.z = length / 2 + 100 - 4;
+        waterMesh.position.z = length / 2 + __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLength
+            - 4 - __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachShift;
         waterMesh.position.y = -0.1;
         appScene.add(waterMesh);
     };
@@ -651,30 +666,49 @@ var LakeMichigan = (function () {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SandDune; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__appsb_params__ = __webpack_require__("../../../../../src/app/components/sleeping-bear/appsb-params.ts");
 /// <reference path="../../../typings/_reference-three.d.ts" />
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
+
 var SandDune = (function () {
     function SandDune(wanderService) {
         this.wanderService = wanderService;
-        this.duneWidth = 100;
-        this.duneLength = 100;
-        this.widthSegments = 50;
-        this.lengthSegments = 50;
+        this.duneWidth = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneWidth;
+        this.duneLength = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneLength;
+        this.widthSegments = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneWidthSegments;
+        this.lengthSegments = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneLengthSegments;
     }
     SandDune.prototype.create = function (appScene) {
         this.duneGeometry = new THREE.PlaneGeometry(this.duneWidth, this.duneLength, this.widthSegments, this.lengthSegments);
         //this.createCurve();
         this.createSlope();
         this.createCurveLater();
+        this.duneGeometry.normalsNeedUpdate = true;
+        this.duneGeometry.verticesNeedUpdate = true;
+        /*
         var meshParams = {
-            wireframe: true,
-            overdraw: 1,
-            color: 0x00ffff
+          wireframe: true,
+          overdraw: 1,
+          color: 0x00ffff
         };
-        var duneMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x111111 });
-        var duneMesh = THREE.SceneUtils.createMultiMaterialObject(this.duneGeometry, [new THREE.MeshBasicMaterial(meshParams),
-            duneMaterial
-        ]);
+        var duneMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111} );
+        var duneMesh = THREE.SceneUtils.createMultiMaterialObject(this.duneGeometry,
+           [new THREE.MeshBasicMaterial(<THREE.MeshBasicMaterialParameters>meshParams),
+                    duneMaterial
+              ]);
+        */
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load("assets/textures/sand.png");
+        texture.wrapS = THREE.MirroredRepeatWrapping;
+        texture.wrapT = THREE.MirroredRepeatWrapping;
+        texture.repeat.set(8, 2);
+        texture.flipY = false;
+        //texture.anisotropy = 16;
+        var sandMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x111111, map: texture });
+        //var sandMaterial = new THREE.MeshPhongMaterial( {map: texture } );
+        //sandMaterial.opacity = 0.8;
+        //sandMaterial.transparent = true;
+        var duneMesh = THREE.SceneUtils.createMultiMaterialObject(this.duneGeometry, [sandMaterial]);
         //duneMesh.rotation.x = 0;
         duneMesh.position.y = this.duneLength / 2;
         appScene.add(duneMesh);
@@ -737,6 +771,10 @@ var SandDune = (function () {
                     vert.z = vert.z + nz;
                     vert.y = vert.y + ny;
                 }
+                // add ramdom
+                var randomFactor = 1;
+                var ry = randomFactor * Math.random();
+                vert.y = vert.y + ry;
                 if (iw < this.widthSegments) {
                     iface = iface + 1;
                 }
@@ -928,18 +966,17 @@ var SleepingBearShow = (function () {
     };
     SleepingBearShow.prototype.addShowLights = function () {
         SleepingBearShow.appScene.add(new THREE.AmbientLight(0xffffff));
-        /*
-        var light = new THREE.DirectionalLight( 0xdfebff, 1.75 );
-        light.position.set( 50, 200, 100 );
-        light.position.multiplyScalar( 1.3 );
+        var light = new THREE.DirectionalLight(0xdfebff, 1.75);
+        light.position.set(50, 200, 100);
+        light.position.multiplyScalar(1.3);
         light.castShadow = false;
         //SleepingBearShow.appScene.add( light );
-        */
         var light = new THREE.DirectionalLight(0xdfebff, 0.5);
-        light.position.set(50, -200, 100);
+        //light.position.set(0, 200, 200 );
         //light.position.multiplyScalar( 1.3 );
+        light.position.set(-200, 200, 0);
         light.castShadow = true;
-        //SleepingBearShow.appScene.add( light );
+        SleepingBearShow.appScene.add(light);
     };
     SleepingBearShow.prototype.getCameraAspect = function () {
         var navbarHeight = this.wanderService.getNavbarHeight();
