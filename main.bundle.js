@@ -540,8 +540,9 @@ AppSbParams.waterLengthSegments = 10;
 AppSbParams.waterShift = AppSbParams.beachShift;
 AppSbParams.duneWidth = 400;
 AppSbParams.duneLength = 100;
-AppSbParams.duneWidthSegments = 50;
-AppSbParams.duneLengthSegments = 50;
+AppSbParams.duneWidthSegments = 150;
+AppSbParams.duneLengthSegments = 150;
+AppSbParams.duneRoughness = 0.1;
 //# sourceMappingURL=appsb-params.js.map
 
 /***/ }),
@@ -683,8 +684,11 @@ var SandDune = (function () {
         //this.createCurve();
         this.createSlope();
         this.createCurveLater();
+        this.createRoughness();
         this.duneGeometry.normalsNeedUpdate = true;
         this.duneGeometry.verticesNeedUpdate = true;
+        this.duneGeometry.computeFaceNormals();
+        this.duneGeometry.computeVertexNormals();
         /*
         var meshParams = {
           wireframe: true,
@@ -704,7 +708,14 @@ var SandDune = (function () {
         texture.repeat.set(8, 2);
         texture.flipY = false;
         //texture.anisotropy = 16;
-        var sandMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff, specular: 0x111111, map: texture });
+        //var sandMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: texture } );
+        var sandParam = {
+            color: 0xaaaaaa,
+            shininess: 80,
+            specular: 0xffffff,
+            map: texture
+        };
+        var sandMaterial = new THREE.MeshPhongMaterial(sandParam);
         //var sandMaterial = new THREE.MeshPhongMaterial( {map: texture } );
         //sandMaterial.opacity = 0.8;
         //sandMaterial.transparent = true;
@@ -865,6 +876,13 @@ var SandDune = (function () {
             }
         }
     };
+    SandDune.prototype.createRoughness = function () {
+        for (var i = 0; i < this.duneGeometry.vertices.length; i++) {
+            var vert = this.duneGeometry.vertices[i];
+            var rz = Math.random() - 0.5;
+            vert.z = vert.z + rz * __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneRoughness;
+        }
+    };
     SandDune.prototype.getSection = function (sections, x) {
         for (var j = 0; j < sections.length; j++) {
             var s = sections[j];
@@ -976,11 +994,10 @@ var SleepingBearShow = (function () {
         light.position.multiplyScalar(1.3);
         light.castShadow = false;
         //SleepingBearShow.appScene.add( light );
-        var light = new THREE.DirectionalLight(0xdfebff, 0.5);
-        //light.position.set(0, 200, 200 );
-        //light.position.multiplyScalar( 1.3 );
-        light.position.set(-200, 200, 0);
-        light.castShadow = true;
+        var light = new THREE.DirectionalLight(0xdfebff, 0.8);
+        //light.position.multiplyScalar( 1 );
+        light.position.set(-250, 510, 1150);
+        light.castShadow = false;
         SleepingBearShow.appScene.add(light);
     };
     SleepingBearShow.prototype.getCameraAspect = function () {
