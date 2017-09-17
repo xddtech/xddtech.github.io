@@ -670,9 +670,22 @@ var LakeMichigan = (function () {
         appScene.add(waterMesh);
     };
     LakeMichigan.prototype.animate = function (deltaTime, elapsedTime) {
-        for (var i = 0, l = this.waterGeometry.vertices.length; i < l; i++) {
-            this.waterGeometry.vertices[i].z = 0.1 * Math.sin(i / 5 + (elapsedTime + i) / 7);
-            this.waterGeometry.vertices[i].y += 0.06 * Math.sin(i / 5 + (elapsedTime + i) / 7);
+        /*
+        for ( var i = 0, l = this.waterGeometry.vertices.length; i < l; i ++ ) {
+          this.waterGeometry.vertices[ i ].z = 0.1 * Math.sin( i / 5 + (elapsedTime + i ) / 7 );
+          this.waterGeometry.vertices[ i ].y += 0.06 * Math.sin( i / 5 + (elapsedTime + i ) / 7 );
+        }
+        */
+        var dWaterLen = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLength / __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLengthSegments;
+        for (var kh = 0; kh <= __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLengthSegments; kh++) {
+            var waterLen = dWaterLen * kh;
+            var fw = waterLen / __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLengthSegments;
+            for (var kw = 0; kw < __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterWidthSegments; kw++) {
+                var kvetex = kw + kh * (__WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].waterLengthSegments + 1);
+                var vetex = this.waterGeometry.vertices[kvetex];
+                vetex.z = fw * 0.1 * Math.sin(kvetex / 15 + elapsedTime / 7);
+                vetex.y += fw * 0.06 * Math.sin(kvetex / 15 + elapsedTime / 7);
+            }
         }
         this.waterGeometry.verticesNeedUpdate = true;
         var dBeachLen = __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLength / __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachLengthSegments;
@@ -683,8 +696,9 @@ var LakeMichigan = (function () {
                 for (var iw = 0; iw < __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidthSegments; iw++) {
                     var ivertex = iw + ih * (__WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidthSegments + 1);
                     var vert = this.beachGeometry.vertices[ivertex];
-                    vert.z += 0.01 * Math.sin(i / 5 + (elapsedTime + i) / 7);
-                    vert.y += 0.005 * Math.sin(i / 5 + (elapsedTime + i) / 7);
+                    var iv = 0;
+                    vert.z += 0.01 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
+                    vert.y += 0.005 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
                 }
             }
         }
@@ -965,6 +979,7 @@ var SleepingBearShow = (function () {
         SleepingBearShow_onWindowResize();
         showElement.appendChild(SleepingBearShow.appRender.domElement);
         window.addEventListener("resize", SleepingBearShow_onWindowResize);
+        this.addBackground();
         this.addShowObjects();
         this.addShowLights();
         SleepingBearShow_animate();
@@ -987,40 +1002,56 @@ var SleepingBearShow = (function () {
         //camera.lookAt(SleepingBearShow.appScene.position);
         /*
         var camControls = new THREE.FirstPersonControls(camera, document);
-            camControls.lookSpeed = 0.4;
+            camControls.lookSpeed = 0; //0.4;
             camControls.movementSpeed = 20;
-            camControls.noFly = true;
-            camControls.lookVertical = true;
+            camControls.noFly = false;
+            camControls.lookVertical = false;
             camControls.constrainVertical = true;
-            camControls.verticalMin = 1.0;
-            camControls.verticalMax = 2.0;
-            camControls.lon = -150;
-            camControls.lat = 120;
+            //camControls.verticalMin = 1.0;
+            //camControls.verticalMax = 2.0;
+            //camControls.lon = -150;
+            //camControls.lat = 120;
         SleepingBearShow.appCamControl = camControls;
         */
+        var sbearControl = new THREE.SleepingBearControls(camera, document);
+        sbearControl.lookSpeed = 0.4;
+        sbearControl.movementSpeed = 20;
+        sbearControl.noFly = false;
+        sbearControl.lookVertical = false;
+        sbearControl.constrainVertical = true;
+        //sbearControl.target = lookAt;
+        sbearControl.activeLook = false;
+        //camControls.verticalMin = 1.0;
+        //camControls.verticalMax = 2.0;
+        //camControls.lon = -150;
+        //camControls.lat = 120;
+        SleepingBearShow.sbearControl = sbearControl;
+        /*
         var trackballControls = new THREE.TrackballControls(camera, document);
-        trackballControls.rotateSpeed = 1.0;
-        trackballControls.zoomSpeed = 1.0;
-        trackballControls.panSpeed = 1.0;
-        //trackballControls.noZoom=false;
-        //trackballControls.noPan=false;
-        trackballControls.staticMoving = true;
-        //trackballControls.dynamicDampingFactor=0.3;
+            trackballControls.rotateSpeed = 1.0;
+            trackballControls.zoomSpeed = 1.0;
+            trackballControls.panSpeed = 1.0;
+            //trackballControls.noZoom=false;
+            //trackballControls.noPan=false;
+            trackballControls.staticMoving = true;
+            //trackballControls.dynamicDampingFactor=0.3;
         SleepingBearShow.trackballControl = trackballControls;
+        */
     };
     SleepingBearShow.prototype.addShowObjects = function () {
-        /*
-        var geometry = new THREE.BoxGeometry(1, 1, 1);
-        var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-        var cube = new THREE.Mesh(geometry, material);
-        SleepingBearShow.appScene.add( cube );
-        */
         var axisHelper = new THREE.AxisHelper(200);
-        SleepingBearShow.appScene.add(axisHelper);
+        //SleepingBearShow.appScene.add(axisHelper);
         SleepingBearShow.lakeMichigan = new __WEBPACK_IMPORTED_MODULE_0__lake_michigan__["a" /* LakeMichigan */](SleepingBearShow.wanderServiceRef);
         SleepingBearShow.lakeMichigan.create(SleepingBearShow.appScene);
         var sandDune = new __WEBPACK_IMPORTED_MODULE_1__sand_dune__["a" /* SandDune */](SleepingBearShow.wanderServiceRef);
         sandDune.create(SleepingBearShow.appScene);
+    };
+    SleepingBearShow.prototype.addBackground = function () {
+        var loader = new THREE.TextureLoader();
+        var texture = loader.load("assets/background-1.png");
+        SleepingBearShow.appScene.background = texture;
+        //SleepingBearShow.appScene.background = new THREE.Color( 0xcce0ff );
+        //SleepingBearShow.appScene.fog = new THREE.Fog( 0xcce0ff, 500, 10000 );
     };
     SleepingBearShow.prototype.addShowLights = function () {
         SleepingBearShow.appScene.add(new THREE.AmbientLight(0xffffff));
@@ -1052,7 +1083,8 @@ var SleepingBearShow_animate = function () {
         try {
             SleepingBearShow.appRender.render(SleepingBearShow.appScene, SleepingBearShow.appCamera);
             //SleepingBearShow.appCamControl.update(deltaTime);
-            SleepingBearShow.trackballControl.update();
+            SleepingBearShow.sbearControl.update(deltaTime);
+            //SleepingBearShow.trackballControl.update();
         }
         catch (error) {
             console.error("render error " + error);
