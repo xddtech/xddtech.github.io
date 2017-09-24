@@ -1019,8 +1019,9 @@ var SleepingBearShow = (function () {
         sbearControl.noFly = false;
         sbearControl.lookVertical = false;
         sbearControl.constrainVertical = true;
-        //sbearControl.target = lookAt;
-        sbearControl.activeLook = false;
+        sbearControl.target = lookAt;
+        sbearControl.activeLook = true;
+        sbearControl.init();
         //camControls.verticalMin = 1.0;
         //camControls.verticalMax = 2.0;
         //camControls.lon = -150;
