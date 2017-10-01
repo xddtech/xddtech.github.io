@@ -734,6 +734,7 @@ var SandDune = (function () {
         this.createSlope();
         this.createCurveLater();
         this.createRoughness();
+        this.extractMiddleLine();
         this.duneGeometry.normalsNeedUpdate = true;
         this.duneGeometry.verticesNeedUpdate = true;
         this.duneGeometry.computeFaceNormals();
@@ -932,6 +933,15 @@ var SandDune = (function () {
             vert.z = vert.z + rz * __WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].duneRoughness;
         }
     };
+    SandDune.prototype.extractMiddleLine = function () {
+        var indexLen = this.duneGeometry.vertices.length;
+        for (var ih = 0; ih <= this.lengthSegments; ih++) {
+            var iw = this.widthSegments / 2;
+            var ivertex = indexLen - 1 - (iw + ih * (this.widthSegments + 1));
+            var vert = this.duneGeometry.vertices[ivertex];
+            SandDune.sandDuneCenterLine.push(vert);
+        }
+    };
     SandDune.prototype.getSection = function (sections, x) {
         for (var j = 0; j < sections.length; j++) {
             var s = sections[j];
@@ -951,6 +961,7 @@ var SandDune = (function () {
     return SandDune;
 }());
 
+SandDune.sandDuneCenterLine = new Array();
 //# sourceMappingURL=sand-dune.js.map
 
 /***/ }),
