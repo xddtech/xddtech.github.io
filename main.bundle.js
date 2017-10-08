@@ -940,6 +940,11 @@ var SandDune = (function () {
             var ivertex = indexLen - 1 - (iw + ih * (this.widthSegments + 1));
             var vert = this.duneGeometry.vertices[ivertex];
             SandDune.sandDuneCenterLine.push(vert);
+            var faceLength = this.duneGeometry.faces.length;
+            var iface = faceLength - (2 * iw + 2 * this.widthSegments * ih);
+            var face = this.duneGeometry.faces[iface];
+            //var normal = face.normal;
+            //SandDune.sandDuneCenterNormal.push(normal);
         }
     };
     SandDune.prototype.getSection = function (sections, x) {
@@ -962,6 +967,7 @@ var SandDune = (function () {
 }());
 
 SandDune.sandDuneCenterLine = new Array();
+SandDune.sandDuneCenterNormal = new Array();
 //# sourceMappingURL=sand-dune.js.map
 
 /***/ }),
@@ -993,6 +999,7 @@ var SleepingBearShow = (function () {
         this.addBackground();
         this.addShowObjects();
         this.addShowLights();
+        SleepingBearShow.sbearControl.setSandDuneParams(__WEBPACK_IMPORTED_MODULE_1__sand_dune__["a" /* SandDune */].sandDuneCenterLine, __WEBPACK_IMPORTED_MODULE_1__sand_dune__["a" /* SandDune */].sandDuneCenterLine);
         SleepingBearShow_animate();
     };
     SleepingBearShow.prototype.addCameraAndControls = function () {
