@@ -773,6 +773,12 @@ var SandDune = (function () {
         //duneMesh.rotation.x = 0;
         duneMesh.position.y = this.duneLength / 2;
         appScene.add(duneMesh);
+        try {
+            this.createTexts(appScene);
+        }
+        catch (error) {
+            console.error("sand-dune.ts: createTexts-" + error);
+        }
     };
     SandDune.prototype.createCurve = function () {
         var depthTop = 20;
@@ -802,8 +808,8 @@ var SandDune = (function () {
         }
     };
     SandDune.prototype.createCurveLater = function () {
-        var depthTop = 20;
-        var depthBottom = 10;
+        var depthTop = 50;
+        var depthBottom = 30;
         var xcenter = 0;
         var zreduce = 0.5;
         this.duneGeometry.computeFaceNormals();
@@ -962,6 +968,38 @@ var SandDune = (function () {
         var f = Math.abs(d / len);
         var slope = section.slope1 * (1 - f) + section.slope2 * f;
         return Math.abs(slope);
+    };
+    SandDune.prototype.createTexts = function (appScene) {
+        //console.log(THREE.FontUtils.faces);
+        var options = {
+            size: 90,
+            height: 90,
+            weight: "normal",
+            font: new THREE.Font("helvetiker"),
+            bevelThickness: 2,
+            bevelSize: 0.5,
+            bevelSegments: 3,
+            bevelEnabled: true,
+            curveSegments: 12,
+            steps: 1
+        };
+        //var fontName = "helvetiker";
+        //var fontWeight = "regular";
+        //var fontLoaded;
+        //var loader = new THREE.FontLoader();
+        //		loader.load( 'fonts/' + fontName + '_' + fontWeight + '.typeface.json', function ( response ) {
+        //			fontLoaded = response;
+        //		} );
+        var textGeom = new THREE.TextGeometry("Sleeping", options);
+        var meshMaterial = new THREE.MeshPhongMaterial({
+            specular: 0xffffff,
+            color: 0xeeffff,
+            shininess: 100
+        });
+        var text = THREE.SceneUtils.createMultiMaterialObject(textGeom, [meshMaterial]);
+        text.position.z = -30;
+        text.position.y = 30;
+        appScene.add(text);
     };
     return SandDune;
 }());
