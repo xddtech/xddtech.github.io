@@ -2,12 +2,17 @@
 THREE.SleepingBearControls = function ( object, domElement ) {
 
 	this.object = object;
-	this.target = new THREE.Vector3(-50, 0, 0 );
+	this.position0 = new THREE.Vector3(0, 0, 0 );
+	this.target = new THREE.Vector3(0, 0, 0 );
+	this.target0 = new THREE.Vector3(-50, 0, 0);
+	this.target1 = new THREE.Vector3(0, 0, 0);
+	this.targetDistance1 = 1.0;
 
 	this.domElement = ( domElement !== undefined ) ? domElement : document;
 
 	this.movementSpeed = 1.0;
 	this.lookSpeed = 0.005;
+	this.climbSpeed = 1.0;
 
 	this.lookVertical = true;
 	this.autoForward = false;
@@ -45,6 +50,14 @@ THREE.SleepingBearControls = function ( object, domElement ) {
 	this.viewHalfX = 0;
 	this.viewHalfY = 0;
 
+	this.SECTION_LAKE = 0;
+	this.SECTION_SAND = 1;
+	this.currentSection = this.SECTION_LAKE;
+
+	this.lakeSandSwitchZ = 2;
+	this.sandLakeSwitchY = 0.5;
+	this.maxClimbHeight = 34.5;
+
 	if ( this.domElement !== document ) {
 
 		this.domElement.setAttribute( 'tabindex', -1 );
@@ -52,6 +65,26 @@ THREE.SleepingBearControls = function ( object, domElement ) {
 	}
 
 	//
+	this.init = function() {
+	  this.position0.x = this.object.position.x;
+	  this.position0.y = this.object.position.y;
+	  this.position0.z = this.object.position.z;
+
+	  this.target0 = new THREE.Vector3(-50, 0, 0);
+	  this.target1 = new THREE.Vector3(0, 0, 0);
+	  var cp = this.object.position;
+	  var cameraV3 = new THREE.Vector3(cp.x, cp.y, cp.z);
+	  //this.targetDistance1 = cameraV3.distanceTo(this.target1);
+	  this.targetDistance1 = Math.abs(cp.x - this.target1.x);
+	}
+
+	this.sandDuneCenterLine = null;
+	this.sandDuneCenterNormal = null;
+	
+	this.setSandDuneParams = function(centerLine, centerNormal) {
+	  this.sandDuneCenterLine = centerLine;
+	  this.sandDuneCenterNormal = centerNormal;
+	}
 
 	this.handleResize = function () {
 
@@ -188,6 +221,14 @@ THREE.SleepingBearControls = function ( object, domElement ) {
 			return;
 
 		}
+		if (this.currentSection === this.SECTION_LAKE) {
+			this.updateLakeSection(delta);
+		} else if(this.currentSection === this.SECTION_SAND) {
+			this.updateSandSection(delta);
+		}
+	}
+
+	this.updateLakeSection = function(delta) {
 
 		if ( this.heightSpeed ) {
 
@@ -204,11 +245,53 @@ THREE.SleepingBearControls = function ( object, domElement ) {
 
 		var actualMoveSpeed = delta * this.movementSpeed;
 
-		if ( this.moveForward || ( this.autoForward && !this.moveBackward ) ) this.object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
-		if ( this.moveBackward ) this.object.translateZ( actualMoveSpeed );
+		//if ( this.moveForward || ( this.autoForward && !this.moveBackward ) ) this.object.translateZ( - ( actualMoveSpeed + this.autoSpeedFactor ) );
+		//if ( this.moveBackward ) this.object.translateZ( actualMoveSpeed );
+		if ( this.moveForward || ( this.autoForward && !this.moveBackward ) ||
+		     this.moveLeft) {
+			var mzforw =  -(actualMoveSpeed + this.autoSpeedFactor);
+			var mxforw = -actualMoveSpeed;
+			this.object.translateX(mxforw);
+			this.object.translateZ(mzforw);
+			if(this.object.position.x < 0) {
+				this.object.position.x = 0;
+			}
 
-		if ( this.moveLeft ) this.object.translateX( - actualMoveSpeed );
-		if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
+			//console.info("lake x,y,z = " + this.object.position.x + ", " + this.object.position.y +
+		    //               ", " + this.object.position.z);
+
+			if(this.object.position.z < this.lakeSandSwitchZ) {
+				this.currentSection = this.SECTION_SAND;
+				console.info("switch to sand section ");
+				console.info("lake x,y,z = " + this.object.position.x + ", " + this.object.position.y +
+		                   ", " + this.object.position.z);
+			}
+		}
+		if ( this.moveBackward || this.moveRight) {
+			var p0Clone = this.position0.clone();
+			p0Clone.sub(this.object.position);
+			p0Clone.normalize();
+
+			var mxback = actualMoveSpeed * p0Clone.x;
+			var myback = actualMoveSpeed * p0Clone.y;
+			var mzback = actualMoveSpeed * p0Clone.z;
+
+			this.object.translateX(mxback);
+			this.object.translateY(myback);
+			this.object.translateZ(mzback);
+			if(this.object.position.x > this.position0.x) {
+				this.object.position.x = this.position0.x;
+			}
+			if(this.object.position.y < this.position0.y) {
+				this.object.position.y = this.position0.y;
+			}
+	       	if(this.object.position.z < this.position0.z) {
+				this.object.position.z = this.position0.z;
+			}
+		}
+
+		//if ( this.moveLeft ) this.object.translateX( - actualMoveSpeed );
+		//if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
 
 		if ( this.moveUp ) this.object.translateY( actualMoveSpeed );
 		if ( this.moveDown ) this.object.translateY( - actualMoveSpeed );
@@ -246,13 +329,144 @@ THREE.SleepingBearControls = function ( object, domElement ) {
 		var targetPosition = this.target,
 			position = this.object.position;
 
-		targetPosition.x = position.x + 100 * Math.sin( this.phi ) * Math.cos( this.theta );
-		targetPosition.y = position.y + 100 * Math.cos( this.phi );
-		targetPosition.z = position.z + 100 * Math.sin( this.phi ) * Math.sin( this.theta );
+		//targetPosition.x = position.x + 100 * Math.sin( this.phi ) * Math.cos( this.theta );
+		//targetPosition.y = position.y + 100 * Math.cos( this.phi );
+		//targetPosition.z = position.z + 100 * Math.sin( this.phi ) * Math.sin( this.theta );
+
+        var cp = this.object.position;
+	    var cameraV3 = new THREE.Vector3(cp.x, cp.y, cp.z);
+		//var dtarget1 = cameraV3.distanceTo(this.target1);
+		var dtarget1 = Math.abs(cp.x - this.target1.x);
+		var tf = dtarget1 / this.targetDistance1;
+		var tx = tf * this.target0.x + (1 - tf) * this.target1.x;
+		var ty = tf * this.target0.y + (1 - tf) * this.target1.y;
+		var tz = tf * this.target0.z + (1 - tf) * this.target1.z;
+		var targetPos = {
+			x: tx,
+			y: ty,
+			z: tx
+		};
+		this.object.lookAt( targetPos );
 
 		//this.object.lookAt( targetPosition );
 
 	};
+
+	this.updateSandSection = function(delta) {
+		
+		var actualMoveSpeed = delta * this.climbSpeed;
+		var slope = this.getSandDuneSlope(this.object.position);
+
+		if ( this.moveForward || ( this.autoForward && !this.moveBackward ) ) {
+
+			var mzforw =  -(actualMoveSpeed + this.autoSpeedFactor);
+			var myforw = actualMoveSpeed;
+			console.info("lake x,y,z = " + this.object.position.x + ", " + this.object.position.y +
+						   ", " + this.object.position.z + 
+						", slope=" + slope.x + ", " + slope.y + ", " + slope.z);
+			if (this.object.position.y < this.maxClimbHeight) {
+			  //mzforw = -mzforw * slope.z;
+			  //myforw = myforw * slope.y;
+			  this.object.translateY(myforw);
+			  this.object.translateZ(mzforw);
+			}
+			//if(this.object.position.y < 1) {
+			//	this.object.position.y = 1;
+			//}
+		}
+		if ( this.moveBackward || this.moveRight) {
+			var p0Clone = this.position0.clone();
+			p0Clone.sub(this.object.position);
+			p0Clone.normalize();
+
+			slope.negate();
+
+			var mxback = 0;
+			var myback = -actualMoveSpeed;
+			var mzback = actualMoveSpeed;
+			//myback = myback * slope.y;
+			//mzback = -mzback * slope.z;
+
+			this.object.translateX(mxback);
+			this.object.translateY(myback);
+			this.object.translateZ(mzback);
+
+			if(this.object.position.y < this.sandLakeSwitchY) {
+				this.currentSection = this.SECTION_LAKE;
+			    console.info("lake x,y,z = " + this.object.position.x + ", " + this.object.position.y +
+		                   ", " + this.object.position.z);
+				console.info("switch to lake section ");
+			}
+
+		}
+
+		//if ( this.moveLeft ) this.object.translateX( - actualMoveSpeed );
+		//if ( this.moveRight ) this.object.translateX( actualMoveSpeed );
+
+		var actualLookSpeed = delta * this.lookSpeed;
+
+		if ( !this.activeLook ) {
+
+			actualLookSpeed = 0;
+
+		}
+
+		var verticalLookRatio = 1;
+
+		if ( this.constrainVertical ) {
+
+			verticalLookRatio = Math.PI / ( this.verticalMax - this.verticalMin );
+
+		}
+
+		this.lon += this.mouseX * actualLookSpeed;
+		if( this.lookVertical ) this.lat -= this.mouseY * actualLookSpeed * verticalLookRatio;
+
+		this.lat = Math.max( - 85, Math.min( 85, this.lat ) );
+		this.phi = THREE.Math.degToRad( 90 - this.lat );
+
+		this.theta = THREE.Math.degToRad( this.lon );
+
+		if ( this.constrainVertical ) {
+
+			this.phi = THREE.Math.mapLinear( this.phi, 0, Math.PI, this.verticalMin, this.verticalMax );
+
+		}
+
+        var cp = this.object.position;
+	    
+		var tx = cp.x;
+		var ty = cp.y + 1;
+		var tz = cp.z + 1;
+		var targetPos = {
+			x: tx,
+			y: ty,
+			z: tx
+		};
+		this.object.lookAt( targetPos );
+	}
+
+	this.getSandDuneSlope = function(position) {
+	  var lines = this.sandDuneCenterLine;
+	  var len = lines.length;
+	  var p1 = null;
+	  var p2 = null;
+	  var i = 0;
+	  for (i =0; i < (len-1); i++) {
+		  p1 = lines[i];
+		  p2 = lines[i+1];
+		  if (position.y >= p1.y && position.y <= p2.y &&
+			  position.z >= p1.z && position.z <= p2.z) {
+				break;
+		  }
+	  }
+      if (p1 === null || p2 === null) {
+		 return new THREE.Vector3(0, 0, -1);
+	  }
+	  var v = new THREE.Vector3(p2.x - p1.x, p2.y - p1.y, p2.z - p1.z);
+	  v.normalize();
+	  return v;
+	}
 
 
 	this.domElement.addEventListener( 'contextmenu', function ( event ) { event.preventDefault(); }, false );
