@@ -970,6 +970,35 @@ var SandDune = (function () {
         return Math.abs(slope);
     };
     SandDune.prototype.createTexts = function (appScene) {
+        var loader = new THREE.FontLoader();
+        loader.load('assets/fonts/helvetiker_regular.typeface.json', function (response) {
+            var font = response;
+            var options = {
+                size: 5,
+                height: 5,
+                weight: "normal",
+                font: font,
+                bevelThickness: 2,
+                bevelSize: 0.5,
+                bevelSegments: 3,
+                bevelEnabled: true,
+                curveSegments: 12,
+                steps: 1
+            };
+            var textGeom = new THREE.TextGeometry("Sleeping Bear", options);
+            var meshMaterial = new THREE.MeshPhongMaterial({
+                specular: 0xffffff,
+                color: 0x88aaee,
+                shininess: 100
+            });
+            var text = THREE.SceneUtils.createMultiMaterialObject(textGeom, [meshMaterial]);
+            text.position.z = -60;
+            text.position.y = 50;
+            text.position.x = -20;
+            appScene.add(text);
+        });
+    };
+    SandDune.prototype.createTextsOld = function (appScene) {
         //console.log(THREE.FontUtils.faces);
         var options = {
             size: 90,
