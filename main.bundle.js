@@ -289,7 +289,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/home/wander-land.html":
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<div id=\"wander-land-show\" class=\"container-fluid, wander-land-margin\"></div>\r\n"
+module.exports = "\r\n<div id=\"duneClimbInfo\">Use the left or right arrow keys to turn around</div>\r\n<div id=\"climbTopWelcome\">You reached the top. Congratulations!</div>\r\n<div id=\"wander-land-show\" class=\"container-fluid, wander-land-margin\"></div>\r\n"
 
 /***/ }),
 
