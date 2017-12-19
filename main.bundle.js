@@ -84,15 +84,17 @@ AppComponent = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__ = __webpack_require__("../../../../../src/app/components/navbar/navbar.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__ = __webpack_require__("../../../../../src/app/components/footer/footer.ts");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__components_home_home__ = __webpack_require__("../../../../../src/app/components/home/home.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_home_wander_land__ = __webpack_require__("../../../../../src/app/components/home/wander-land.ts");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__components_vr_vr__ = __webpack_require__("../../../../../src/app/components/vr/vr.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__components_about_about__ = __webpack_require__("../../../../../src/app/components/about/about.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__components_home_wander_land__ = __webpack_require__("../../../../../src/app/components/home/wander-land.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -118,8 +120,9 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_7__components_navbar_navbar__["a" /* default */],
             __WEBPACK_IMPORTED_MODULE_8__components_footer_footer__["a" /* default */],
             __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */],
-            __WEBPACK_IMPORTED_MODULE_11__components_home_wander_land__["a" /* default */]
+            __WEBPACK_IMPORTED_MODULE_10__components_vr_vr__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_11__components_about_about__["a" /* default */],
+            __WEBPACK_IMPORTED_MODULE_12__components_home_wander_land__["a" /* default */]
         ],
         imports: [
             __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
@@ -128,12 +131,13 @@ AppModule = __decorate([
             __WEBPACK_IMPORTED_MODULE_3__angular_forms__["b" /* ReactiveFormsModule */],
             __WEBPACK_IMPORTED_MODULE_4__angular_router__["a" /* RouterModule */].forRoot([
                 { path: '', component: __WEBPACK_IMPORTED_MODULE_9__components_home_home__["a" /* default */] },
-                { path: 'about', component: __WEBPACK_IMPORTED_MODULE_10__components_about_about__["a" /* default */] }
+                { path: 'vr', component: __WEBPACK_IMPORTED_MODULE_10__components_vr_vr__["a" /* default */] },
+                { path: 'about', component: __WEBPACK_IMPORTED_MODULE_11__components_about_about__["a" /* default */] }
             ])
         ],
         providers: [
             { provide: __WEBPACK_IMPORTED_MODULE_2__angular_common__["g" /* LocationStrategy */], useClass: __WEBPACK_IMPORTED_MODULE_2__angular_common__["d" /* HashLocationStrategy */] },
-            __WEBPACK_IMPORTED_MODULE_12__services_wander_service__["a" /* WanderService */]
+            __WEBPACK_IMPORTED_MODULE_13__services_wander_service__["a" /* WanderService */]
         ],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_6__app_component__["a" /* AppComponent */]]
     })
@@ -467,7 +471,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/app/components/navbar/navbar.html":
 /***/ (function(module, exports) {
 
-module.exports = "<nav #wanderNavbar class=\"navbar navbar-inverse navbar-margin-bottom-0\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
+module.exports = "<nav #wanderNavbar class=\"navbar navbar-inverse navbar-margin-bottom-0\" role=\"navigation\">\r\n  <div class=\"container\">\r\n    <div class=\"navbar-header\">\r\n      <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n        <span class=\"sr-only\">Toggle navigation</span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n        <span class=\"icon-bar\"></span>\r\n      </button>\r\n      <a class=\"navbar-brand\" href=\"#\">Wandering...</a>\r\n    </div>\r\n\r\n    <!-- Collect the nav links, forms, and other content for toggling -->\r\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n      <ul class=\"nav navbar-nav\">\r\n        <li><a routerLink=\"/vr\">VR</a></li>\r\n        <li><a routerLink=\"/about\">About</a></li>\r\n      </ul>\r\n    </div>\r\n    <!-- /.navbar-collapse -->\r\n  </div>\r\n  <!-- /.container -->\r\n</nav>"
 
 /***/ }),
 
@@ -697,8 +701,8 @@ var LakeMichigan = (function () {
                     var ivertex = iw + ih * (__WEBPACK_IMPORTED_MODULE_0__appsb_params__["a" /* AppSbParams */].beachWidthSegments + 1);
                     var vert = this.beachGeometry.vertices[ivertex];
                     var iv = 0;
-                    vert.z += 0.005 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
-                    vert.y += 0.005 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
+                    vert.z += 0.001 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
+                    vert.y += 0.001 * Math.sin(iv / 5 + (elapsedTime + iv) / 7);
                 }
             }
         }
@@ -905,9 +909,9 @@ var SandDune = (function () {
                 var ivertex = indexLen - 1 - (iw + ih * (this.widthSegments + 1));
                 var ivertexBase = indexLen - 1 - (iw + (ih - 1) * (this.widthSegments + 1));
                 var vert = this.duneGeometry.vertices[ivertex];
-                if (ih === 1) {
-                    console.log("vert: " + vert.x + ", " + vert.y + ", " + vert.z);
-                }
+                //if (ih === 1) {
+                //  console.log("vert: " + vert.x + ", " + vert.y + ", " + vert.z);
+                //}
                 var vertBase = this.duneGeometry.vertices[ivertexBase];
                 var slope = this.getSlope(section, iLength);
                 var dz = dLength * Math.cos(slope) + zbase;
@@ -1189,6 +1193,252 @@ function SleepingBearShow_onWindowResize() {
     SleepingBearShow.appRender.setSize(window.innerWidth, height);
 }
 //# sourceMappingURL=sleeping-bear-show.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vr/gear-show.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GearShow; });
+/// <reference path="../../../typings/_reference-three.d.ts" />
+/// <reference path="../../../typings/_reference-jquery.d.ts" />
+var GearShow = (function () {
+    function GearShow(wanderService) {
+        GearShow.wanderService = wanderService;
+    }
+    GearShow.prototype.create = function (showElement) {
+        var appScene = new THREE.Scene();
+        GearShow.appScene = appScene;
+        this.addCameraAndControls();
+        var appRender = new THREE.WebGLRenderer({ antialias: true });
+        GearShow.appRender = appRender;
+        appRender.setClearColor(new THREE.Color(0xEE0000));
+        GearShow.onWindowResize();
+        showElement.appendChild(appRender.domElement);
+        window.addEventListener("resize", GearShow.onWindowResize);
+        this.addShowObjects();
+        var info = document.createElement('div');
+        info.style.position = 'absolute';
+        info.style.top = '10px';
+        info.style.width = '100%';
+        info.style.textAlign = 'center';
+        info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - gear vr';
+        showElement.appendChild(info);
+        GearShow.animate();
+    };
+    GearShow.onWindowResize = function () {
+        var navbarHeight = GearShow.wanderService.getNavbarHeight();
+        var height = window.innerHeight - navbarHeight;
+        GearShow.appRender.setSize(window.innerWidth, height);
+    };
+    GearShow.prototype.addCameraAndControls = function () {
+        var fov = 70;
+        var aspect = this.getCameraAspect();
+        var near = 0.1;
+        var far = 10;
+        var appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+        GearShow.appCamera = appCamera;
+        appCamera.position.x = 5;
+        appCamera.position.y = 5;
+        appCamera.position.z = 5;
+        var lookAt = new THREE.Vector3(0, 0, 0);
+        appCamera.lookAt(lookAt);
+    };
+    GearShow.prototype.getCameraAspect = function () {
+        var navbarHeight = GearShow.wanderService.getNavbarHeight();
+        var height = window.innerHeight - navbarHeight;
+        return window.innerWidth / height;
+    };
+    GearShow.prototype.addShowObjects = function () {
+        var axisHelper = new THREE.AxisHelper(200);
+        GearShow.appScene.add(axisHelper);
+        this.camBox = new THREE.Object3D();
+        this.camBox.position.y = 1.8;
+        this.camBox.add(GearShow.appCamera);
+        GearShow.appScene.add(this.camBox);
+        var room = new THREE.Mesh(new THREE.BoxGeometry(6, 6, 6, 8, 8, 8), new THREE.MeshBasicMaterial({ color: 0x404040, wireframe: true }));
+        GearShow.room = room;
+        room.position.y = 3;
+        GearShow.appScene.add(room);
+        GearShow.appScene.add(new THREE.HemisphereLight(0x606060, 0x404040));
+        var light = new THREE.DirectionalLight(0xffffff);
+        light.position.set(1, 1, 1).normalize();
+        GearShow.appScene.add(light);
+        var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+        for (var i = 0; i < 200; i++) {
+            var object = new THREE.Mesh(geometry, new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff }));
+            object.position.x = Math.random() * 4 - 2;
+            object.position.y = Math.random() * 4 - 2;
+            object.position.z = Math.random() * 4 - 2;
+            object.rotation.x = Math.random() * 2 * Math.PI;
+            object.rotation.y = Math.random() * 2 * Math.PI;
+            object.rotation.z = Math.random() * 2 * Math.PI;
+            object.scale.x = Math.random() + 0.5;
+            object.scale.y = Math.random() + 0.5;
+            object.scale.z = Math.random() + 0.5;
+            object.userData.velocity = new THREE.Vector3();
+            object.userData.velocity.x = Math.random() * 0.01 - 0.005;
+            object.userData.velocity.y = Math.random() * 0.01 - 0.005;
+            object.userData.velocity.z = Math.random() * 0.01 - 0.005;
+            room.add(object);
+        }
+    };
+    GearShow.animate = function () {
+        requestAnimationFrame(GearShow.animate);
+        var deltaTime = GearShow.showClock.getDelta(), elapsedTime = GearShow.showClock.getElapsedTime() * 10;
+        var room = GearShow.room;
+        for (var i = 0; i < room.children.length; i++) {
+            var cube = room.children[i];
+            if (cube.geometry instanceof THREE.BoxGeometry === false)
+                continue;
+            if (cube.position.x < -3 || cube.position.x > 3) {
+                cube.position.x = THREE.Math.clamp(cube.position.x, -3, 3);
+                cube.userData.velocity.x = -cube.userData.velocity.x;
+            }
+            if (cube.position.y < -3 || cube.position.y > 3) {
+                cube.position.y = THREE.Math.clamp(cube.position.y, -3, 3);
+                cube.userData.velocity.y = -cube.userData.velocity.y;
+            }
+            if (cube.position.z < -3 || cube.position.z > 3) {
+                cube.position.z = THREE.Math.clamp(cube.position.z, -3, 3);
+                cube.userData.velocity.z = -cube.userData.velocity.z;
+            }
+            cube.rotation.x += 0.01 * deltaTime;
+        }
+        if (GearShow.appRender != null) {
+            try {
+                GearShow.appRender.render(GearShow.appScene, GearShow.appCamera);
+            }
+            catch (error) {
+                console.error("GearShow render error " + error);
+            }
+        }
+        else {
+            console.error("GearShow appRender is null");
+        }
+    };
+    return GearShow;
+}());
+
+GearShow.showClock = new THREE.Clock();
+//# sourceMappingURL=gear-show.js.map
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vr/vr.css":
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, ".vr-margin {\r\n    margin: 0px;\r\n    border: 0px;\r\n    padding: 0px;\r\n}", ""]);
+
+// exports
+
+
+/*** EXPORTS FROM exports-loader ***/
+module.exports = module.exports.toString();
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vr/vr.html":
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"vr-show\" class=\"container-fluid vr-margin\"></div>"
+
+/***/ }),
+
+/***/ "../../../../../src/app/components/vr/vr.ts":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/@angular/core.es5.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_wander_service__ = __webpack_require__("../../../../../src/app/services/wander-service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__gear_show__ = __webpack_require__("../../../../../src/app/components/vr/gear-show.ts");
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var vrShowElemntId = "vr-show";
+function getShowElement() {
+    return document.getElementById(vrShowElemntId);
+}
+var VRComponent = (function () {
+    function VRComponent(wanderService) {
+        this.wanderService = wanderService;
+    }
+    VRComponent.prototype.ngAfterViewInit = function () {
+        // hide scrollbar
+        $("body").css("overflow", "hidden");
+        if (getShowElement() != null) {
+            console.log("VRComponent get showElement inside ngAfterViewInit");
+        }
+        this.initGearShow();
+    };
+    VRComponent.prototype.ngOnDestroy = function () {
+        // show scrollbar for other routes
+        $("body").css("overflow", "auto");
+    };
+    VRComponent.prototype.initGearShow = function () {
+        var _this = this;
+        this.showElementReady().then(function () {
+            if (__WEBPACK_IMPORTED_MODULE_2__gear_show__["a" /* GearShow */].appRender == null) {
+                var gearShow = new __WEBPACK_IMPORTED_MODULE_2__gear_show__["a" /* GearShow */](_this.wanderService);
+                gearShow.create(getShowElement());
+            }
+            else {
+                getShowElement().appendChild(__WEBPACK_IMPORTED_MODULE_2__gear_show__["a" /* GearShow */].appRender.domElement);
+                console.log("load the existing show renderer");
+            }
+        }).catch(function (error) {
+            console.error("failed to init sleeping bear: " + error);
+        });
+    };
+    VRComponent.prototype.showElementReady = function () {
+        return new Promise(function (resolve, reject) {
+            var checkTimes = 0;
+            function checkShowElement() {
+                if (getShowElement() == null) {
+                    checkTimes++;
+                    if (checkTimes > 10) {
+                        reject();
+                    }
+                    setTimeout(checkShowElement, 200);
+                    console.log("checking showElement: " + checkTimes + "...");
+                }
+                else {
+                    console.log("showElement ready");
+                    resolve();
+                }
+            }
+            checkShowElement();
+        });
+    };
+    return VRComponent;
+}());
+VRComponent = __decorate([
+    Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["o" /* Component */])({
+        selector: 'vr-page',
+        template: __webpack_require__("../../../../../src/app/components/vr/vr.html"),
+        styles: [__webpack_require__("../../../../../src/app/components/vr/vr.css")],
+        providers: [__WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]]
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_wander_service__["a" /* WanderService */]) === "function" && _a || Object])
+], VRComponent);
+/* harmony default export */ __webpack_exports__["a"] = (VRComponent);
+var _a;
+//# sourceMappingURL=vr.js.map
 
 /***/ }),
 
