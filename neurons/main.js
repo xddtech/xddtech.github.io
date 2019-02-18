@@ -1762,7 +1762,8 @@ var NeuronService = /** @class */ (function () {
         var reqHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpHeaders"]({
             'Accept': 'application/json'
         });
-        return this.http.get('/assets/csvexample-layers.json', { headers: reqHeaders, responseType: 'json' });
+        //return this.http.get('/assets/csvexample-layers.json', {headers: reqHeaders, responseType: 'json'});
+        return this.http.get('assets/csvexample-layers.json', { headers: reqHeaders, responseType: 'json' });
     };
     NeuronService.prototype.getNavbarHeight = function () {
         if (NeuronService_1.navbarElement == null) {
