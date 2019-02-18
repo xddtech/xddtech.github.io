@@ -1896,7 +1896,7 @@ if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].produc
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
 }
 var loader = new THREE.FontLoader();
-loader.load('/libs/fonts/helvetiker_regular.typeface.json', function (font) {
+loader.load('/libs/fonts/helvetiker_regular_typeface.json', function (font) {
     _app_app_global__WEBPACK_IMPORTED_MODULE_4__["AppGlobal"].labelFont = font;
     Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"]);
 });
