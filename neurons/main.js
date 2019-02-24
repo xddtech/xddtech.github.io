@@ -863,14 +863,14 @@ __webpack_require__.r(__webpack_exports__);
 /// <reference path="../../../typings/_reference-jquery.d.ts" />
 
 var ModelLayersView = /** @class */ (function () {
-    //cellLayout = ModelLayersView.SQUARE;
     function ModelLayersView(neuronService, appScene, modelData) {
         this.neuronService = neuronService;
         this.appScene = appScene;
         this.modelData = modelData;
         this.cellGap = 1;
         this.maxRowCells = 20;
-        this.cellLayout = ModelLayersView.ROW_FILL;
+        //cellLayout = ModelLayersView.ROW_FILL;
+        this.cellLayout = ModelLayersView.SQUARE;
         this.create();
     }
     ModelLayersView.prototype.create = function () {
@@ -879,7 +879,7 @@ var ModelLayersView = /** @class */ (function () {
             console.warn('nuerons layers are empty');
             return;
         }
-        var ypos = 0;
+        var ypos = -1.5;
         var layerIndex;
         var length = layers.length;
         var prevLayer;
@@ -907,33 +907,48 @@ var ModelLayersView = /** @class */ (function () {
         return this.createGenericLayer(layerIndex, layer, ypos, nin, type, false, activation);
     };
     ModelLayersView.prototype.createGenericLayer = function (layerIndex, layer, ypos, cnum, type, isOutput, activation) {
+        var hasBias = false;
+        if (isOutput == false && layer.b != null && layer.b.length > 0) {
+            hasBias = true;
+        }
+        var totalNum = hasBias ? cnum + 1 : cnum;
         //var nin = layer.conf.layer.nin;
+        var xcenter = 0;
+        var zcenter = 0;
         var maxXRowCells = this.maxRowCells;
         if (this.cellLayout == ModelLayersView.SQUARE) {
-            maxXRowCells = Math.round(Math.sqrt(cnum));
+            maxXRowCells = Math.round(Math.sqrt(totalNum));
+            xcenter = Math.floor((maxXRowCells - 1) * this.cellGap / 2);
+            zcenter = Math.floor(xcenter);
         }
-        var maxZRowCells = Math.ceil(cnum / maxXRowCells);
+        var maxZRowCells = Math.ceil(totalNum / maxXRowCells);
         var cellList = new Array();
         var xCounter = 0;
         var xpos = 0;
         var zpos = 0;
-        for (var i = 0; i < cnum; i++) {
+        for (var i = 0; i < totalNum; i++) {
             if (xCounter >= maxXRowCells) {
                 xCounter = 0;
                 zpos -= this.cellGap;
                 xpos = 0;
             }
             xCounter++;
-            var xyz = new THREE.Vector3(xpos, ypos, zpos);
-            //var type = layerIndex == 0? ModelCell.INPUT : ModelCell.NET;
+            var xyz = new THREE.Vector3(xpos - xcenter, ypos, zpos + zcenter);
+            var ctype = type;
+            if (hasBias && (i == totalNum - 1)) {
+                ctype = _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].BIAS;
+            }
             var label = null;
-            if (type === _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].INPUT || type === _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].OUTPUT) {
+            if (ctype === _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].INPUT || ctype === _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].OUTPUT) {
                 label = '' + i;
+            }
+            else if (ctype == _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].BIAS) {
+                label = 'b';
             }
             var cell = new _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"]({
                 appScene: this.appScene,
                 xyz: xyz,
-                cellType: type,
+                cellType: ctype,
                 layerIndex: layerIndex,
                 seqIndex: i,
                 label: label,
@@ -943,22 +958,24 @@ var ModelLayersView = /** @class */ (function () {
             cell.label = "" + i;
             xpos += this.cellGap;
         }
+        /*
         // output has no bias cell
         if (isOutput) {
-            return cellList;
+          return cellList;
         }
         var zMiddle = -this.cellGap * (Math.ceil(maxZRowCells / 2) - 1);
         if (layer.b != null && layer.b.length > 0) {
-            var xyz = new THREE.Vector3(-1, ypos, zMiddle);
-            var cell = new _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"]({
-                appScene: this.appScene,
-                xyz: xyz,
-                cellType: _model_cell__WEBPACK_IMPORTED_MODULE_0__["ModelCell"].BIAS,
-                layerIndex: layerIndex
-            });
-            cellList.push(cell);
-            cell.label = "b";
+          var xyz = new THREE.Vector3(-1, ypos, zMiddle);
+          var cell = new ModelCell({
+            appScene: this.appScene,
+            xyz: xyz,
+            cellType: ModelCell.BIAS,
+            layerIndex: layerIndex
+          });
+          cellList.push(cell);
+          cell.label = "b";
         }
+        */
         return cellList;
     };
     ModelLayersView.prototype.linkLayerCells = function (prevLayer, currentLayer) {
@@ -1080,16 +1097,16 @@ var NeuronModelView = /** @class */ (function () {
         NeuronModelView_animate();
     };
     NeuronModelView.prototype.addCameraAndControls = function () {
-        var fov = 50;
+        var fov = 30;
         var aspect = this.getCameraAspect();
         var near = 0.1;
-        var far = 1000;
+        var far = 500;
         NeuronModelView.appCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
         var camera = NeuronModelView.appCamera;
-        camera.position.x = 5;
-        camera.position.y = 5;
-        camera.position.z = 10;
-        var lookAt = new THREE.Vector3(0, 0, 0);
+        camera.position.x = 0;
+        camera.position.y = 2;
+        camera.position.z = 12;
+        var lookAt = new THREE.Vector3(0, 8, -1);
         camera.lookAt(lookAt);
         /*
         var camControls = new THREE.FirstPersonControls(camera, document);
@@ -1763,7 +1780,9 @@ var NeuronService = /** @class */ (function () {
             'Accept': 'application/json'
         });
         //return this.http.get('/assets/csvexample-layers.json', {headers: reqHeaders, responseType: 'json'});
-        return this.http.get('assets/csvexample-layers.json', { headers: reqHeaders, responseType: 'json' });
+        //return this.http.get('assets/csvexample-layers.json', {headers: reqHeaders, responseType: 'json'});
+        //return this.http.get('/assets/regression-math-layers.json', {headers: reqHeaders, responseType: 'json'});
+        return this.http.get('/assets/csvexample-30-layers.json', { headers: reqHeaders, responseType: 'json' });
     };
     NeuronService.prototype.getNavbarHeight = function () {
         if (NeuronService_1.navbarElement == null) {
