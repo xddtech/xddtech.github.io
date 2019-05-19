@@ -987,7 +987,9 @@ var NavbarComponent = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ModelMain", function() { return ModelMain; });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "../node_modules/three/build/three.module.js");
-/* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+/* harmony import */ var _neurons_neurons_model_view__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../neurons/neurons-model-view */ "../src/app/components/neurons/neurons-model-view.ts");
+/* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+
 
 
 var ModelMain = /** @class */ (function () {
@@ -1000,13 +1002,14 @@ var ModelMain = /** @class */ (function () {
     ModelMain.prototype.init = function () {
         this.rootGroup = new three__WEBPACK_IMPORTED_MODULE_0__["Group"]();
         this.viewScene.add(this.rootGroup);
+        ModelMain.mainRootGroup = this.rootGroup;
         var axesHelper = new three__WEBPACK_IMPORTED_MODULE_0__["AxesHelper"](100);
         this.rootGroup.add(axesHelper);
     };
     ModelMain.prototype.loadCreateModel = function () {
         var _this = this;
         this.appService.loadDefaultModel().subscribe(function (modelData) {
-            _this.neuronsModel = _model_neurons_model__WEBPACK_IMPORTED_MODULE_1__["NeuronsModel"].clone(modelData);
+            _this.neuronsModel = _model_neurons_model__WEBPACK_IMPORTED_MODULE_2__["NeuronsModel"].clone(modelData);
             ModelMain.currentNeoronsModel = _this.neuronsModel;
             _this.appStates.setCurrentNeuronsModel(_this.neuronsModel);
             _this.neuronsModel.preProcess();
@@ -1019,6 +1022,25 @@ var ModelMain = /** @class */ (function () {
         //var object = new THREE.Mesh( geometry, material );
         //this.rootGroup.add(object);
         this.loadCreateModel();
+    };
+    ModelMain.toggleLayerVisibility = function (index, visible) {
+        var neuronsModel = ModelMain.currentNeoronsModel;
+        if (neuronsModel == null) {
+            console.error('toggleLayerVisibility has null currentNeoronsModel');
+            return;
+        }
+        var layer = neuronsModel.layers[index];
+        if (layer.layerGroup == null) {
+            console.error('toggleLayerVisibility has null layerGroup at ' + index);
+            return;
+        }
+        if (visible) {
+            layer.layerGroup.traverse(function (object) { object.visible = true; });
+        }
+        else {
+            layer.layerGroup.traverse(function (object) { object.visible = false; });
+        }
+        _neurons_neurons_model_view__WEBPACK_IMPORTED_MODULE_1__["NeuronsModelView"].animate();
     };
     return ModelMain;
 }());
@@ -1317,6 +1339,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
 /* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
 /* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+/* harmony import */ var _neurons_model_main__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../neurons/model-main */ "../src/app/components/neurons/model-main.ts");
+
 
 
 
@@ -1338,7 +1362,7 @@ var LayersNavPanelComponent = /** @class */ (function () {
     };
     LayersNavPanelComponent.prototype.toggleLayerVisible = function (index) {
         var visible = false;
-        if (this.layersViewMap[index]) {
+        if (this.layersViewMap[index] || this.layersViewMap[index] == false) {
             visible = !this.layersViewMap[index];
             this.layersViewMap[index] = visible;
         }
@@ -1346,6 +1370,7 @@ var LayersNavPanelComponent = /** @class */ (function () {
             this.layersViewMap[index] = false;
             visible = false;
         }
+        _neurons_model_main__WEBPACK_IMPORTED_MODULE_6__["ModelMain"].toggleLayerVisibility(index, visible);
     };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
