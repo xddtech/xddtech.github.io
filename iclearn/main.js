@@ -57,43 +57,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AppComponent", function() { return AppComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "../node_modules/three/build/three.module.js");
-
 
 
 var AppComponent = /** @class */ (function () {
     function AppComponent() {
-        this.title = 'deeplearn';
-        this.name = 'Angular';
+        this.title = 'iclearn';
     }
     AppComponent.prototype.ngAfterViewInit = function () {
-        //this.init();
-        //this.animate();
-    };
-    AppComponent.prototype.init = function () {
-        this.scene = new three__WEBPACK_IMPORTED_MODULE_2__["Scene"]();
-        this.camera = new three__WEBPACK_IMPORTED_MODULE_2__["PerspectiveCamera"](75, window.innerWidth / window.innerHeight, 1, 10000);
-        this.camera.position.z = 1000;
-        this.geometry = new three__WEBPACK_IMPORTED_MODULE_2__["BoxGeometry"](200, 200, 200);
-        this.material = new three__WEBPACK_IMPORTED_MODULE_2__["MeshBasicMaterial"]({ color: 0xff0000, wireframe: true });
-        this.mesh = new three__WEBPACK_IMPORTED_MODULE_2__["Mesh"](this.geometry, this.material);
-        this.scene.add(this.mesh);
-        this.renderer = new three__WEBPACK_IMPORTED_MODULE_2__["WebGLRenderer"]();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.renderer.domElement);
-    };
-    AppComponent.prototype.animate = function () {
-        requestAnimationFrame(this.animate);
-        this.mesh.rotation.x += 0.01;
-        this.mesh.rotation.y += 0.02;
-        this.renderer.render(this.scene, this.camera);
     };
     AppComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-root',
             template: __webpack_require__(/*! ./app.component.html */ "../src/app/app.component.html"),
             styles: [__webpack_require__(/*! ./app.component.css */ "../src/app/app.component.css")]
-        })
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], AppComponent);
     return AppComponent;
 }());
@@ -158,6 +136,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_about_about__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/about/about */ "../src/app/components/about/about.ts");
 /* harmony import */ var _components_debug_debug__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/debug/debug */ "../src/app/components/debug/debug.ts");
 /* harmony import */ var _components_tools_modelnav_panel__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/tools/modelnav-panel */ "../src/app/components/tools/modelnav-panel.ts");
+/* harmony import */ var _components_tools_layersnav_panel__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/tools/layersnav-panel */ "../src/app/components/tools/layersnav-panel.ts");
+
 
 
 
@@ -185,7 +165,8 @@ var AppModule = /** @class */ (function () {
                 _components_model_model_source__WEBPACK_IMPORTED_MODULE_11__["default"],
                 _components_about_about__WEBPACK_IMPORTED_MODULE_12__["default"],
                 _components_debug_debug__WEBPACK_IMPORTED_MODULE_13__["default"],
-                _components_tools_modelnav_panel__WEBPACK_IMPORTED_MODULE_14__["default"]
+                _components_tools_modelnav_panel__WEBPACK_IMPORTED_MODULE_14__["default"],
+                _components_tools_layersnav_panel__WEBPACK_IMPORTED_MODULE_15__["default"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -1299,6 +1280,97 @@ var NeuronsStageComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../src/app/components/tools/layersnav-panel.css":
+/*!*******************************************************!*\
+  !*** ../src/app/components/tools/layersnav-panel.css ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".table-nonfluid {\r\n    width: 100px !important;\r\n    background: rgba(60, 209, 184, 0.3)!important;\r\n    border: 1px solid lightgrey;\r\n    border-radius: 4px;\r\n    top: 70px;\r\n    left: 550px;\r\n    width: 200px;\r\n    padding: 2px;\r\n  }\r\n#layersnav-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9sYXllcnNuYXYtcGFuZWwuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksdUJBQXVCO0lBQ3ZCLDZDQUE2QztJQUM3QywyQkFBMkI7SUFDM0Isa0JBQWtCO0lBQ2xCLFNBQVM7SUFDVCxXQUFXO0lBQ1gsWUFBWTtJQUNaLFlBQVk7RUFDZDtBQUNGO0lBQ0ksa0JBQWtCO0lBQ2xCLFVBQVU7Q0FDYiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvdG9vbHMvbGF5ZXJzbmF2LXBhbmVsLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi50YWJsZS1ub25mbHVpZCB7XHJcbiAgICB3aWR0aDogMTAwcHggIWltcG9ydGFudDtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoNjAsIDIwOSwgMTg0LCAwLjMpIWltcG9ydGFudDtcclxuICAgIGJvcmRlcjogMXB4IHNvbGlkIGxpZ2h0Z3JleTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDRweDtcclxuICAgIHRvcDogNzBweDtcclxuICAgIGxlZnQ6IDU1MHB4O1xyXG4gICAgd2lkdGg6IDIwMHB4O1xyXG4gICAgcGFkZGluZzogMnB4O1xyXG4gIH1cclxuI2xheWVyc25hdi1wYW5lbCB7XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB6LWluZGV4OiA5O1xyXG4gfSJdfQ== */"
+
+/***/ }),
+
+/***/ "../src/app/components/tools/layersnav-panel.html":
+/*!********************************************************!*\
+  !*** ../src/app/components/tools/layersnav-panel.html ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"layersnav-panel\">\r\n    <div>\r\n        <a (click)=\"closeLayersView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n    </div>\r\n    <table id=\"layers\" *ngIf=\"neuronsModel\" class=\"table table-condensed table-bordered table-hover table-nonfluid\">\r\n    <thead>\r\n        <tr>\r\n           <th></th>\r\n           <th>Layers</th>\r\n           <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let layer of neuronsModel.layers; let i = index\">\r\n            <td>{{layer.layerIndex}}</td>\r\n            <td>{{layer.layerType}}</td>\r\n            <td><input type=\"checkbox\" checked=\"true\" (change)=\"toggleLayerVisible(i)\" /></td>\r\n        </tr>\r\n    </tbody>\r\n    </table>\r\n</div>"
+
+/***/ }),
+
+/***/ "../src/app/components/tools/layersnav-panel.ts":
+/*!******************************************************!*\
+  !*** ../src/app/components/tools/layersnav-panel.ts ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/element-draggable */ "../src/app/utils/element-draggable.ts");
+/* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
+/* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
+/* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+
+
+
+
+
+
+var LayersNavPanelComponent = /** @class */ (function () {
+    function LayersNavPanelComponent(appService, appStates) {
+        this.appService = appService;
+        this.appStates = appStates;
+        this.closeLayersPanelEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.layersViewMap = {};
+    }
+    LayersNavPanelComponent.prototype.ngAfterViewInit = function () {
+        _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('layersnav-panel', {});
+    };
+    LayersNavPanelComponent.prototype.closeLayersView = function () {
+        this.closeLayersPanelEvent.emit();
+    };
+    LayersNavPanelComponent.prototype.toggleLayerVisible = function (index) {
+        var visible = false;
+        if (this.layersViewMap[index]) {
+            visible = !this.layersViewMap[index];
+            this.layersViewMap[index] = visible;
+        }
+        else {
+            this.layersViewMap[index] = false;
+            visible = false;
+        }
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], LayersNavPanelComponent.prototype, "closeLayersPanelEvent", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _model_neurons_model__WEBPACK_IMPORTED_MODULE_5__["NeuronsModel"])
+    ], LayersNavPanelComponent.prototype, "neuronsModel", void 0);
+    LayersNavPanelComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'layersnav-panel',
+            template: __webpack_require__(/*! ./layersnav-panel.html */ "../src/app/components/tools/layersnav-panel.html"),
+            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"]],
+            styles: [__webpack_require__(/*! ./layersnav-panel.css */ "../src/app/components/tools/layersnav-panel.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"]])
+    ], LayersNavPanelComponent);
+    return LayersNavPanelComponent;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (LayersNavPanelComponent);
+
+
+/***/ }),
+
 /***/ "../src/app/components/tools/modelnav-panel.css":
 /*!******************************************************!*\
   !*** ../src/app/components/tools/modelnav-panel.css ***!
@@ -1317,7 +1389,7 @@ module.exports = ".modelnav-head {\r\n    background: rgba(220, 220, 220, 0.1)!i
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"modelnav-panel\" class=\"container text-center\">\r\n\r\n   <a class=\"modelnav-head\" data-toggle=\"collapse\" data-target=\"#modelnav-menu\">\r\n      <span class=\"glyphicon glyphicon-th-large\"></span>\r\n   </a>\r\n   <div id=\"modelnav-menu\" class=\"collapse\">\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"resetModelView()\">\r\n          <span class=\"glyphicon glyphicon-circle-arrow-up\"></span></button></div>\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" data-toggle=\"collapse\" data-target=\"#layers-panel\">\r\n          <span class=\"glyphicon glyphicon-align-justify\"></span></button></div>\r\n   </div>\r\n\r\n   <div id=\"layers-panel\" class=\"collapse\">layers</div>\r\n   <div id=\"input-panel\" class=\"collapse\">input</div>\r\n</div>"
+module.exports = "<div id=\"modelnav-panel\" #modelNavPanel class=\"container text-center\">\r\n\r\n   <a class=\"modelnav-head\" data-toggle=\"collapse\" data-target=\"#modelnav-menu\">\r\n      <span class=\"glyphicon glyphicon-th-large\"></span>\r\n   </a>\r\n   <div id=\"modelnav-menu\" class=\"collapse\">\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"resetModelView()\">\r\n          <span class=\"glyphicon glyphicon-circle-arrow-up\"></span></button></div>\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"toggleLayersPanel()\">\r\n          <span class=\"glyphicon glyphicon-align-justify\"></span></button></div>\r\n   </div>\r\n</div>\r\n<layersnav-panel #layersNavPanel [hidden]=\"hideLayersNavPanel\" (closeLayersPanelEvent)=\"closeLayersPanel()\"\r\n     [neuronsModel]=\"neuronsModel\"></layersnav-panel>"
 
 /***/ }),
 
@@ -1346,6 +1418,7 @@ var ModelNavPanelComponent = /** @class */ (function () {
     function ModelNavPanelComponent(appService, appStates) {
         this.appService = appService;
         this.appStates = appStates;
+        this.hideLayersNavPanel = true;
     }
     ModelNavPanelComponent.prototype.ngAfterViewInit = function () {
         var top = 10 + this.appStates.getNavbarHeight();
@@ -1356,6 +1429,31 @@ var ModelNavPanelComponent = /** @class */ (function () {
     ModelNavPanelComponent.prototype.resetModelView = function () {
         _neurons_neurons_model_view__WEBPACK_IMPORTED_MODULE_5__["NeuronsModelView"].appCamControl.reset();
     };
+    ModelNavPanelComponent.prototype.toggleLayersPanel = function () {
+        this.hideLayersNavPanel = !this.hideLayersNavPanel;
+        if (!this.hideLayersNavPanel) {
+            this.openLayersPanel();
+        }
+    };
+    ModelNavPanelComponent.prototype.openLayersPanel = function () {
+        var menuElem = this.modelNavPanelRef.nativeElement;
+        var top = menuElem.offsetTop;
+        var left = menuElem.offsetLeft + menuElem.offsetWidth + 10;
+        $('#layersnav-panel').css('top', top + 'px');
+        $('#layersnav-panel').css('left', left + 'px');
+        this.neuronsModel = this.appStates.getCurrentNeuronsModel();
+    };
+    ModelNavPanelComponent.prototype.closeLayersPanel = function () {
+        this.hideLayersNavPanel = true;
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('modelNavPanel'),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
+    ], ModelNavPanelComponent.prototype, "modelNavPanelRef", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('layersNavPanel'),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
+    ], ModelNavPanelComponent.prototype, "layersNavPanelRef", void 0);
     ModelNavPanelComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'modelnav-panel',
