@@ -137,6 +137,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_debug_debug__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/debug/debug */ "../src/app/components/debug/debug.ts");
 /* harmony import */ var _components_tools_modelnav_panel__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/tools/modelnav-panel */ "../src/app/components/tools/modelnav-panel.ts");
 /* harmony import */ var _components_tools_layersnav_panel__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/tools/layersnav-panel */ "../src/app/components/tools/layersnav-panel.ts");
+/* harmony import */ var _components_tools_datainput_panel__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./components/tools/datainput-panel */ "../src/app/components/tools/datainput-panel.ts");
+
 
 
 
@@ -166,7 +168,8 @@ var AppModule = /** @class */ (function () {
                 _components_about_about__WEBPACK_IMPORTED_MODULE_12__["default"],
                 _components_debug_debug__WEBPACK_IMPORTED_MODULE_13__["default"],
                 _components_tools_modelnav_panel__WEBPACK_IMPORTED_MODULE_14__["default"],
-                _components_tools_layersnav_panel__WEBPACK_IMPORTED_MODULE_15__["default"]
+                _components_tools_layersnav_panel__WEBPACK_IMPORTED_MODULE_15__["default"],
+                _components_tools_datainput_panel__WEBPACK_IMPORTED_MODULE_16__["default"]
             ],
             imports: [
                 _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
@@ -483,6 +486,9 @@ var ModelCell = /** @class */ (function () {
     };
     ModelCell.prototype.createCellLabel = function () {
     };
+    ModelCell.prototype.getDescription = function () {
+        return this.label ? this.label : this.seqIndex;
+    };
     ModelCell.prototype.connectTo = function (target) {
         var to = new _link_info__WEBPACK_IMPORTED_MODULE_5__["LinkInfo"]();
         to.layerIndex = target.layerIndex;
@@ -636,6 +642,9 @@ var ModelLayer = /** @class */ (function () {
         }
     };
     ModelLayer.prototype.setupCellLayoutSquare = function (layerHeight, cellGap) {
+    };
+    ModelLayer.prototype.getDescription = function () {
+        return this.layerType + ": " + this.cellList.length;
     };
     ModelLayer.clone = function (layerData) {
         if (layerData == null) {
@@ -1101,8 +1110,8 @@ var NeuronsModelView = /** @class */ (function () {
         var lookAt = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](0, 0, 0);
         vcamera.lookAt(lookAt);
         // right mouse not work when pass element
-        //var trackball = new THREE.TrackballControls(vcamera, document.getElementById('neurons-stage-div'));
-        var trackball = new three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"](vcamera);
+        var trackball = new three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"](vcamera, document.getElementById('neurons-stage-div'));
+        //var trackball = new THREE.TrackballControls(vcamera);
         NeuronsModelView.appCamControl = trackball;
         trackball.rotateSpeed = 1.0;
         trackball.zoomSpeed = 1.0;
@@ -1302,6 +1311,107 @@ var NeuronsStageComponent = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../src/app/components/tools/datainput-panel.css":
+/*!*******************************************************!*\
+  !*** ../src/app/components/tools/datainput-panel.css ***!
+  \*******************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#datainput-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n}\r\n\r\n.input-action-menu {\r\n    background: rgba(0, 0, 0, 0.2) !important;\r\n    border-radius: 100% 100% 0 0;\r\n    padding-top: 5px;\r\n    padding-bottom: 5px;\r\n}\r\n\r\n.action-close {\r\n    text-align: left;\r\n}\r\n\r\n.action-go {\r\n    text-align: center;\r\n}\r\n\r\n.action-go a {\r\n    color: black;\r\n    padding: 2px;\r\n    margin: 0px 0px 0px 0px;\r\n    vertical-align: top;\r\n    border: none;\r\n    border-radius: 100% 100% 100% 100%;\r\n    background: rgba(0, 255, 0, 0.4) !important;\r\n    box-shadow: 2px 2px 2px black;\r\n}\r\n\r\n.action-type {\r\n    text-align: right;\r\n}\r\n\r\n.action-type select {\r\n    background: rgba(0, 255, 0, 0.4) !important;\r\n    border: 0px;\r\n    border-radius: 20% 20% 20% 20%;\r\n    box-shadow: 2px 2px 2px black;\r\n}\r\n\r\n#input-table {\r\n    width: 100% !important;\r\n    background: rgba(220, 220, 220, 0.1)!important;\r\n}\r\n\r\n.input-table-x {\r\n    border-left: 1px grey;\r\n    border-right: 1px grey;\r\n    border-bottom: 1px grey;\r\n    border: 1;\r\n}\r\n\r\n#input-table th {\r\n    text-align: center;\r\n    font-size: 0.8em;\r\n}\r\n\r\n#input-table input {\r\n    padding: 0px;\r\n    margin: 0px;\r\n    border: 0px;\r\n    width: 100px;\r\n    background: rgba(0, 220, 220, 0)!important;\r\n}\r\n\r\n#input-table td {\r\n    width: 10px;\r\n    margin: 0px;\r\n    padding: 0px;\r\n    background: rgba(0, 220, 220, 0.1)!important;\r\n  }\r\n\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9kYXRhaW5wdXQtcGFuZWwuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLFVBQVU7QUFDZDs7QUFFQTtJQUNJLHlDQUF5QztJQUN6Qyw0QkFBNEI7SUFDNUIsZ0JBQWdCO0lBQ2hCLG1CQUFtQjtBQUN2Qjs7QUFFQTtJQUNJLGdCQUFnQjtBQUNwQjs7QUFFQTtJQUNJLGtCQUFrQjtBQUN0Qjs7QUFDQTtJQUNJLFlBQVk7SUFDWixZQUFZO0lBQ1osdUJBQXVCO0lBQ3ZCLG1CQUFtQjtJQUNuQixZQUFZO0lBQ1osa0NBQWtDO0lBQ2xDLDJDQUEyQztJQUMzQyw2QkFBNkI7QUFDakM7O0FBRUE7SUFDSSxpQkFBaUI7QUFDckI7O0FBQ0E7SUFDSSwyQ0FBMkM7SUFDM0MsV0FBVztJQUNYLDhCQUE4QjtJQUM5Qiw2QkFBNkI7QUFDakM7O0FBRUE7SUFDSSxzQkFBc0I7SUFDdEIsOENBQThDO0FBQ2xEOztBQUVBO0lBQ0kscUJBQXFCO0lBQ3JCLHNCQUFzQjtJQUN0Qix1QkFBdUI7SUFDdkIsU0FBUztBQUNiOztBQUVBO0lBQ0ksa0JBQWtCO0lBQ2xCLGdCQUFnQjtBQUNwQjs7QUFFQTtJQUNJLFlBQVk7SUFDWixXQUFXO0lBQ1gsV0FBVztJQUNYLFlBQVk7SUFDWiwwQ0FBMEM7QUFDOUM7O0FBRUE7SUFDSSxXQUFXO0lBQ1gsV0FBVztJQUNYLFlBQVk7SUFDWiw0Q0FBNEM7RUFDOUMiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL3Rvb2xzL2RhdGFpbnB1dC1wYW5lbC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIjZGF0YWlucHV0LXBhbmVsIHtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIHotaW5kZXg6IDk7XHJcbn1cclxuXHJcbi5pbnB1dC1hY3Rpb24tbWVudSB7XHJcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDAsIDAsIDAuMikgIWltcG9ydGFudDtcclxuICAgIGJvcmRlci1yYWRpdXM6IDEwMCUgMTAwJSAwIDA7XHJcbiAgICBwYWRkaW5nLXRvcDogNXB4O1xyXG4gICAgcGFkZGluZy1ib3R0b206IDVweDtcclxufVxyXG5cclxuLmFjdGlvbi1jbG9zZSB7XHJcbiAgICB0ZXh0LWFsaWduOiBsZWZ0O1xyXG59XHJcblxyXG4uYWN0aW9uLWdvIHtcclxuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcclxufVxyXG4uYWN0aW9uLWdvIGEge1xyXG4gICAgY29sb3I6IGJsYWNrO1xyXG4gICAgcGFkZGluZzogMnB4O1xyXG4gICAgbWFyZ2luOiAwcHggMHB4IDBweCAwcHg7XHJcbiAgICB2ZXJ0aWNhbC1hbGlnbjogdG9wO1xyXG4gICAgYm9yZGVyOiBub25lO1xyXG4gICAgYm9yZGVyLXJhZGl1czogMTAwJSAxMDAlIDEwMCUgMTAwJTtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjU1LCAwLCAwLjQpICFpbXBvcnRhbnQ7XHJcbiAgICBib3gtc2hhZG93OiAycHggMnB4IDJweCBibGFjaztcclxufVxyXG5cclxuLmFjdGlvbi10eXBlIHtcclxuICAgIHRleHQtYWxpZ246IHJpZ2h0O1xyXG59XHJcbi5hY3Rpb24tdHlwZSBzZWxlY3Qge1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSgwLCAyNTUsIDAsIDAuNCkgIWltcG9ydGFudDtcclxuICAgIGJvcmRlcjogMHB4O1xyXG4gICAgYm9yZGVyLXJhZGl1czogMjAlIDIwJSAyMCUgMjAlO1xyXG4gICAgYm94LXNoYWRvdzogMnB4IDJweCAycHggYmxhY2s7XHJcbn1cclxuXHJcbiNpbnB1dC10YWJsZSB7XHJcbiAgICB3aWR0aDogMTAwJSAhaW1wb3J0YW50O1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSgyMjAsIDIyMCwgMjIwLCAwLjEpIWltcG9ydGFudDtcclxufVxyXG5cclxuLmlucHV0LXRhYmxlLXgge1xyXG4gICAgYm9yZGVyLWxlZnQ6IDFweCBncmV5O1xyXG4gICAgYm9yZGVyLXJpZ2h0OiAxcHggZ3JleTtcclxuICAgIGJvcmRlci1ib3R0b206IDFweCBncmV5O1xyXG4gICAgYm9yZGVyOiAxO1xyXG59XHJcblxyXG4jaW5wdXQtdGFibGUgdGgge1xyXG4gICAgdGV4dC1hbGlnbjogY2VudGVyO1xyXG4gICAgZm9udC1zaXplOiAwLjhlbTtcclxufVxyXG5cclxuI2lucHV0LXRhYmxlIGlucHV0IHtcclxuICAgIHBhZGRpbmc6IDBweDtcclxuICAgIG1hcmdpbjogMHB4O1xyXG4gICAgYm9yZGVyOiAwcHg7XHJcbiAgICB3aWR0aDogMTAwcHg7XHJcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDIyMCwgMjIwLCAwKSFpbXBvcnRhbnQ7XHJcbn1cclxuXHJcbiNpbnB1dC10YWJsZSB0ZCB7XHJcbiAgICB3aWR0aDogMTBweDtcclxuICAgIG1hcmdpbjogMHB4O1xyXG4gICAgcGFkZGluZzogMHB4O1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSgwLCAyMjAsIDIyMCwgMC4xKSFpbXBvcnRhbnQ7XHJcbiAgfVxyXG4iXX0= */"
+
+/***/ }),
+
+/***/ "../src/app/components/tools/datainput-panel.html":
+/*!********************************************************!*\
+  !*** ../src/app/components/tools/datainput-panel.html ***!
+  \********************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<div id=\"datainput-panel\" #dataInputPanelRoot class=\"conatiner\">\r\n    <div class=\"row\">\r\n        <div id=\"input-action-header\" class=\"col-sm-4 input-action-menu action-close\">\r\n            <a (click)=\"closeDataInputView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-go\">\r\n            <a (click)=\"processInput()\">Go</a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-type\">\r\n            <select class=\"select-button\" (change)=\"onInputTypeChange($event.target.value)\">\r\n                <option *ngFor=\"let opt of inputTypesOpt\" [value]=\"opt\">{{opt}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"neuronsModel\" class=\"row\" >\r\n        <table id=\"input-table\" border=\"1\" class=\"input-table-x\">\r\n            <thead>\r\n            <tr>\r\n               <th *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   {{cell.getDescription()}}\r\n               </th>\r\n               <th>expected</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n               <td *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   <input id=\"input-value-{{cell.seqIndex}}\" autocomplete=\"off\" />\r\n               </td>\r\n               <td><input id=\"expected-input\" [disabled]=\"expectedDisabled\" /></td>\r\n            </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n</div>"
+
+/***/ }),
+
+/***/ "../src/app/components/tools/datainput-panel.ts":
+/*!******************************************************!*\
+  !*** ../src/app/components/tools/datainput-panel.ts ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
+/* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
+/* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+
+
+
+
+
+var DataInputPanelComponent = /** @class */ (function () {
+    function DataInputPanelComponent(appService, appStates) {
+        this.appService = appService;
+        this.appStates = appStates;
+        this.closeDataInputPanelEvent = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.inputTypesOpt = ['Predict', 'Learn', 'Test'];
+        this.inputType = 'Predict';
+        this.expectedDisabled = true;
+    }
+    DataInputPanelComponent.prototype.ngAfterViewInit = function () {
+        //this.inputLayer = this.neuronsModel.layers[0];
+    };
+    DataInputPanelComponent.prototype.ngAfterContentChecked = function () {
+    };
+    DataInputPanelComponent.prototype.onInputTypeChange = function (newValue) {
+        this.inputType = newValue;
+        var bg = 'rgba(0, 220, 220, 0)!important';
+        if (this.inputType == 'Predict') {
+            this.expectedDisabled = true;
+        }
+        else {
+            this.expectedDisabled = false;
+            bg = 'rgba(0, 0, 0, 0)!important';
+        }
+        // not work??
+        $('#expected-input').css('background-color', 'red !important');
+    };
+    DataInputPanelComponent.prototype.processInput = function () {
+    };
+    DataInputPanelComponent.prototype.closeDataInputView = function () {
+        this.closeDataInputPanelEvent.emit();
+    };
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('dataInputPanelRoot'),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
+    ], DataInputPanelComponent.prototype, "rootRef", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", Object)
+    ], DataInputPanelComponent.prototype, "closeDataInputPanelEvent", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Input"])(),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _model_neurons_model__WEBPACK_IMPORTED_MODULE_4__["NeuronsModel"])
+    ], DataInputPanelComponent.prototype, "neuronsModel", void 0);
+    DataInputPanelComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+            selector: 'datainput-panel',
+            template: __webpack_require__(/*! ./datainput-panel.html */ "../src/app/components/tools/datainput-panel.html"),
+            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_3__["AppStates"]],
+            styles: [__webpack_require__(/*! ./datainput-panel.css */ "../src/app/components/tools/datainput-panel.css")]
+        }),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_3__["AppStates"]])
+    ], DataInputPanelComponent);
+    return DataInputPanelComponent;
+}());
+/* harmony default export */ __webpack_exports__["default"] = (DataInputPanelComponent);
+
+
+/***/ }),
+
 /***/ "../src/app/components/tools/layersnav-panel.css":
 /*!*******************************************************!*\
   !*** ../src/app/components/tools/layersnav-panel.css ***!
@@ -1309,7 +1419,7 @@ var NeuronsStageComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".table-nonfluid {\r\n    width: 100px !important;\r\n    background: rgba(60, 209, 184, 0.3)!important;\r\n    border: 1px solid lightgrey;\r\n    border-radius: 4px;\r\n    top: 70px;\r\n    left: 550px;\r\n    width: 200px;\r\n    padding: 2px;\r\n  }\r\n#layersnav-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9sYXllcnNuYXYtcGFuZWwuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksdUJBQXVCO0lBQ3ZCLDZDQUE2QztJQUM3QywyQkFBMkI7SUFDM0Isa0JBQWtCO0lBQ2xCLFNBQVM7SUFDVCxXQUFXO0lBQ1gsWUFBWTtJQUNaLFlBQVk7RUFDZDtBQUNGO0lBQ0ksa0JBQWtCO0lBQ2xCLFVBQVU7Q0FDYiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvdG9vbHMvbGF5ZXJzbmF2LXBhbmVsLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi50YWJsZS1ub25mbHVpZCB7XHJcbiAgICB3aWR0aDogMTAwcHggIWltcG9ydGFudDtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoNjAsIDIwOSwgMTg0LCAwLjMpIWltcG9ydGFudDtcclxuICAgIGJvcmRlcjogMXB4IHNvbGlkIGxpZ2h0Z3JleTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDRweDtcclxuICAgIHRvcDogNzBweDtcclxuICAgIGxlZnQ6IDU1MHB4O1xyXG4gICAgd2lkdGg6IDIwMHB4O1xyXG4gICAgcGFkZGluZzogMnB4O1xyXG4gIH1cclxuI2xheWVyc25hdi1wYW5lbCB7XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB6LWluZGV4OiA5O1xyXG4gfSJdfQ== */"
+module.exports = ".table-nonfluid {\r\n    width: 100px !important;\r\n    background: rgba(60, 209, 184, 0.3)!important;\r\n    border: 1px solid lightgrey;\r\n    border-radius: 4px;\r\n    top: 70px;\r\n    left: 550px;\r\n    width: 200px;\r\n    padding: 2px;\r\n}\r\n#layersnav-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n }\r\n#layersnav-head {\r\n    background: rgba(0, 0, 0, 0.2) !important;\r\n    border-radius: 100% 100% 0 0;\r\n    text-align: center;\r\n    padding-bottom: 1px;\r\n    padding-top: 2px;\r\n}\r\n#layers {\r\n    font-size: 0.8em;\r\n }\r\n#layers th {\r\n    text-align: center;\r\n }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9sYXllcnNuYXYtcGFuZWwuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksdUJBQXVCO0lBQ3ZCLDZDQUE2QztJQUM3QywyQkFBMkI7SUFDM0Isa0JBQWtCO0lBQ2xCLFNBQVM7SUFDVCxXQUFXO0lBQ1gsWUFBWTtJQUNaLFlBQVk7QUFDaEI7QUFDQTtJQUNJLGtCQUFrQjtJQUNsQixVQUFVO0NBQ2I7QUFDQTtJQUNHLHlDQUF5QztJQUN6Qyw0QkFBNEI7SUFDNUIsa0JBQWtCO0lBQ2xCLG1CQUFtQjtJQUNuQixnQkFBZ0I7QUFDcEI7QUFDQztJQUNHLGdCQUFnQjtDQUNuQjtBQUNBO0lBQ0csa0JBQWtCO0NBQ3JCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy90b29scy9sYXllcnNuYXYtcGFuZWwuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRhYmxlLW5vbmZsdWlkIHtcclxuICAgIHdpZHRoOiAxMDBweCAhaW1wb3J0YW50O1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSg2MCwgMjA5LCAxODQsIDAuMykhaW1wb3J0YW50O1xyXG4gICAgYm9yZGVyOiAxcHggc29saWQgbGlnaHRncmV5O1xyXG4gICAgYm9yZGVyLXJhZGl1czogNHB4O1xyXG4gICAgdG9wOiA3MHB4O1xyXG4gICAgbGVmdDogNTUwcHg7XHJcbiAgICB3aWR0aDogMjAwcHg7XHJcbiAgICBwYWRkaW5nOiAycHg7XHJcbn1cclxuI2xheWVyc25hdi1wYW5lbCB7XHJcbiAgICBwb3NpdGlvbjogYWJzb2x1dGU7XHJcbiAgICB6LWluZGV4OiA5O1xyXG4gfVxyXG4gI2xheWVyc25hdi1oZWFkIHtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMCwgMCwgMC4yKSAhaW1wb3J0YW50O1xyXG4gICAgYm9yZGVyLXJhZGl1czogMTAwJSAxMDAlIDAgMDtcclxuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcclxuICAgIHBhZGRpbmctYm90dG9tOiAxcHg7XHJcbiAgICBwYWRkaW5nLXRvcDogMnB4O1xyXG59XHJcbiAjbGF5ZXJzIHtcclxuICAgIGZvbnQtc2l6ZTogMC44ZW07XHJcbiB9XHJcbiAjbGF5ZXJzIHRoIHtcclxuICAgIHRleHQtYWxpZ246IGNlbnRlcjtcclxuIH0iXX0= */"
 
 /***/ }),
 
@@ -1320,7 +1430,7 @@ module.exports = ".table-nonfluid {\r\n    width: 100px !important;\r\n    backg
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"layersnav-panel\">\r\n    <div>\r\n        <a (click)=\"closeLayersView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n    </div>\r\n    <table id=\"layers\" *ngIf=\"neuronsModel\" class=\"table table-condensed table-bordered table-hover table-nonfluid\">\r\n    <thead>\r\n        <tr>\r\n           <th></th>\r\n           <th>Layers</th>\r\n           <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let layer of neuronsModel.layers; let i = index\">\r\n            <td>{{layer.layerIndex}}</td>\r\n            <td>{{layer.layerType}}</td>\r\n            <td><input type=\"checkbox\" checked=\"true\" (change)=\"toggleLayerVisible(i)\" /></td>\r\n        </tr>\r\n    </tbody>\r\n    </table>\r\n</div>"
+module.exports = "<div id=\"layersnav-panel\">\r\n    <div id=\"layersnav-head\">\r\n        <a (click)=\"closeLayersView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n    </div>\r\n    <table id=\"layers\" *ngIf=\"neuronsModel\" class=\"table table-condensed table-bordered table-hover table-nonfluid\">\r\n    <thead>\r\n        <tr>\r\n           <th></th>\r\n           <th>Layers</th>\r\n           <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let layer of neuronsModel.layers; let i = index\">\r\n            <td>{{layer.layerIndex}}</td>\r\n            <td>{{layer.getDescription()}}</td>\r\n            <td><input type=\"checkbox\" checked=\"true\" (change)=\"toggleLayerVisible(i)\" /></td>\r\n        </tr>\r\n    </tbody>\r\n    </table>\r\n</div>"
 
 /***/ }),
 
@@ -1355,7 +1465,7 @@ var LayersNavPanelComponent = /** @class */ (function () {
         this.layersViewMap = {};
     }
     LayersNavPanelComponent.prototype.ngAfterViewInit = function () {
-        _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('layersnav-panel', {});
+        _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('layersnav-head', 'layersnav-panel', {});
     };
     LayersNavPanelComponent.prototype.closeLayersView = function () {
         this.closeLayersPanelEvent.emit();
@@ -1403,7 +1513,7 @@ var LayersNavPanelComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".modelnav-head {\r\n    background: rgba(220, 220, 220, 0.1)!important;\r\n    padding-left: 4px;\r\n    -webkit-transform: scaleY(0.6);\r\n            transform: scaleY(0.6);\r\n }\r\n.modelnav-head:hover {\r\n    background: rgba(220, 220, 220, 0.5)!important;\r\n    -webkit-transform: scaleY(1);\r\n            transform: scaleY(1);\r\n }\r\n.modelnav-item {\r\n    background: rgba(0, 200, 0, 0.2)!important;\r\n    padding-left: 5px;\r\n    padding-right: 5px;\r\n    padding-top: 2px;\r\n    padding-bottom: 2px;\r\n    border-bottom: 4px solid grey;\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\r\n    margin-top: 4px;\r\n }\r\n.modelnav-item:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5);\r\n }\r\n#modelnav-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n    border: 1px solid lightgrey;\r\n    border-radius: 4px;\r\n    top: 70px;\r\n    left: 50px;\r\n    width: 40px;\r\n    padding: 2px;\r\n    padding-right: 2px;\r\n }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9tb2RlbG5hdi1wYW5lbC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSw4Q0FBOEM7SUFDOUMsaUJBQWlCO0lBQ2pCLDhCQUFzQjtZQUF0QixzQkFBc0I7Q0FDekI7QUFDRDtJQUNJLDhDQUE4QztJQUM5Qyw0QkFBb0I7WUFBcEIsb0JBQW9CO0NBQ3ZCO0FBQ0Q7SUFDSSwwQ0FBMEM7SUFDMUMsaUJBQWlCO0lBQ2pCLGtCQUFrQjtJQUNsQixnQkFBZ0I7SUFDaEIsbUJBQW1CO0lBQ25CLDZCQUE2QjtJQUM3QiwyQkFBbUI7WUFBbkIsbUJBQW1CO0lBQ25CLGVBQWU7Q0FDbEI7QUFDQTtJQUNHLDZCQUFxQjtZQUFyQixxQkFBcUI7Q0FDeEI7QUFDQTtJQUNHLGtCQUFrQjtJQUNsQixVQUFVO0lBQ1YsMkJBQTJCO0lBQzNCLGtCQUFrQjtJQUNsQixTQUFTO0lBQ1QsVUFBVTtJQUNWLFdBQVc7SUFDWCxZQUFZO0lBQ1osa0JBQWtCO0NBQ3JCIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy90b29scy9tb2RlbG5hdi1wYW5lbC5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubW9kZWxuYXYtaGVhZCB7XHJcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDIyMCwgMjIwLCAyMjAsIDAuMSkhaW1wb3J0YW50O1xyXG4gICAgcGFkZGluZy1sZWZ0OiA0cHg7XHJcbiAgICB0cmFuc2Zvcm06IHNjYWxlWSgwLjYpO1xyXG4gfVxyXG4ubW9kZWxuYXYtaGVhZDpob3ZlciB7XHJcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDIyMCwgMjIwLCAyMjAsIDAuNSkhaW1wb3J0YW50O1xyXG4gICAgdHJhbnNmb3JtOiBzY2FsZVkoMSk7XHJcbiB9XHJcbi5tb2RlbG5hdi1pdGVtIHtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjAwLCAwLCAwLjIpIWltcG9ydGFudDtcclxuICAgIHBhZGRpbmctbGVmdDogNXB4O1xyXG4gICAgcGFkZGluZy1yaWdodDogNXB4O1xyXG4gICAgcGFkZGluZy10b3A6IDJweDtcclxuICAgIHBhZGRpbmctYm90dG9tOiAycHg7XHJcbiAgICBib3JkZXItYm90dG9tOiA0cHggc29saWQgZ3JleTtcclxuICAgIHRyYW5zZm9ybTogc2NhbGUoMSk7XHJcbiAgICBtYXJnaW4tdG9wOiA0cHg7XHJcbiB9XHJcbiAubW9kZWxuYXYtaXRlbTpob3ZlciB7XHJcbiAgICB0cmFuc2Zvcm06IHNjYWxlKDEuNSk7XHJcbiB9XHJcbiAjbW9kZWxuYXYtcGFuZWwge1xyXG4gICAgcG9zaXRpb246IGFic29sdXRlO1xyXG4gICAgei1pbmRleDogOTtcclxuICAgIGJvcmRlcjogMXB4IHNvbGlkIGxpZ2h0Z3JleTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDRweDtcclxuICAgIHRvcDogNzBweDtcclxuICAgIGxlZnQ6IDUwcHg7XHJcbiAgICB3aWR0aDogNDBweDtcclxuICAgIHBhZGRpbmc6IDJweDtcclxuICAgIHBhZGRpbmctcmlnaHQ6IDJweDtcclxuIH0iXX0= */"
+module.exports = ".modelnav-head {\r\n    background: rgba(220, 220, 220, 0.1)!important;\r\n    padding-left: 4px;\r\n    padding-right: 4px;\r\n    -webkit-transform: scaleY(0.6);\r\n            transform: scaleY(0.6);\r\n }\r\n.modelnav-head:hover {\r\n    background: rgba(220, 220, 220, 0.5)!important;\r\n    -webkit-transform: scaleY(1);\r\n            transform: scaleY(1);\r\n }\r\n.modelnav-item {\r\n    background: rgba(0, 200, 0, 0.2)!important;\r\n    padding-left: 5px;\r\n    padding-right: 5px;\r\n    padding-top: 2px;\r\n    padding-bottom: 2px;\r\n    border-bottom: 4px solid grey;\r\n    -webkit-transform: scale(1);\r\n            transform: scale(1);\r\n    margin-top: 4px;\r\n }\r\n.modelnav-item:hover {\r\n    -webkit-transform: scale(1.5);\r\n            transform: scale(1.5);\r\n }\r\n#modelnav-panel {\r\n    position: absolute;\r\n    z-index: 9;\r\n    border: 1px solid lightgrey;\r\n    border-radius: 4px;\r\n    top: 70px;\r\n    left: 50px;\r\n    width: 40px;\r\n    padding: 2px;\r\n    padding-right: 2px;\r\n }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy90b29scy9tb2RlbG5hdi1wYW5lbC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSw4Q0FBOEM7SUFDOUMsaUJBQWlCO0lBQ2pCLGtCQUFrQjtJQUNsQiw4QkFBc0I7WUFBdEIsc0JBQXNCO0NBQ3pCO0FBQ0Q7SUFDSSw4Q0FBOEM7SUFDOUMsNEJBQW9CO1lBQXBCLG9CQUFvQjtDQUN2QjtBQUNEO0lBQ0ksMENBQTBDO0lBQzFDLGlCQUFpQjtJQUNqQixrQkFBa0I7SUFDbEIsZ0JBQWdCO0lBQ2hCLG1CQUFtQjtJQUNuQiw2QkFBNkI7SUFDN0IsMkJBQW1CO1lBQW5CLG1CQUFtQjtJQUNuQixlQUFlO0NBQ2xCO0FBQ0E7SUFDRyw2QkFBcUI7WUFBckIscUJBQXFCO0NBQ3hCO0FBQ0E7SUFDRyxrQkFBa0I7SUFDbEIsVUFBVTtJQUNWLDJCQUEyQjtJQUMzQixrQkFBa0I7SUFDbEIsU0FBUztJQUNULFVBQVU7SUFDVixXQUFXO0lBQ1gsWUFBWTtJQUNaLGtCQUFrQjtDQUNyQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvdG9vbHMvbW9kZWxuYXYtcGFuZWwuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1vZGVsbmF2LWhlYWQge1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSgyMjAsIDIyMCwgMjIwLCAwLjEpIWltcG9ydGFudDtcclxuICAgIHBhZGRpbmctbGVmdDogNHB4O1xyXG4gICAgcGFkZGluZy1yaWdodDogNHB4O1xyXG4gICAgdHJhbnNmb3JtOiBzY2FsZVkoMC42KTtcclxuIH1cclxuLm1vZGVsbmF2LWhlYWQ6aG92ZXIge1xyXG4gICAgYmFja2dyb3VuZDogcmdiYSgyMjAsIDIyMCwgMjIwLCAwLjUpIWltcG9ydGFudDtcclxuICAgIHRyYW5zZm9ybTogc2NhbGVZKDEpO1xyXG4gfVxyXG4ubW9kZWxuYXYtaXRlbSB7XHJcbiAgICBiYWNrZ3JvdW5kOiByZ2JhKDAsIDIwMCwgMCwgMC4yKSFpbXBvcnRhbnQ7XHJcbiAgICBwYWRkaW5nLWxlZnQ6IDVweDtcclxuICAgIHBhZGRpbmctcmlnaHQ6IDVweDtcclxuICAgIHBhZGRpbmctdG9wOiAycHg7XHJcbiAgICBwYWRkaW5nLWJvdHRvbTogMnB4O1xyXG4gICAgYm9yZGVyLWJvdHRvbTogNHB4IHNvbGlkIGdyZXk7XHJcbiAgICB0cmFuc2Zvcm06IHNjYWxlKDEpO1xyXG4gICAgbWFyZ2luLXRvcDogNHB4O1xyXG4gfVxyXG4gLm1vZGVsbmF2LWl0ZW06aG92ZXIge1xyXG4gICAgdHJhbnNmb3JtOiBzY2FsZSgxLjUpO1xyXG4gfVxyXG4gI21vZGVsbmF2LXBhbmVsIHtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIHotaW5kZXg6IDk7XHJcbiAgICBib3JkZXI6IDFweCBzb2xpZCBsaWdodGdyZXk7XHJcbiAgICBib3JkZXItcmFkaXVzOiA0cHg7XHJcbiAgICB0b3A6IDcwcHg7XHJcbiAgICBsZWZ0OiA1MHB4O1xyXG4gICAgd2lkdGg6IDQwcHg7XHJcbiAgICBwYWRkaW5nOiAycHg7XHJcbiAgICBwYWRkaW5nLXJpZ2h0OiAycHg7XHJcbiB9Il19 */"
 
 /***/ }),
 
@@ -1414,7 +1524,7 @@ module.exports = ".modelnav-head {\r\n    background: rgba(220, 220, 220, 0.1)!i
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"modelnav-panel\" #modelNavPanel class=\"container text-center\">\r\n\r\n   <a class=\"modelnav-head\" data-toggle=\"collapse\" data-target=\"#modelnav-menu\">\r\n      <span class=\"glyphicon glyphicon-th-large\"></span>\r\n   </a>\r\n   <div id=\"modelnav-menu\" class=\"collapse\">\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"resetModelView()\">\r\n          <span class=\"glyphicon glyphicon-circle-arrow-up\"></span></button></div>\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"toggleLayersPanel()\">\r\n          <span class=\"glyphicon glyphicon-align-justify\"></span></button></div>\r\n   </div>\r\n</div>\r\n<layersnav-panel #layersNavPanel [hidden]=\"hideLayersNavPanel\" (closeLayersPanelEvent)=\"closeLayersPanel()\"\r\n     [neuronsModel]=\"neuronsModel\"></layersnav-panel>"
+module.exports = "<div id=\"modelnav-panel\" #modelNavPanel class=\"container text-center\">\r\n\r\n   <a id=\"modelnav-head\" class=\"modelnav-head\" data-toggle=\"collapse\" data-target=\"#modelnav-menu\">\r\n      <span class=\"glyphicon glyphicon-th-large\"></span>\r\n   </a>\r\n   <div id=\"modelnav-menu\" class=\"collapse\">\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"resetModelView()\">\r\n          <span class=\"glyphicon glyphicon-circle-arrow-up\"></span></button></div>\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"toggleLayersPanel()\">\r\n          <span class=\"glyphicon glyphicon-align-justify\"></span></button></div>\r\n      <div><button type=\"button\" class=\"btn modelnav-item\" (click)=\"openDataInputPanel()\">\r\n            <span class=\"glyphicon glyphicon-signal\"></span></button></div>\r\n   </div>\r\n</div>\r\n<layersnav-panel #layersNavPanel [hidden]=\"hideLayersNavPanel\" (closeLayersPanelEvent)=\"closeLayersPanel()\"\r\n     [neuronsModel]=\"neuronsModel\"></layersnav-panel>\r\n<datainput-panel #dataInputPanel [hidden]=\"hideDataInputPanel\" (closeDataInputPanelEvent)=\"closeDataInputPanel()\"\r\n     [neuronsModel]=\"neuronsModel\"></datainput-panel>"
 
 /***/ }),
 
@@ -1444,21 +1554,29 @@ var ModelNavPanelComponent = /** @class */ (function () {
         this.appService = appService;
         this.appStates = appStates;
         this.hideLayersNavPanel = true;
+        this.hideDataInputPanel = true;
+        this.inputPanelDragRegistered = false;
     }
     ModelNavPanelComponent.prototype.ngAfterViewInit = function () {
         var top = 10 + this.appStates.getNavbarHeight();
         $('#modelnav-panel').css('top', top + 'px');
         $('#modelnav-panel').css('left', '10px');
-        _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('modelnav-panel', {});
+        _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('modelnav-head', 'modelnav-panel', {});
     };
     ModelNavPanelComponent.prototype.resetModelView = function () {
         _neurons_neurons_model_view__WEBPACK_IMPORTED_MODULE_5__["NeuronsModelView"].appCamControl.reset();
     };
     ModelNavPanelComponent.prototype.toggleLayersPanel = function () {
+        if (this.hideLayersNavPanel) {
+            this.openLayersPanel();
+            this.hideLayersNavPanel = false;
+        }
+        /* disable toggle
         this.hideLayersNavPanel = !this.hideLayersNavPanel;
         if (!this.hideLayersNavPanel) {
             this.openLayersPanel();
         }
+        */
     };
     ModelNavPanelComponent.prototype.openLayersPanel = function () {
         var menuElem = this.modelNavPanelRef.nativeElement;
@@ -1468,8 +1586,36 @@ var ModelNavPanelComponent = /** @class */ (function () {
         $('#layersnav-panel').css('left', left + 'px');
         this.neuronsModel = this.appStates.getCurrentNeuronsModel();
     };
+    ModelNavPanelComponent.prototype.openDataInputPanel = function () {
+        var _this = this;
+        this.hideDataInputPanel = false;
+        this.neuronsModel = this.appStates.getCurrentNeuronsModel();
+        //NeuronsModelView.appCamControl.dispose(); for input avail?
+        if (!this.inputPanelDragRegistered) {
+            // do for the first time
+            setTimeout(function () {
+                _this.positionDataInputPanel();
+            }, 600);
+        }
+    };
+    ModelNavPanelComponent.prototype.positionDataInputPanel = function () {
+        var inputPanel = this.dataInputPanelRef;
+        var nativeElement = inputPanel.rootRef.nativeElement;
+        var top = window.innerHeight - nativeElement.offsetHeight - 20;
+        var left = window.innerWidth / 2 - nativeElement.offsetWidth / 2;
+        $('#datainput-panel').css('top', top + 'px');
+        $('#datainput-panel').css('left', left + 'px');
+        if (!this.inputPanelDragRegistered) {
+            _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('input-action-header', 'datainput-panel', {});
+            this.inputPanelDragRegistered = true;
+        }
+    };
     ModelNavPanelComponent.prototype.closeLayersPanel = function () {
         this.hideLayersNavPanel = true;
+    };
+    ModelNavPanelComponent.prototype.closeDataInputPanel = function () {
+        this.hideDataInputPanel = true;
+        //NeuronsModelView.appCamControl.addListeners();
     };
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('modelNavPanel'),
@@ -1479,6 +1625,10 @@ var ModelNavPanelComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('layersNavPanel'),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
     ], ModelNavPanelComponent.prototype, "layersNavPanelRef", void 0);
+    tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('dataInputPanel'),
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
+    ], ModelNavPanelComponent.prototype, "dataInputPanelRef", void 0);
     ModelNavPanelComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'modelnav-panel',
@@ -2106,16 +2256,19 @@ three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"] = function ( object, dom
 
 	};
 
-	this.domElement.addEventListener( 'contextmenu', contextmenu, false );
-	this.domElement.addEventListener( 'mousedown', mousedown, false );
-	this.domElement.addEventListener( 'wheel', mousewheel, false );
+	this.addListeners = function () {
+	    this.domElement.addEventListener( 'contextmenu', contextmenu, false );
+	    this.domElement.addEventListener( 'mousedown', mousedown, false );
+	    this.domElement.addEventListener( 'wheel', mousewheel, false );
 
-	this.domElement.addEventListener( 'touchstart', touchstart, false );
-	this.domElement.addEventListener( 'touchend', touchend, false );
-	this.domElement.addEventListener( 'touchmove', touchmove, false );
+	    this.domElement.addEventListener( 'touchstart', touchstart, false );
+	    this.domElement.addEventListener( 'touchend', touchend, false );
+	    this.domElement.addEventListener( 'touchmove', touchmove, false );
 
-	window.addEventListener( 'keydown', keydown, false );
-	window.addEventListener( 'keyup', keyup, false );
+	    window.addEventListener( 'keydown', keydown, false );
+	    window.addEventListener( 'keyup', keyup, false );
+	}
+	this.addListeners();
 
 	this.handleResize();
 
@@ -2267,15 +2420,26 @@ __webpack_require__.r(__webpack_exports__);
 var ElementDraggable = /** @class */ (function () {
     function ElementDraggable() {
     }
-    ElementDraggable.register = function (elementId, config) {
+    ElementDraggable.register = function (elementId, targetElementId, config) {
         var elem = document.getElementById(elementId);
-        if (elem) {
-            elem.onmousedown = ElementDraggable.dragMouseDown;
-            ElementDraggable.dragElements[elementId] = elem;
+        var targetElem = document.getElementById(targetElementId);
+        if (!elem) {
+            console.error('not able to find drag elements ' + elementId);
+            return;
         }
-        else {
-            console.error('not able to find drag element ' + elementId);
+        if (!targetElem) {
+            console.error('not able to find drag target elements ' + targetElementId);
+            return;
         }
+        var idstr = '#' + elementId;
+        $(idstr).hover(function () {
+            $(idstr).css('cursor', 'move');
+        }, function () {
+            $(idstr).css('cursor', 'auto');
+        });
+        $(idstr).css('box-shadow', 'inset 0 0 1px 1px olive');
+        elem.onmousedown = ElementDraggable.dragMouseDown;
+        ElementDraggable.dragElements[elementId] = targetElem;
     };
     ElementDraggable.getTargetElement = function (mevent) {
         var target = mevent.currentTarget;
@@ -2295,6 +2459,7 @@ var ElementDraggable = /** @class */ (function () {
         if (!elem) {
             return;
         }
+        ElementDraggable.targetElem = elem;
         var mpos2 = ElementDraggable.mpos2;
         mpos2.x = mevent.clientX;
         mpos2.y = mevent.clientY;
@@ -2304,16 +2469,17 @@ var ElementDraggable = /** @class */ (function () {
         ElementDraggable.isDragging = true;
     };
     ElementDraggable.elementDrag = function (mevent) {
-        if (!ElementDraggable.isDragging) {
+        if (!ElementDraggable.isDragging || !ElementDraggable.targetElem) {
             return;
         }
         //e = e || window.event;
         mevent.preventDefault();
         mevent.stopPropagation();
-        var elem = ElementDraggable.getTargetElement(mevent);
-        if (!elem) {
-            return;
-        }
+        //var elem = ElementDraggable.getTargetElement(mevent);
+        //if ( !elem ) {
+        //   return;
+        //}
+        var elem = ElementDraggable.targetElem;
         // calculate the new cursor position:
         var mpos1 = ElementDraggable.mpos1;
         var mpos2 = ElementDraggable.mpos2;
@@ -2330,13 +2496,15 @@ var ElementDraggable = /** @class */ (function () {
         //mevent = mevent || window.event;
         mevent.preventDefault();
         mevent.stopPropagation();
-        var elem = ElementDraggable.getTargetElement(mevent);
+        //var elem = ElementDraggable.getTargetElement(mevent);
+        var elem = ElementDraggable.targetElem;
         if (!elem) {
             return;
         }
         // stop moving when mouse button is released:
         elem.onmouseup = null;
         elem.onmousemove = null;
+        ElementDraggable.targetElem = null;
     };
     ElementDraggable.dragElements = {};
     ElementDraggable.mpos1 = { x: 0, y: 0 };
