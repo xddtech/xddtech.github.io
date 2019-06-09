@@ -99,7 +99,7 @@ var AppConfig = /** @class */ (function () {
     }
     AppConfig.prototype.toString = function () { };
     ;
-    AppConfig.showDebugRoute = true;
+    AppConfig.showDebugRoute = false;
     AppConfig = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
@@ -196,6 +196,17 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../src/app/components/about/about.css":
+/*!*********************************************!*\
+  !*** ../src/app/components/about/about.css ***!
+  \*********************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "#about-page {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.about-header {\r\n    color: blue;\r\n    font-size: 3em;\r\n    font-style: italic;\r\n    padding: 20px;\r\n}\r\n.about-text {\r\n    font-size: 2em;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hYm91dC9hYm91dC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtBQUNoQjtBQUNBO0lBQ0ksV0FBVztJQUNYLGNBQWM7SUFDZCxrQkFBa0I7SUFDbEIsYUFBYTtBQUNqQjtBQUNBO0lBQ0ksY0FBYztBQUNsQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYWJvdXQvYWJvdXQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI2Fib3V0LXBhZ2Uge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgICBoZWlnaHQ6IDEwMCU7XHJcbn1cclxuLmFib3V0LWhlYWRlciB7XHJcbiAgICBjb2xvcjogYmx1ZTtcclxuICAgIGZvbnQtc2l6ZTogM2VtO1xyXG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xyXG4gICAgcGFkZGluZzogMjBweDtcclxufVxyXG4uYWJvdXQtdGV4dCB7XHJcbiAgICBmb250LXNpemU6IDJlbTtcclxufSJdfQ== */"
+
+/***/ }),
+
 /***/ "../src/app/components/about/about.html":
 /*!**********************************************!*\
   !*** ../src/app/components/about/about.html ***!
@@ -203,7 +214,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <h3>{{aboutText}}</h3>\r\n   </div>\r\n</div>"
+module.exports = "<div id=\"about-page\" class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-header text-shadow-extra\">iclearn</div>\r\n   </div>\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-text text-shadow-extra\">{{aboutText}}</div>\r\n     </div>\r\n</div>"
 
 /***/ }),
 
@@ -237,7 +248,8 @@ var AboutComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'about-page',
             template: __webpack_require__(/*! ./about.html */ "../src/app/components/about/about.html"),
-            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"]]
+            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"]],
+            styles: [__webpack_require__(/*! ./about.css */ "../src/app/components/about/about.css")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"]])
     ], AboutComponent);
@@ -674,7 +686,7 @@ var ModelLayer = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n    <div class=\"row text-center\">\r\n      <h3>{{neuronsModel.name}}</h3>\r\n    </div>\r\n</div>  "
+module.exports = "<div class=\"container\">\r\n    <div class=\"row text-center\">\r\n      <h3>{{neuronsModelName}}</h3>\r\n    </div>\r\n    <div class=\"row text-center\">\r\n        {{neuronsModelPath}}\r\n    </div>\r\n    <div id=\"model-source-detail\">\r\n        <div [innerHtml]=\"sourceHtmlDetail\"></div>\r\n    </div>\r\n</div>  "
 
 /***/ }),
 
@@ -689,27 +701,73 @@ module.exports = "<div class=\"container\">\r\n    <div class=\"row text-center\
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
-/* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "../node_modules/@angular/platform-browser/fesm5/platform-browser.js");
+/* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
+/* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
+
 
 
 
 
 var ModelSourceComponent = /** @class */ (function () {
-    function ModelSourceComponent(appService, appStates) {
+    function ModelSourceComponent(appService, appStates, sanitizer) {
         this.appService = appService;
         this.appStates = appStates;
-        this.neuronsModel = appStates.getCurrentNeuronsModel();
+        this.sanitizer = sanitizer;
     }
+    ModelSourceComponent.prototype.ngOnInit = function () {
+        this.getModelSource();
+    };
     ModelSourceComponent.prototype.ngAfterViewInit = function () {
+    };
+    ModelSourceComponent.prototype.getModelSource = function () {
+        this.neuronsModelSrc = this.appStates.getCurrentNeuronsModelSrc();
+        if (this.neuronsModelSrc) {
+            this.generateModelDetail();
+        }
+        else {
+            this.neuronsModelName = "undefined";
+            this.sourceDetail = "neuronsModelSrc is null";
+        }
+        this.neuronsModelPath = _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"].neuronsModelPath;
+        this.sourceHtmlDetail = this.sanitizer.bypassSecurityTrustHtml(this.sourceDetail);
+    };
+    ModelSourceComponent.prototype.generateModelDetail = function () {
+        var rawJson = JSON.parse(this.neuronsModelSrc);
+        this.neuronsModelName = rawJson.name;
+        //this.sourceDetail = this.neuronsModelSrc;
+        this.sourceDetail = '<ul>';
+        this.traverseObject('root', rawJson);
+        this.sourceDetail += '</ul>';
+    };
+    ModelSourceComponent.prototype.traverseObject = function (key, obj) {
+        var type = typeof obj;
+        if (type == 'object') {
+            for (var key in obj) {
+                var child = obj[key];
+                var isChildObject = typeof child == 'object' ? true : false;
+                if (isChildObject) {
+                    this.sourceDetail += '<li>' + key + ':<ul>';
+                }
+                this.traverseObject(key, obj[key]);
+                if (isChildObject) {
+                    this.sourceDetail += '</ul></li>';
+                }
+            }
+        }
+        else {
+            this.sourceDetail += '<li>';
+            this.sourceDetail += key + ': ' + ((obj == null) ? 'null' : JSON.stringify(obj)) + ',';
+            this.sourceDetail += '</li>';
+        }
     };
     ModelSourceComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'model-source',
             template: __webpack_require__(/*! ./model-source.html */ "../src/app/components/model/model-source.html"),
-            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_3__["AppStates"]]
+            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"]]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_2__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_3__["AppStates"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"]])
     ], ModelSourceComponent);
     return ModelSourceComponent;
 }());
@@ -925,7 +983,7 @@ var OutputCell = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".navbar-margin-bottom-0 {\r\n    margin-bottom: 0px;\r\n    border-radius: 0px;\r\n  }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXZiYXIvbmF2YmFyLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtJQUNJLGtCQUFrQjtJQUNsQixrQkFBa0I7RUFDcEIiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL25hdmJhci9uYXZiYXIuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm5hdmJhci1tYXJnaW4tYm90dG9tLTAge1xyXG4gICAgbWFyZ2luLWJvdHRvbTogMHB4O1xyXG4gICAgYm9yZGVyLXJhZGl1czogMHB4O1xyXG4gIH0iXX0= */"
+module.exports = "\r\n.brand-style {\r\n  color: white;\r\n  float: left;\r\n  height: 40px;\r\n  padding: 15px 15px;\r\n  font-size: 16px;\r\n  font-style: italic;\r\n  line-height: 16px;\r\n  text-shadow: 0 1px 0 #ccc,\r\n               0 2px 0 #c9c9c9,\r\n               0 3px 0 #bbb,\r\n               0 4px 0 #b9b9b9,\r\n               0 5px 0 #aaa,\r\n               0 6px 1px rgba(0,0,0,.1),\r\n               0 0 5px rgba(0,0,0,.1),\r\n               0 1px 3px rgba(0,0,0,.3),\r\n               0 3px 5px rgba(0,0,0,.2),\r\n               0 5px 10px rgba(0,0,0,.25),\r\n               0 10px 10px rgba(0,0,0,.2),\r\n               0 20px 20px rgba(0,0,0,.15);\r\n}\r\n\r\n.navbar-customized {\r\n    margin-bottom: 0px !important;\r\n    border-radius: 0px !important;\r\n    padding: 0px !important;\r\n    height: 40px !important;\r\n  }\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9uYXZiYXIvbmF2YmFyLmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiO0FBQ0E7RUFDRSxZQUFZO0VBQ1osV0FBVztFQUNYLFlBQVk7RUFDWixrQkFBa0I7RUFDbEIsZUFBZTtFQUNmLGtCQUFrQjtFQUNsQixpQkFBaUI7RUFDakI7Ozs7Ozs7Ozs7OzBDQVd3QztBQUMxQzs7QUFFQTtJQUNJLDZCQUE2QjtJQUM3Qiw2QkFBNkI7SUFDN0IsdUJBQXVCO0lBQ3ZCLHVCQUF1QjtFQUN6QiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbmF2YmFyL25hdmJhci5jc3MiLCJzb3VyY2VzQ29udGVudCI6WyJcclxuLmJyYW5kLXN0eWxlIHtcclxuICBjb2xvcjogd2hpdGU7XHJcbiAgZmxvYXQ6IGxlZnQ7XHJcbiAgaGVpZ2h0OiA0MHB4O1xyXG4gIHBhZGRpbmc6IDE1cHggMTVweDtcclxuICBmb250LXNpemU6IDE2cHg7XHJcbiAgZm9udC1zdHlsZTogaXRhbGljO1xyXG4gIGxpbmUtaGVpZ2h0OiAxNnB4O1xyXG4gIHRleHQtc2hhZG93OiAwIDFweCAwICNjY2MsXHJcbiAgICAgICAgICAgICAgIDAgMnB4IDAgI2M5YzljOSxcclxuICAgICAgICAgICAgICAgMCAzcHggMCAjYmJiLFxyXG4gICAgICAgICAgICAgICAwIDRweCAwICNiOWI5YjksXHJcbiAgICAgICAgICAgICAgIDAgNXB4IDAgI2FhYSxcclxuICAgICAgICAgICAgICAgMCA2cHggMXB4IHJnYmEoMCwwLDAsLjEpLFxyXG4gICAgICAgICAgICAgICAwIDAgNXB4IHJnYmEoMCwwLDAsLjEpLFxyXG4gICAgICAgICAgICAgICAwIDFweCAzcHggcmdiYSgwLDAsMCwuMyksXHJcbiAgICAgICAgICAgICAgIDAgM3B4IDVweCByZ2JhKDAsMCwwLC4yKSxcclxuICAgICAgICAgICAgICAgMCA1cHggMTBweCByZ2JhKDAsMCwwLC4yNSksXHJcbiAgICAgICAgICAgICAgIDAgMTBweCAxMHB4IHJnYmEoMCwwLDAsLjIpLFxyXG4gICAgICAgICAgICAgICAwIDIwcHggMjBweCByZ2JhKDAsMCwwLC4xNSk7XHJcbn1cclxuXHJcbi5uYXZiYXItY3VzdG9taXplZCB7XHJcbiAgICBtYXJnaW4tYm90dG9tOiAwcHggIWltcG9ydGFudDtcclxuICAgIGJvcmRlci1yYWRpdXM6IDBweCAhaW1wb3J0YW50O1xyXG4gICAgcGFkZGluZzogMHB4ICFpbXBvcnRhbnQ7XHJcbiAgICBoZWlnaHQ6IDQwcHggIWltcG9ydGFudDtcclxuICB9Il19 */"
 
 /***/ }),
 
@@ -936,7 +994,7 @@ module.exports = ".navbar-margin-bottom-0 {\r\n    margin-bottom: 0px;\r\n    bo
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<nav #appNavbar class=\"navbar navbar-inverse navbar-margin-bottom-0\" role=\"navigation\">\r\n    <div class=\"container\">\r\n      <div class=\"navbar-header\">\r\n        <button type=\"button\" class=\"navbar-toggle\" data-toggle=\"collapse\" data-target=\".navbar-ex1-collapse\">\r\n          <span class=\"sr-only\">Toggle navigation</span>\r\n          <span class=\"icon-bar\"></span>\r\n          <span class=\"icon-bar\"></span>\r\n          <span class=\"icon-bar\"></span>\r\n        </button>\r\n        <a class=\"navbar-brand\" href=\"#\">Home</a>\r\n      </div>\r\n  \r\n      <!-- Collect the nav links, forms, and other content for toggling -->\r\n      <div class=\"collapse navbar-collapse navbar-ex1-collapse\">\r\n        <ul class=\"nav navbar-nav\">\r\n          <li><a routerLink=\"/model\">Model</a></li>\r\n          <li><a routerLink=\"/about\">About</a></li>\r\n          <li *ngIf=\"showDebugRoute\"><a routerLink=\"/debug\">Debug</a></li>\r\n        </ul>\r\n      </div>\r\n      <!-- /.navbar-collapse -->\r\n    </div>\r\n    <!-- /.container -->\r\n  </nav>"
+module.exports = "<nav #appNavbar class=\"navbar navbar-inverse navbar-customized\" role=\"navigation\">\r\n  <div class=\"\">\r\n     <span class=\"brand-style\">iclearn</span>\r\n  </div>\r\n\r\n  <ul class=\"nav navbar-nav\">\r\n       <li><a routerLink=\"/\">Home</a></li>\r\n       <li><a routerLink=\"/model\">Model</a></li>\r\n       <li><a routerLink=\"/about\">About</a></li>\r\n       <li *ngIf=\"showDebugRoute\"><a routerLink=\"/debug\">Debug</a></li>\r\n   </ul>\r\n</nav>\r\n"
 
 /***/ }),
 
@@ -1017,11 +1075,28 @@ var ModelMain = /** @class */ (function () {
     };
     ModelMain.prototype.loadCreateModel = function () {
         var _this = this;
-        this.appService.loadDefaultModel().subscribe(function (modelData) {
+        /*
+        this.appService.loadDefaultModel().subscribe(modelData => {
+           this.neuronsModel = NeuronsModel.clone(modelData);
+           ModelMain.currentNeoronsModel = this.neuronsModel;
+           this.appStates.setCurrentNeuronsModel(this.neuronsModel, JSON.stringify(modelData));
+           this.neuronsModel.preProcess();
+           this.neuronsModel.create(this.rootGroup);
+        });
+        */
+        this.appService.loadDefaultModelSrc().subscribe(function (modelDataSrc) {
+            // keep original text
+            var srcJson = JSON.stringify(modelDataSrc);
+            // convert to a model
+            var modelData = new _model_neurons_model__WEBPACK_IMPORTED_MODULE_2__["NeuronsModel"]();
+            Object.assign(modelData, modelDataSrc);
+            // do deep clone
             _this.neuronsModel = _model_neurons_model__WEBPACK_IMPORTED_MODULE_2__["NeuronsModel"].clone(modelData);
             ModelMain.currentNeoronsModel = _this.neuronsModel;
-            _this.appStates.setCurrentNeuronsModel(_this.neuronsModel);
+            _this.appStates.setCurrentNeuronsModel(_this.neuronsModel, srcJson);
+            // preprocess the model
             _this.neuronsModel.preProcess();
+            // create graphs
             _this.neuronsModel.create(_this.rootGroup);
         });
     };
@@ -1329,7 +1404,7 @@ module.exports = "#datainput-panel {\r\n    position: absolute;\r\n    z-index: 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"datainput-panel\" #dataInputPanelRoot class=\"conatiner\">\r\n    <div class=\"row\">\r\n        <div id=\"input-action-header\" class=\"col-sm-4 input-action-menu action-close\">\r\n            <a (click)=\"closeDataInputView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-go\">\r\n            <a (click)=\"processInput()\">Go</a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-type\">\r\n            <select class=\"select-button\" (change)=\"onInputTypeChange($event.target.value)\">\r\n                <option *ngFor=\"let opt of inputTypesOpt\" [value]=\"opt\">{{opt}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"neuronsModel\" class=\"row\" >\r\n        <table id=\"input-table\" border=\"1\" class=\"input-table-x\">\r\n            <thead>\r\n            <tr>\r\n               <th *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   {{cell.getDescription()}}\r\n               </th>\r\n               <th>expected</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n               <td *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   <input id=\"input-value-{{cell.seqIndex}}\" autocomplete=\"off\" />\r\n               </td>\r\n               <td><input id=\"expected-input\" [disabled]=\"expectedDisabled\" /></td>\r\n            </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n</div>"
+module.exports = "<div id=\"datainput-panel\" #dataInputPanelRoot class=\"conatiner\">\r\n    <div class=\"row\">\r\n        <div id=\"input-action-header\" class=\"col-sm-4 input-action-menu action-close\">\r\n            <a (click)=\"closeDataInputView()\"><span class=\"glyphicon glyphicon-remove-sign close-sign-extra\"></span></a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-go\">\r\n            <a (click)=\"processInput()\">Go</a>\r\n        </div>\r\n        <div class=\"col-sm-4 input-action-menu action-type\">\r\n            <select class=\"select-button\" (change)=\"onInputTypeChange($event.target.value)\">\r\n                <option *ngFor=\"let opt of inputTypesOpt\" [value]=\"opt\">{{opt}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"neuronsModel\" class=\"row\" >\r\n        <table id=\"input-table\" border=\"1\" class=\"input-table-x\">\r\n            <thead>\r\n            <tr>\r\n               <th *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   {{cell.getDescription()}}\r\n               </th>\r\n               <th>expected</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n               <td *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   <input id=\"input-value-{{cell.seqIndex}}\" autocomplete=\"off\" />\r\n               </td>\r\n               <td><input id=\"expected-input\" [disabled]=\"expectedDisabled\" /></td>\r\n            </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -1430,7 +1505,7 @@ module.exports = ".table-nonfluid {\r\n    width: 100px !important;\r\n    backg
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"layersnav-panel\">\r\n    <div id=\"layersnav-head\">\r\n        <a (click)=\"closeLayersView()\"><span class=\"glyphicon glyphicon-remove-sign\"></span></a>\r\n    </div>\r\n    <table id=\"layers\" *ngIf=\"neuronsModel\" class=\"table table-condensed table-bordered table-hover table-nonfluid\">\r\n    <thead>\r\n        <tr>\r\n           <th></th>\r\n           <th>Layers</th>\r\n           <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let layer of neuronsModel.layers; let i = index\">\r\n            <td>{{layer.layerIndex}}</td>\r\n            <td>{{layer.getDescription()}}</td>\r\n            <td><input type=\"checkbox\" checked=\"true\" (change)=\"toggleLayerVisible(i)\" /></td>\r\n        </tr>\r\n    </tbody>\r\n    </table>\r\n</div>"
+module.exports = "<div id=\"layersnav-panel\">\r\n    <div id=\"layersnav-head\">\r\n        <a (click)=\"closeLayersView()\"><span class=\"glyphicon glyphicon-remove-sign close-sign-extra\"></span></a>\r\n    </div>\r\n    <table id=\"layers\" *ngIf=\"neuronsModel\" class=\"table table-condensed table-bordered table-hover table-nonfluid\">\r\n    <thead>\r\n        <tr>\r\n           <th></th>\r\n           <th>Layers</th>\r\n           <th></th>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let layer of neuronsModel.layers; let i = index\">\r\n            <td>{{layer.layerIndex}}</td>\r\n            <td>{{layer.getDescription()}}</td>\r\n            <td><input type=\"checkbox\" checked=\"true\" (change)=\"toggleLayerVisible(i)\" /></td>\r\n        </tr>\r\n    </tbody>\r\n    </table>\r\n</div>"
 
 /***/ }),
 
@@ -1754,7 +1829,7 @@ three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"] = function ( object, dom
 			this.screen.left = box.left + window.pageXOffset - d.clientLeft;
 			this.screen.top = box.top + window.pageYOffset - d.clientTop;
 			this.screen.width = box.width;
-			this.screen.height = box.height;
+			this.screen.height = box.height > 2 ? box.height :  window.innerHeight;
 
 		}
 
@@ -2315,12 +2390,22 @@ var AppService = /** @class */ (function () {
     };
     AppService.prototype.loadDefaultModel = function () {
         var path = this.getBaseUrl() + '/assets/default-neurons-model.json';
-        console.info('path=' + path);
         return this.loadNeuronsModel(path);
     };
     AppService.prototype.loadNeuronsModel = function (path) {
         this.informModelPath(path);
         return this.http.get(path);
+    };
+    AppService.prototype.loadDefaultModelSrc = function () {
+        var path = this.getBaseUrl() + '/assets/default-neurons-model.json';
+        return this.loadNeuronsModelSrc(path);
+    };
+    AppService.prototype.loadNeuronsModelSrc = function (path) {
+        this.informModelPath(path);
+        var reqHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
+            'Accept': 'application/json'
+        });
+        return this.http.get(path, { headers: reqHeaders, responseType: 'json' });
     };
     AppService.prototype.informModelPath = function (path) {
         _app_states__WEBPACK_IMPORTED_MODULE_3__["AppStates"].neuronsModelPath = path;
@@ -2367,11 +2452,15 @@ var AppStates = /** @class */ (function () {
         }
         return AppStates_1.navbarElem.nativeElement.offsetHeight;
     };
-    AppStates.prototype.setCurrentNeuronsModel = function (neuronsModel) {
+    AppStates.prototype.setCurrentNeuronsModel = function (neuronsModel, neuronsModelSrc) {
         AppStates_1.neuronsModel = neuronsModel;
+        AppStates_1.neuronsModelSrc = neuronsModelSrc;
     };
     AppStates.prototype.getCurrentNeuronsModel = function () {
         return AppStates_1.neuronsModel;
+    };
+    AppStates.prototype.getCurrentNeuronsModelSrc = function () {
+        return AppStates_1.neuronsModelSrc;
     };
     AppStates.toDebug = function () {
         var json = {};
