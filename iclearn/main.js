@@ -774,7 +774,7 @@ var ModelSourceComponent = /** @class */ (function () {
         var rawJson = JSON.parse(this.neuronsModelSrc);
         this.neuronsModelName = rawJson.name;
         //this.sourceDetail = this.neuronsModelSrc;
-        this.sourceDetail = '<ul id="model-source-list" class="nobull">';
+        this.sourceDetail = '<ul id="model-source-list" class="model-root-ul">';
         this.traverseObject('root', rawJson, '');
         this.sourceDetail += '</ul>';
     };
@@ -783,21 +783,22 @@ var ModelSourceComponent = /** @class */ (function () {
         if (type == 'object') {
             var path = ppath;
             var isArray = Array.isArray(obj);
-            for (var key in obj) {
-                var child = obj[key];
+            for (var ckey in obj) {
+                var child = obj[ckey];
                 var isChildObject = typeof child == 'object' ? true : false;
                 if (isChildObject) {
-                    path = ppath + '-' + key;
+                    path = ppath + '-' + ckey;
                     var target = path + '-target';
                     var btnId = path + '-btn';
                     var btn = '<input type="button" id="' + btnId + '" href="#' + target +
-                        '" data-toggle="collapse" value="+" class="expand-btn"></input>';
-                    var line = '<li id="' + path + '" >' + btn + '&nbsp;' + key + ':' +
+                        '" data-toggle="collapse" value="&#177" class="expand-btn"></input>';
+                    var desc = this.getNodeDescription(child, ckey, key);
+                    var line = '<li id="' + path + '" >' + btn + '&nbsp;' + desc + ':' +
                         '<ul id="' + target + '" class="collapse expand-verticalline model-source-ul">';
                     this.sourceDetail += line;
                     this.collapsableSourceList.push(path);
                 }
-                this.traverseObject(key, obj[key], path);
+                this.traverseObject(ckey, obj[ckey], path);
                 if (isChildObject) {
                     this.sourceDetail += '</ul></li>';
                 }
@@ -808,6 +809,18 @@ var ModelSourceComponent = /** @class */ (function () {
             this.sourceDetail += key + ': ' + ((obj == null) ? 'null' : JSON.stringify(obj));
             this.sourceDetail += '</li>';
         }
+    };
+    ModelSourceComponent.prototype.getNodeDescription = function (obj, key, parentKey) {
+        if (parentKey === 'layers') {
+            return obj.layerType + '-' + obj.linkType + ' (' + obj.cellList.length + ')';
+        }
+        if (key === 'cellList') {
+            return 'cellList (' + obj.length + ')';
+        }
+        if (parentKey === 'cellList') {
+            return obj.cellType;
+        }
+        return key;
     };
     ModelSourceComponent.expandBtnClick = function (btnId) {
         //$('#' + btnId).value('=');
