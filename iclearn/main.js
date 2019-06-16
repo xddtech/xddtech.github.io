@@ -679,6 +679,17 @@ var ModelLayer = /** @class */ (function () {
 
 /***/ }),
 
+/***/ "../src/app/components/model/model-source.css":
+/*!****************************************************!*\
+  !*** ../src/app/components/model/model-source.css ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = ".source-display-type {\r\n    position: absolute;\r\n    border-radius: 10% 10% 10% 10%;\r\n    background: rgba(0, 255, 0, 0.4) !important;\r\n    box-shadow: 2px 2px 2px black;\r\n}\r\n\r\n.hr-padding-margin {\r\n    padding: 0px;\r\n    margin: 5px 0px 5px 0px;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9tb2RlbC9tb2RlbC1zb3VyY2UuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLDhCQUE4QjtJQUM5QiwyQ0FBMkM7SUFDM0MsNkJBQTZCO0FBQ2pDOztBQUVBO0lBQ0ksWUFBWTtJQUNaLHVCQUF1QjtBQUMzQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbW9kZWwvbW9kZWwtc291cmNlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5zb3VyY2UtZGlzcGxheS10eXBlIHtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDEwJSAxMCUgMTAlIDEwJTtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjU1LCAwLCAwLjQpICFpbXBvcnRhbnQ7XHJcbiAgICBib3gtc2hhZG93OiAycHggMnB4IDJweCBibGFjaztcclxufVxyXG5cclxuLmhyLXBhZGRpbmctbWFyZ2luIHtcclxuICAgIHBhZGRpbmc6IDBweDtcclxuICAgIG1hcmdpbjogNXB4IDBweCA1cHggMHB4O1xyXG59Il19 */"
+
+/***/ }),
+
 /***/ "../src/app/components/model/model-source.html":
 /*!*****************************************************!*\
   !*** ../src/app/components/model/model-source.html ***!
@@ -686,7 +697,7 @@ var ModelLayer = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n    <div class=\"row text-center\">\r\n      <h3>{{neuronsModelName}}</h3>\r\n    </div>\r\n    <div class=\"row text-center\">\r\n        {{neuronsModelPath}}\r\n    </div>\r\n    <div id=\"model-source-detail\">\r\n        <div [innerHtml]=\"sourceHtmlDetail\"></div>\r\n    </div>\r\n</div>  "
+module.exports = "<div class=\"container-fluid\">\r\n    <div class=\"row text-center\">\r\n      <h4>{{neuronsModelName}}</h4>\r\n    </div>\r\n\r\n    <select  class=\"source-display-type\">\r\n       <option value=\"Model\">Model</option>\r\n       <option value=\"Text\">Text</option>\r\n       <option value=\"Processed\">Processed</option>\r\n    </select> \r\n    <div class=\"row text-center\">\r\n           source: {{neuronsModelPath}} <span *ngIf=\"!neuronsModelPath\">undefined</span>\r\n    </div>\r\n    \r\n    <hr class=\"hr-padding-margin\">\r\n    <div id=\"model-source-detail\">\r\n        <div [innerHtml]=\"sourceHtmlDetail\"></div>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -714,11 +725,37 @@ var ModelSourceComponent = /** @class */ (function () {
         this.appService = appService;
         this.appStates = appStates;
         this.sanitizer = sanitizer;
+        this.collapsableSourceList = [];
     }
     ModelSourceComponent.prototype.ngOnInit = function () {
         this.getModelSource();
     };
     ModelSourceComponent.prototype.ngAfterViewInit = function () {
+        $('#model-source-detail').find('ul').addClass('model-source-ul');
+        for (var path in this.collapsableSourceList) {
+            var target = path + '-target';
+            //$('#' + path).attr('data-toggle', 'collapse');
+            //$('#' + path).attr('data-target', target);
+            //$('#' + target).addClass('expand-line');
+            var btnId = path + '-btn';
+            //$('#' + btnId).onclick = ModelSourceComponent.expandBtnClick(btnId);
+            /* myEl is null
+            var myEl = document.getElementById(btnId);
+            myEl.addEventListener('click', function() {
+               alert('Hello world');
+            }, false);
+            */
+        }
+    };
+    ModelSourceComponent.prototype.ngAfterViewChecked = function () {
+        /*
+        for (var path in this.collapsableSourceList) {
+           var target = path + '-target';
+           var btnId = path + '-btn';
+           // only called first time??
+           $('#' + btnId).onclick = ModelSourceComponent.expandBtnClick(btnId);
+       }
+       */
     };
     ModelSourceComponent.prototype.getModelSource = function () {
         this.neuronsModelSrc = this.appStates.getCurrentNeuronsModelSrc();
@@ -733,39 +770,64 @@ var ModelSourceComponent = /** @class */ (function () {
         this.sourceHtmlDetail = this.sanitizer.bypassSecurityTrustHtml(this.sourceDetail);
     };
     ModelSourceComponent.prototype.generateModelDetail = function () {
+        this.collapsableSourceList = [];
         var rawJson = JSON.parse(this.neuronsModelSrc);
         this.neuronsModelName = rawJson.name;
         //this.sourceDetail = this.neuronsModelSrc;
-        this.sourceDetail = '<ul>';
-        this.traverseObject('root', rawJson);
+        this.sourceDetail = '<ul id="model-source-list" class="nobull">';
+        this.traverseObject('root', rawJson, '');
         this.sourceDetail += '</ul>';
     };
-    ModelSourceComponent.prototype.traverseObject = function (key, obj) {
+    ModelSourceComponent.prototype.traverseObject = function (key, obj, ppath) {
         var type = typeof obj;
         if (type == 'object') {
+            var path = ppath;
+            var isArray = Array.isArray(obj);
             for (var key in obj) {
                 var child = obj[key];
                 var isChildObject = typeof child == 'object' ? true : false;
                 if (isChildObject) {
-                    this.sourceDetail += '<li>' + key + ':<ul>';
+                    path = ppath + '-' + key;
+                    var target = path + '-target';
+                    var btnId = path + '-btn';
+                    var btn = '<input type="button" id="' + btnId + '" href="#' + target +
+                        '" data-toggle="collapse" value="+" class="expand-btn"></input>';
+                    var line = '<li id="' + path + '" >' + btn + '&nbsp;' + key + ':' +
+                        '<ul id="' + target + '" class="collapse expand-verticalline model-source-ul">';
+                    this.sourceDetail += line;
+                    this.collapsableSourceList.push(path);
                 }
-                this.traverseObject(key, obj[key]);
+                this.traverseObject(key, obj[key], path);
                 if (isChildObject) {
                     this.sourceDetail += '</ul></li>';
                 }
             }
         }
         else {
-            this.sourceDetail += '<li>';
-            this.sourceDetail += key + ': ' + ((obj == null) ? 'null' : JSON.stringify(obj)) + ',';
+            this.sourceDetail += '<li class="model-source-li">';
+            this.sourceDetail += key + ': ' + ((obj == null) ? 'null' : JSON.stringify(obj));
             this.sourceDetail += '</li>';
         }
+    };
+    ModelSourceComponent.expandBtnClick = function (btnId) {
+        //$('#' + btnId).value('=');
+        //var e = event;
+        //e.target.vaule = (e.target.value == '+' ? '=' : '+');
+        //this.value = (this.value == '+' ? '=' : '+');
+        //alert(btnId);
+        /* can't find object
+        var myEl = document.getElementById(btnId);
+        if (!myEl) {
+           console.error(btnId + ' is null');
+        }
+        */
     };
     ModelSourceComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'model-source',
             template: __webpack_require__(/*! ./model-source.html */ "../src/app/components/model/model-source.html"),
-            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"]]
+            providers: [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"]],
+            styles: [__webpack_require__(/*! ./model-source.css */ "../src/app/components/model/model-source.css")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_services_app_service__WEBPACK_IMPORTED_MODULE_3__["AppService"], _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"], _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__["DomSanitizer"]])
     ], ModelSourceComponent);
