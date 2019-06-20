@@ -203,7 +203,7 @@ var AppModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "#about-page {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.about-header {\r\n    color: blue;\r\n    font-size: 3em;\r\n    font-style: italic;\r\n    padding: 20px;\r\n}\r\n.about-text {\r\n    font-size: 2em;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hYm91dC9hYm91dC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtBQUNoQjtBQUNBO0lBQ0ksV0FBVztJQUNYLGNBQWM7SUFDZCxrQkFBa0I7SUFDbEIsYUFBYTtBQUNqQjtBQUNBO0lBQ0ksY0FBYztBQUNsQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvYWJvdXQvYWJvdXQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiI2Fib3V0LXBhZ2Uge1xyXG4gICAgd2lkdGg6IDEwMCU7XHJcbiAgICBoZWlnaHQ6IDEwMCU7XHJcbn1cclxuLmFib3V0LWhlYWRlciB7XHJcbiAgICBjb2xvcjogYmx1ZTtcclxuICAgIGZvbnQtc2l6ZTogM2VtO1xyXG4gICAgZm9udC1zdHlsZTogaXRhbGljO1xyXG4gICAgcGFkZGluZzogMjBweDtcclxufVxyXG4uYWJvdXQtdGV4dCB7XHJcbiAgICBmb250LXNpemU6IDJlbTtcclxufSJdfQ== */"
+module.exports = "#about-page {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\n.about-header {\r\n    color: blue;\r\n    font-size: 3em;\r\n    font-style: italic;\r\n    padding: 20px;\r\n}\r\n.about-text {\r\n    font-size: 2em;\r\n}\r\n.build-info {\r\n    font-size: 0.8em;\r\n    font-style: italic;\r\n    padding-top: 40px;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9hYm91dC9hYm91dC5jc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7SUFDSSxXQUFXO0lBQ1gsWUFBWTtBQUNoQjtBQUNBO0lBQ0ksV0FBVztJQUNYLGNBQWM7SUFDZCxrQkFBa0I7SUFDbEIsYUFBYTtBQUNqQjtBQUNBO0lBQ0ksY0FBYztBQUNsQjtBQUNBO0lBQ0ksZ0JBQWdCO0lBQ2hCLGtCQUFrQjtJQUNsQixpQkFBaUI7QUFDckIiLCJmaWxlIjoic3JjL2FwcC9jb21wb25lbnRzL2Fib3V0L2Fib3V0LmNzcyIsInNvdXJjZXNDb250ZW50IjpbIiNhYm91dC1wYWdlIHtcclxuICAgIHdpZHRoOiAxMDAlO1xyXG4gICAgaGVpZ2h0OiAxMDAlO1xyXG59XHJcbi5hYm91dC1oZWFkZXIge1xyXG4gICAgY29sb3I6IGJsdWU7XHJcbiAgICBmb250LXNpemU6IDNlbTtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxuICAgIHBhZGRpbmc6IDIwcHg7XHJcbn1cclxuLmFib3V0LXRleHQge1xyXG4gICAgZm9udC1zaXplOiAyZW07XHJcbn1cclxuLmJ1aWxkLWluZm8ge1xyXG4gICAgZm9udC1zaXplOiAwLjhlbTtcclxuICAgIGZvbnQtc3R5bGU6IGl0YWxpYztcclxuICAgIHBhZGRpbmctdG9wOiA0MHB4O1xyXG59Il19 */"
 
 /***/ }),
 
@@ -214,7 +214,7 @@ module.exports = "#about-page {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"about-page\" class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-header text-shadow-extra\">iclearn</div>\r\n   </div>\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-text text-shadow-extra\">{{aboutText}}</div>\r\n     </div>\r\n</div>"
+module.exports = "<div id=\"about-page\" class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-header text-shadow-extra\">iclearn</div>\r\n   </div>\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-text text-shadow-extra\">{{aboutText}}</div>\r\n   </div>\r\n   <div class=\"row text-center build-info\">\r\n       <span>@xddtech - {{buildInfo}}</span>\r\n   </div>\r\n</div>"
 
 /***/ }),
 
@@ -241,7 +241,14 @@ var AboutComponent = /** @class */ (function () {
     AboutComponent.prototype.load = function () {
         var _this = this;
         this.appService.getAboutHtml().subscribe(function (data) {
-            _this.aboutText = data;
+            var obj = JSON.parse(data);
+            _this.aboutText = obj.aboutText;
+            if (obj.build) {
+                _this.buildInfo = obj.build;
+            }
+            else {
+                _this.buildInfo = (new Date()).toString();
+            }
         });
     };
     AboutComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -686,7 +693,7 @@ var ModelLayer = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = ".source-display-type {\r\n    position: absolute;\r\n    border-radius: 10% 10% 10% 10%;\r\n    background: rgba(0, 255, 0, 0.4) !important;\r\n    box-shadow: 2px 2px 2px black;\r\n}\r\n\r\n.hr-padding-margin {\r\n    padding: 0px;\r\n    margin: 5px 0px 5px 0px;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9tb2RlbC9tb2RlbC1zb3VyY2UuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLDhCQUE4QjtJQUM5QiwyQ0FBMkM7SUFDM0MsNkJBQTZCO0FBQ2pDOztBQUVBO0lBQ0ksWUFBWTtJQUNaLHVCQUF1QjtBQUMzQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbW9kZWwvbW9kZWwtc291cmNlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5zb3VyY2UtZGlzcGxheS10eXBlIHtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDEwJSAxMCUgMTAlIDEwJTtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjU1LCAwLCAwLjQpICFpbXBvcnRhbnQ7XHJcbiAgICBib3gtc2hhZG93OiAycHggMnB4IDJweCBibGFjaztcclxufVxyXG5cclxuLmhyLXBhZGRpbmctbWFyZ2luIHtcclxuICAgIHBhZGRpbmc6IDBweDtcclxuICAgIG1hcmdpbjogNXB4IDBweCA1cHggMHB4O1xyXG59Il19 */"
+module.exports = ".source-display-type {\r\n    position: absolute;\r\n    border-radius: 10% 10% 10% 10%;\r\n    background: rgba(0, 255, 0, 0.4) !important;\r\n    box-shadow: 2px 2px 2px black;\r\n}\r\n\r\n.hr-padding-margin {\r\n    padding: 0px;\r\n    margin: 5px 0px 5px 0px;\r\n}\r\n\r\n#model-source-detail {\r\n    font-family: Lucida Console;\r\n    font-size: 0.9em;\r\n    color: black;\r\n}\r\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9hcHAvY29tcG9uZW50cy9tb2RlbC9tb2RlbC1zb3VyY2UuY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0lBQ0ksa0JBQWtCO0lBQ2xCLDhCQUE4QjtJQUM5QiwyQ0FBMkM7SUFDM0MsNkJBQTZCO0FBQ2pDOztBQUVBO0lBQ0ksWUFBWTtJQUNaLHVCQUF1QjtBQUMzQjs7QUFFQTtJQUNJLDJCQUEyQjtJQUMzQixnQkFBZ0I7SUFDaEIsWUFBWTtBQUNoQiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvbW9kZWwvbW9kZWwtc291cmNlLmNzcyIsInNvdXJjZXNDb250ZW50IjpbIi5zb3VyY2UtZGlzcGxheS10eXBlIHtcclxuICAgIHBvc2l0aW9uOiBhYnNvbHV0ZTtcclxuICAgIGJvcmRlci1yYWRpdXM6IDEwJSAxMCUgMTAlIDEwJTtcclxuICAgIGJhY2tncm91bmQ6IHJnYmEoMCwgMjU1LCAwLCAwLjQpICFpbXBvcnRhbnQ7XHJcbiAgICBib3gtc2hhZG93OiAycHggMnB4IDJweCBibGFjaztcclxufVxyXG5cclxuLmhyLXBhZGRpbmctbWFyZ2luIHtcclxuICAgIHBhZGRpbmc6IDBweDtcclxuICAgIG1hcmdpbjogNXB4IDBweCA1cHggMHB4O1xyXG59XHJcblxyXG4jbW9kZWwtc291cmNlLWRldGFpbCB7XHJcbiAgICBmb250LWZhbWlseTogTHVjaWRhIENvbnNvbGU7XHJcbiAgICBmb250LXNpemU6IDAuOWVtO1xyXG4gICAgY29sb3I6IGJsYWNrO1xyXG59Il19 */"
 
 /***/ }),
 
@@ -725,37 +732,32 @@ var ModelSourceComponent = /** @class */ (function () {
         this.appService = appService;
         this.appStates = appStates;
         this.sanitizer = sanitizer;
-        this.collapsableSourceList = [];
     }
+    ModelSourceComponent_1 = ModelSourceComponent;
     ModelSourceComponent.prototype.ngOnInit = function () {
         this.getModelSource();
     };
     ModelSourceComponent.prototype.ngAfterViewInit = function () {
         $('#model-source-detail').find('ul').addClass('model-source-ul');
-        for (var path in this.collapsableSourceList) {
-            var target = path + '-target';
-            //$('#' + path).attr('data-toggle', 'collapse');
-            //$('#' + path).attr('data-target', target);
-            //$('#' + target).addClass('expand-line');
-            var btnId = path + '-btn';
-            //$('#' + btnId).onclick = ModelSourceComponent.expandBtnClick(btnId);
-            /* myEl is null
-            var myEl = document.getElementById(btnId);
-            myEl.addEventListener('click', function() {
-               alert('Hello world');
-            }, false);
-            */
-        }
-    };
-    ModelSourceComponent.prototype.ngAfterViewChecked = function () {
         /*
         for (var path in this.collapsableSourceList) {
            var target = path + '-target';
+           //$('#' + path).attr('data-toggle', 'collapse');
+           //$('#' + path).attr('data-target', target);
+           //$('#' + target).addClass('expand-line');
            var btnId = path + '-btn';
-           // only called first time??
-           $('#' + btnId).onclick = ModelSourceComponent.expandBtnClick(btnId);
        }
        */
+        $('#model-source-list .expand-btn').click(function (event) {
+            var btnId = event.target.id;
+            var sign = $('#' + event.target.id).val();
+            sign = (sign == '+') ? '=' : '+';
+            $('#' + event.target.id).val(sign);
+            ModelSourceComponent_1.btnState['btn' + btnId] = sign;
+            _services_app_states__WEBPACK_IMPORTED_MODULE_4__["AppStates"].clickModelSourceNode(btnId);
+        });
+    };
+    ModelSourceComponent.prototype.ngAfterViewChecked = function () {
     };
     ModelSourceComponent.prototype.getModelSource = function () {
         this.neuronsModelSrc = this.appStates.getCurrentNeuronsModelSrc();
@@ -770,7 +772,7 @@ var ModelSourceComponent = /** @class */ (function () {
         this.sourceHtmlDetail = this.sanitizer.bypassSecurityTrustHtml(this.sourceDetail);
     };
     ModelSourceComponent.prototype.generateModelDetail = function () {
-        this.collapsableSourceList = [];
+        //this.collapsableSourceList = [];
         var rawJson = JSON.parse(this.neuronsModelSrc);
         this.neuronsModelName = rawJson.name;
         //this.sourceDetail = this.neuronsModelSrc;
@@ -783,30 +785,48 @@ var ModelSourceComponent = /** @class */ (function () {
         if (type == 'object') {
             var path = ppath;
             var isArray = Array.isArray(obj);
+            var isEmpty = true;
             for (var ckey in obj) {
+                isEmpty = false;
                 var child = obj[ckey];
                 var isChildObject = typeof child == 'object' ? true : false;
                 if (isChildObject) {
                     path = ppath + '-' + ckey;
                     var target = path + '-target';
                     var btnId = path + '-btn';
+                    var collapse = 'collapse';
+                    var sign = '+';
+                    if (ModelSourceComponent_1.btnState['btn' + btnId]) {
+                        if (ModelSourceComponent_1.btnState['btn' + btnId] == '+') {
+                            collapse = 'collapse';
+                            sign = '+';
+                        }
+                        else {
+                            collapse = 'collapse.show';
+                            sign = '=';
+                        }
+                    }
                     var btn = '<input type="button" id="' + btnId + '" href="#' + target +
-                        '" data-toggle="collapse" value="&#177" class="expand-btn"></input>';
+                        '" data-toggle="collapse" value="' + sign + '" class="expand-btn"></input>';
+                    //value="&#58" --> :
                     var desc = this.getNodeDescription(child, ckey, key);
-                    var line = '<li id="' + path + '" >' + btn + '&nbsp;' + desc + ':' +
-                        '<ul id="' + target + '" class="collapse expand-verticalline model-source-ul">';
+                    var line = '<li id="' + path + '" >' + btn + '&nbsp;<b>' + desc + '</b>:' +
+                        '<ul id="' + target + '" class="' + collapse + ' expand-verticalline model-source-ul">';
                     this.sourceDetail += line;
-                    this.collapsableSourceList.push(path);
+                    //this.collapsableSourceList.push(path);
                 }
                 this.traverseObject(ckey, obj[ckey], path);
                 if (isChildObject) {
                     this.sourceDetail += '</ul></li>';
                 }
             }
+            if (isEmpty) {
+                this.sourceDetail += '<li class="model-source-li model-empty-li">empty object</li>';
+            }
         }
         else {
             this.sourceDetail += '<li class="model-source-li">';
-            this.sourceDetail += key + ': ' + ((obj == null) ? 'null' : JSON.stringify(obj));
+            this.sourceDetail += key + ': ' + JSON.stringify(obj);
             this.sourceDetail += '</li>';
         }
     };
@@ -835,7 +855,10 @@ var ModelSourceComponent = /** @class */ (function () {
         }
         */
     };
-    ModelSourceComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    var ModelSourceComponent_1;
+    //collapsableSourceList = [];
+    ModelSourceComponent.btnState = {};
+    ModelSourceComponent = ModelSourceComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'model-source',
             template: __webpack_require__(/*! ./model-source.html */ "../src/app/components/model/model-source.html"),
@@ -2536,6 +2559,9 @@ var AppStates = /** @class */ (function () {
     };
     AppStates.prototype.getCurrentNeuronsModelSrc = function () {
         return AppStates_1.neuronsModelSrc;
+    };
+    AppStates.clickModelSourceNode = function (btnId) {
+        //alert( 'clicked: ' + btnId);
     };
     AppStates.toDebug = function () {
         var json = {};
