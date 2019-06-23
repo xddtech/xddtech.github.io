@@ -214,7 +214,7 @@ module.exports = "#about-page {\r\n    width: 100%;\r\n    height: 100%;\r\n}\r\
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"about-page\" class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-header text-shadow-extra\">iclearn</div>\r\n   </div>\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-text text-shadow-extra\">{{aboutText}}</div>\r\n   </div>\r\n   <div class=\"row text-center build-info\">\r\n       <span>@xddtech - {{buildInfo}}</span>\r\n   </div>\r\n</div>"
+module.exports = "<div id=\"about-page\" class=\"container\">\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-header text-shadow-extra\">iclearn</div>\r\n   </div>\r\n   <div class=\"row text-center\">\r\n      <div class=\"about-text text-shadow-extra\">{{aboutText}}</div>\r\n   </div>\r\n   <div class=\"row text-center build-info\">\r\n       <span>XDDTech &trade; - {{buildInfo}}</span>\r\n   </div>\r\n</div>"
 
 /***/ }),
 
@@ -1296,6 +1296,33 @@ var NeuronsModelView = /** @class */ (function () {
         trackball.keys = [65, 83, 68];
         trackball.addEventListener('change', NeuronsModelView.renderScene);
     };
+    NeuronsModelView.prototype.redisplay = function () {
+        window.addEventListener("resize", NeuronsModelView.onWindowResize);
+        NeuronsModelView.listenNeuronsStageEvents();
+        var prevTarget = {
+            x: 0,
+            y: 0,
+            z: 0
+        };
+        if (NeuronsModelView.appCamControl) {
+            prevTarget.x = NeuronsModelView.appCamControl.target.x;
+            prevTarget.y = NeuronsModelView.appCamControl.target.y;
+            prevTarget.z = NeuronsModelView.appCamControl.target.z;
+            NeuronsModelView.appCamControl.dispose();
+        }
+        var trackball = new three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"](NeuronsModelView.viewCamera, document.getElementById('neurons-stage-div'));
+        NeuronsModelView.appCamControl = trackball;
+        trackball.setTarget(prevTarget.x, prevTarget.y, prevTarget.z);
+        trackball.rotateSpeed = 1.0;
+        trackball.zoomSpeed = 1.0;
+        trackball.panSpeed = 1.0;
+        trackball.noZoom = false;
+        trackball.noPan = false;
+        trackball.staticMoving = true;
+        trackball.dynamicDampingFactor = 0.3;
+        trackball.keys = [65, 83, 68];
+        trackball.addEventListener('change', NeuronsModelView.renderScene);
+    };
     NeuronsModelView.prototype.addShowObjects = function () {
         var vscene = NeuronsModelView.viewScene;
         var axesHelper = new three__WEBPACK_IMPORTED_MODULE_0__["AxesHelper"](100);
@@ -1459,12 +1486,18 @@ var NeuronsStageComponent = /** @class */ (function () {
         this.createShow();
     };
     NeuronsStageComponent.prototype.createShow = function () {
-        if (this.neuronsModelView == null) {
+        if (!this.appStates.getCurrentNeuronsModelView()) {
             this.neuronsModelView = new _neurons_model_view__WEBPACK_IMPORTED_MODULE_4__["NeuronsModelView"](this.getNeuronsStageElement(), this.appService, this.appStates);
             this.neuronsModelView.create();
+            //NeuronsStageComponent.neuronsModelViewRef = this.neuronsModelView;
+            this.appStates.setCurrentNeuronsModelView(this.neuronsModelView);
         }
         else {
+            //this.neuronsModelView = NeuronsStageComponent.neuronsModelViewRef ;
+            this.neuronsModelView = this.appStates.getCurrentNeuronsModelView();
             this.getNeuronsStageElement().appendChild(_neurons_model_view__WEBPACK_IMPORTED_MODULE_4__["NeuronsModelView"].viewRender.domElement);
+            this.neuronsModelView.redisplay();
+            //this.neuronsModelView.addCameraAndControls();
             console.log("loaded the existing show renderer");
         }
     };
@@ -1538,6 +1571,8 @@ var DataInputPanelComponent = /** @class */ (function () {
         //this.inputLayer = this.neuronsModel.layers[0];
     };
     DataInputPanelComponent.prototype.ngAfterContentChecked = function () {
+    };
+    DataInputPanelComponent.prototype.ngOnDestroy = function () {
     };
     DataInputPanelComponent.prototype.onInputTypeChange = function (newValue) {
         this.inputType = newValue;
@@ -1730,11 +1765,41 @@ var ModelNavPanelComponent = /** @class */ (function () {
         this.hideDataInputPanel = true;
         this.inputPanelDragRegistered = false;
     }
+    ModelNavPanelComponent_1 = ModelNavPanelComponent;
     ModelNavPanelComponent.prototype.ngAfterViewInit = function () {
-        var top = 10 + this.appStates.getNavbarHeight();
+        var top;
+        var left;
+        var prevPos = _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].dragElementsPos['modelnav-panel'];
+        if (prevPos) {
+            top = prevPos.top;
+            left = prevPos.left;
+        }
+        else {
+            top = 10 + this.appStates.getNavbarHeight();
+            left = 10;
+        }
         $('#modelnav-panel').css('top', top + 'px');
-        $('#modelnav-panel').css('left', '10px');
+        $('#modelnav-panel').css('left', left + 'px');
         _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].register('modelnav-head', 'modelnav-panel', {});
+        this.redisplay();
+    };
+    ModelNavPanelComponent.prototype.ngOnDestroy = function () {
+        ModelNavPanelComponent_1.navPanelState['hideDataInputPanel'] = this.hideDataInputPanel;
+        ModelNavPanelComponent_1.navPanelState['hideLayersNavPanel'] = this.hideLayersNavPanel;
+    };
+    ModelNavPanelComponent.prototype.redisplay = function () {
+        var hideDataInputPanel = ModelNavPanelComponent_1.navPanelState['hideDataInputPanel'];
+        if (typeof hideDataInputPanel !== 'undefined') {
+            this.hideDataInputPanel = hideDataInputPanel;
+            if (!this.hideDataInputPanel) {
+                this.openDataInputPanel();
+            }
+        }
+        var hideLayersNavPanel = ModelNavPanelComponent_1.navPanelState['hideLayersNavPanel'];
+        if (typeof hideLayersNavPanel !== 'undefined') {
+            this.hideLayersNavPanel = hideLayersNavPanel;
+            this.openLayersPanel();
+        }
     };
     ModelNavPanelComponent.prototype.resetModelView = function () {
         _neurons_neurons_model_view__WEBPACK_IMPORTED_MODULE_5__["NeuronsModelView"].appCamControl.reset();
@@ -1753,8 +1818,17 @@ var ModelNavPanelComponent = /** @class */ (function () {
     };
     ModelNavPanelComponent.prototype.openLayersPanel = function () {
         var menuElem = this.modelNavPanelRef.nativeElement;
-        var top = menuElem.offsetTop;
-        var left = menuElem.offsetLeft + menuElem.offsetWidth + 10;
+        var top;
+        var left;
+        var prevPos = _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].dragElementsPos['layersnav-panel'];
+        if (prevPos) {
+            top = prevPos.top;
+            left = prevPos.left;
+        }
+        else {
+            top = menuElem.offsetTop;
+            left = menuElem.offsetLeft + menuElem.offsetWidth + 10;
+        }
         $('#layersnav-panel').css('top', top + 'px');
         $('#layersnav-panel').css('left', left + 'px');
         this.neuronsModel = this.appStates.getCurrentNeuronsModel();
@@ -1774,8 +1848,17 @@ var ModelNavPanelComponent = /** @class */ (function () {
     ModelNavPanelComponent.prototype.positionDataInputPanel = function () {
         var inputPanel = this.dataInputPanelRef;
         var nativeElement = inputPanel.rootRef.nativeElement;
-        var top = window.innerHeight - nativeElement.offsetHeight - 20;
-        var left = window.innerWidth / 2 - nativeElement.offsetWidth / 2;
+        var top;
+        var left;
+        var prevPos = _utils_element_draggable__WEBPACK_IMPORTED_MODULE_2__["ElementDraggable"].dragElementsPos['datainput-panel'];
+        if (prevPos) {
+            top = prevPos.top;
+            left = prevPos.left;
+        }
+        else {
+            top = window.innerHeight - nativeElement.offsetHeight - 20;
+            left = window.innerWidth / 2 - nativeElement.offsetWidth / 2;
+        }
         $('#datainput-panel').css('top', top + 'px');
         $('#datainput-panel').css('left', left + 'px');
         if (!this.inputPanelDragRegistered) {
@@ -1790,6 +1873,8 @@ var ModelNavPanelComponent = /** @class */ (function () {
         this.hideDataInputPanel = true;
         //NeuronsModelView.appCamControl.addListeners();
     };
+    var ModelNavPanelComponent_1;
+    ModelNavPanelComponent.navPanelState = {};
     tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('modelNavPanel'),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
@@ -1802,7 +1887,7 @@ var ModelNavPanelComponent = /** @class */ (function () {
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewChild"])('dataInputPanel'),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:type", _angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"])
     ], ModelNavPanelComponent.prototype, "dataInputPanelRef", void 0);
-    ModelNavPanelComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    ModelNavPanelComponent = ModelNavPanelComponent_1 = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'modelnav-panel',
             template: __webpack_require__(/*! ./modelnav-panel.html */ "../src/app/components/tools/modelnav-panel.html"),
@@ -1907,6 +1992,14 @@ three__WEBPACK_IMPORTED_MODULE_0__["TrackballControls"] = function ( object, dom
 	var startEvent = { type: 'start' };
 	var endEvent = { type: 'end' };
 
+	this.setTarget = function(x, y, z) {
+		this.target.x = x;
+		this.target.y = y;
+		this.target.z = z;
+		this.target0.x = x;
+		this.target0.y = y;
+		this.target0.z = z;
+	}
 
 	// methods
 
@@ -2557,6 +2650,12 @@ var AppStates = /** @class */ (function () {
     AppStates.prototype.getCurrentNeuronsModel = function () {
         return AppStates_1.neuronsModel;
     };
+    AppStates.prototype.setCurrentNeuronsModelView = function (neuronsModelView) {
+        AppStates_1.neuronsModelViewRef = neuronsModelView;
+    };
+    AppStates.prototype.getCurrentNeuronsModelView = function () {
+        return AppStates_1.neuronsModelViewRef;
+    };
     AppStates.prototype.getCurrentNeuronsModelSrc = function () {
         return AppStates_1.neuronsModelSrc;
     };
@@ -2678,8 +2777,15 @@ var ElementDraggable = /** @class */ (function () {
         mpos2.x = mevent.clientX;
         mpos2.y = mevent.clientY;
         // set the element's new position:
-        elem.style.top = (elem.offsetTop - mpos1.y) + "px";
-        elem.style.left = (elem.offsetLeft - mpos1.x) + "px";
+        var pos = {
+            top: elem.offsetTop - mpos1.y,
+            left: elem.offsetLeft - mpos1.x
+        };
+        var target = mevent.currentTarget;
+        var key = target.id;
+        ElementDraggable.dragElementsPos[key] = pos;
+        elem.style.top = pos.top + "px";
+        elem.style.left = pos.left + "px";
     };
     ElementDraggable.closeDragElement = function (mevent) {
         ElementDraggable.isDragging = false;
@@ -2697,6 +2803,7 @@ var ElementDraggable = /** @class */ (function () {
         ElementDraggable.targetElem = null;
     };
     ElementDraggable.dragElements = {};
+    ElementDraggable.dragElementsPos = {};
     ElementDraggable.mpos1 = { x: 0, y: 0 };
     ElementDraggable.mpos2 = { x: 0, y: 0 };
     ElementDraggable.isDragging = false;
