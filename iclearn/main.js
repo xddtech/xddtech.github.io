@@ -443,7 +443,8 @@ var ModelCell = /** @class */ (function () {
         this.linkToList = [];
         this.linkFromList = [];
     }
-    ModelCell.prototype.create = function (layerGroup, layerType) {
+    ModelCell.prototype.create = function (layerGroup, layerType, layerRef) {
+        this.layerRef = layerRef;
         this.createMesh(layerType);
         if (!this.cellMesh) {
             console.error('Failed to create cell mesh at layer ' + this.layerIndex + ', cell seqIndex ' + this.seqIndex);
@@ -516,9 +517,24 @@ var ModelCell = /** @class */ (function () {
         return line;
     };
     ModelCell.prototype.getLinkColor = function (toW) {
-        var red = (toW > 0) ? 255 : 10;
-        var green = (toW > 0) ? 10 : 10;
-        var blue = (toW > 0) ? 10 : 255;
+        var wrange = this.layerRef.wrange;
+        var dead = 10;
+        var red = dead;
+        var green = dead;
+        var blue = dead;
+        var enlarge = 4;
+        if (toW > 0) {
+            red = enlarge * 255 * toW / (wrange[1] + 0.00001);
+            red = Math.floor(red);
+            red = (red < dead) ? dead : red;
+            red = (red > 255) ? 255 : red;
+        }
+        else if (toW < 0) {
+            blue = enlarge * 255 * toW / (wrange[0] - 0.00001);
+            blue = Math.floor(blue);
+            blue = (blue < dead) ? dead : blue;
+            blue = (blue > 255) ? 255 : blue;
+        }
         var col = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
         return { color: col };
     };
@@ -646,19 +662,32 @@ var ModelLayer = /** @class */ (function () {
     function ModelLayer() {
         this.cellList = [];
         this.hasBias = false;
+        this.wrange = [0, 0];
     }
     ModelLayer.prototype.create = function (rootGroup) {
         this.layerGroup = new three__WEBPACK_IMPORTED_MODULE_0__["Group"]();
         rootGroup.add(this.layerGroup);
         var i;
         for (i = 0; i < this.cellList.length; i++) {
-            this.cellList[i].create(this.layerGroup, this.layerType);
+            this.cellList[i].create(this.layerGroup, this.layerType, this);
         }
     };
     ModelLayer.prototype.collectLayerInfo = function () {
         for (var i in this.cellList) {
             if (this.cellList[i].cellType == _model_cell__WEBPACK_IMPORTED_MODULE_1__["ModelCell"].BIAS) {
                 this.hasBias = true;
+            }
+            if (this.cellList[i].W) {
+                var wlist = this.cellList[i].W;
+                for (var k in wlist) {
+                    var w = wlist[k];
+                    if (w < 0 && w < this.wrange[0]) {
+                        this.wrange[0] = w;
+                    }
+                    else if (w > 0 && w > this.wrange[1]) {
+                        this.wrange[1] = w;
+                    }
+                }
             }
         }
     };
