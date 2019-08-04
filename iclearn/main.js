@@ -425,6 +425,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _bias_cell__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bias-cell */ "../src/app/components/model/bias-cell.ts");
 /* harmony import */ var _link_info__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./link-info */ "../src/app/components/model/link-info.ts");
 /* harmony import */ var _neurons_model_main__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../neurons/model-main */ "../src/app/components/neurons/model-main.ts");
+/* harmony import */ var _app_config__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../app.config */ "../src/app/app.config.ts");
+
 
 
 
@@ -436,6 +438,7 @@ var ModelCell = /** @class */ (function () {
     function ModelCell() {
         this.netSize = 0.1;
         this.inputSize = 0.1;
+        this.W = [];
         this.xyz = [0, 0, 0];
         this.linkToList = [];
         this.linkFromList = [];
@@ -454,7 +457,7 @@ var ModelCell = /** @class */ (function () {
         layerGroup.add(this.cellMesh);
         this.createCellLinks(layerGroup);
         if (this.label != null) {
-            this.createCellLabel();
+            this.createCellLabel(layerGroup, layerType);
         }
     };
     ModelCell.prototype.createMesh = function (layerType) {
@@ -486,15 +489,24 @@ var ModelCell = /** @class */ (function () {
         if (this.linkToList == null || this.linkToList.length == 0) {
             return;
         }
-        for (var i in this.linkToList) {
-            var linkInfo = this.linkToList[i];
+        var index = 0;
+        for (index = 0; index < this.linkToList.length; index++) {
+            var linkInfo = this.linkToList[index];
             var toCell = _neurons_model_main__WEBPACK_IMPORTED_MODULE_6__["ModelMain"].currentNeoronsModel.getCellOnLink(linkInfo);
-            var line = this.createLinkLine(toCell);
+            var toW = this.getToW(index);
+            var line = this.createLinkLine(toCell, toW);
             layerGroup.add(line);
         }
     };
-    ModelCell.prototype.createLinkLine = function (toCell) {
-        var material = new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"]({ color: 0x0000ff });
+    ModelCell.prototype.getToW = function (index) {
+        if (!this.W || (index >= this.W.length)) {
+            return 0;
+        }
+        return this.W[index];
+    };
+    ModelCell.prototype.createLinkLine = function (toCell, toW) {
+        var linkColor = this.getLinkColor(toW);
+        var material = new three__WEBPACK_IMPORTED_MODULE_0__["LineBasicMaterial"](linkColor);
         var geometry = new three__WEBPACK_IMPORTED_MODULE_0__["Geometry"]();
         var from = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](this.xyz[0], this.xyz[1], this.xyz[2]);
         var to = new three__WEBPACK_IMPORTED_MODULE_0__["Vector3"](toCell.xyz[0], toCell.xyz[1], toCell.xyz[2]);
@@ -503,7 +515,44 @@ var ModelCell = /** @class */ (function () {
         var line = new three__WEBPACK_IMPORTED_MODULE_0__["Line"](geometry, material);
         return line;
     };
-    ModelCell.prototype.createCellLabel = function () {
+    ModelCell.prototype.getLinkColor = function (toW) {
+        var red = (toW > 0) ? 255 : 10;
+        var green = (toW > 0) ? 10 : 10;
+        var blue = (toW > 0) ? 10 : 255;
+        var col = 'rgb(' + red + ', ' + green + ', ' + blue + ')';
+        return { color: col };
+    };
+    ModelCell.prototype.createCellLabel = function (layerGroup, layerType) {
+        var ctype = this.cellType == null ? layerType : this.cellType;
+        if (ctype !== ModelCell.INPUT && ctype !== ModelCell.OUTPUT) {
+            return;
+        }
+        var lsize = 0.1;
+        var lheight = 0.025;
+        var dx = 0;
+        var dy = 0;
+        if (ctype == ModelCell.INPUT) {
+            dx = -0.05;
+            dy = -this.inputSize - 0.125;
+        }
+        else if (ctype == ModelCell.OUTPUT) {
+            dx = -0.05;
+            dy = this.inputSize / 2 + 0.05;
+        }
+        var param = {
+            font: _app_config__WEBPACK_IMPORTED_MODULE_7__["AppConfig"].labelFont,
+            size: lsize,
+            height: lheight
+        };
+        var textGeo = new three__WEBPACK_IMPORTED_MODULE_0__["TextGeometry"](this.label, param);
+        var material = new three__WEBPACK_IMPORTED_MODULE_0__["MeshPhongMaterial"]({ color: 0x000000, flatShading: true });
+        textGeo.computeBoundingBox();
+        textGeo.computeVertexNormals();
+        var mesh = new three__WEBPACK_IMPORTED_MODULE_0__["Mesh"](textGeo, material);
+        mesh.position.x = this.xyz[0] + dx;
+        mesh.position.y = this.xyz[1] + dy;
+        mesh.position.z = this.xyz[2];
+        layerGroup.add(mesh);
     };
     ModelCell.prototype.getDescription = function () {
         return this.label ? this.label : this.seqIndex;
@@ -678,7 +727,7 @@ var ModelLayer = /** @class */ (function () {
     ModelLayer.NET = 'NET';
     ModelLayer.INPUT = 'INPUT';
     ModelLayer.OUTPUT = 'OUTPUT';
-    ModelLayer.DENSELAYER = "DenseLayer";
+    ModelLayer.DENSELAYER = "DenseLink";
     return ModelLayer;
 }());
 
@@ -942,6 +991,7 @@ var NeuronsModel = /** @class */ (function () {
         this.collectModelInfo();
         this.setupLayout();
         this.setupLayerLinks();
+        this.setupLabels();
     };
     NeuronsModel.prototype.collectModelInfo = function () {
         for (var i in this.layers) {
@@ -989,6 +1039,23 @@ var NeuronsModel = /** @class */ (function () {
             var layer = this.layers[index];
             var nextLayer = this.layers[index + 1];
             this.connectLayers(layer, nextLayer);
+        }
+    };
+    NeuronsModel.prototype.setupLabels = function () {
+        var incells = this.layers[0].cellList;
+        var index;
+        for (index = 0; index < incells.length; index++) {
+            var cell = incells[index];
+            if (!cell.label) {
+                cell.label = '' + (index + 1);
+            }
+        }
+        var outcells = this.layers[this.layers.length - 1].cellList;
+        for (index = 0; index < outcells.length; index++) {
+            var cell = outcells[index];
+            if (!cell.label) {
+                cell.label = '' + (index + 1);
+            }
         }
     };
     NeuronsModel.prototype.connectLayers = function (layer, nextLayer) {
@@ -1218,15 +1285,6 @@ var ModelMain = /** @class */ (function () {
     };
     ModelMain.prototype.loadCreateModel = function () {
         var _this = this;
-        /*
-        this.appService.loadDefaultModel().subscribe(modelData => {
-           this.neuronsModel = NeuronsModel.clone(modelData);
-           ModelMain.currentNeoronsModel = this.neuronsModel;
-           this.appStates.setCurrentNeuronsModel(this.neuronsModel, JSON.stringify(modelData));
-           this.neuronsModel.preProcess();
-           this.neuronsModel.create(this.rootGroup);
-        });
-        */
         this.appService.loadDefaultModelSrc().subscribe(function (modelDataSrc) {
             // keep original text
             var srcJson = JSON.stringify(modelDataSrc);
@@ -1239,6 +1297,8 @@ var ModelMain = /** @class */ (function () {
             _this.appStates.setCurrentNeuronsModel(_this.neuronsModel, srcJson);
             // preprocess the model
             _this.neuronsModel.preProcess();
+            // adjust camera
+            _this.adjustRootPosition();
             // create graphs
             _this.neuronsModel.create(_this.rootGroup);
         });
@@ -1249,6 +1309,18 @@ var ModelMain = /** @class */ (function () {
         //var object = new THREE.Mesh( geometry, material );
         //this.rootGroup.add(object);
         this.loadCreateModel();
+    };
+    ModelMain.prototype.adjustRootPosition = function () {
+        if (!this.neuronsModel || !this.neuronsModel.layers) {
+            return;
+        }
+        var length = this.neuronsModel.layers.length;
+        var dsize = length - 4;
+        if (dsize <= 0) {
+            return;
+        }
+        var factor = 1;
+        this.rootGroup.position.y = this.rootGroup.position.y - dsize * factor;
     };
     ModelMain.toggleLayerVisibility = function (index, visible) {
         var neuronsModel = ModelMain.currentNeoronsModel;
@@ -1340,6 +1412,15 @@ var NeuronsModelView = /** @class */ (function () {
         trackball.dynamicDampingFactor = 0.3;
         trackball.keys = [65, 83, 68];
         trackball.addEventListener('change', NeuronsModelView.renderScene);
+    };
+    NeuronsModelView.adjustCamera = function (dx, dy, dz) {
+        var camera = NeuronsModelView.viewCamera;
+        if (!camera) {
+            return;
+        }
+        camera.position.x = camera.position.x + dx;
+        camera.position.y = camera.position.y + dy;
+        camera.position.z = camera.position.z + dz;
     };
     NeuronsModelView.prototype.redisplay = function () {
         window.addEventListener("resize", NeuronsModelView.onWindowResize);
@@ -1580,7 +1661,7 @@ module.exports = "#datainput-panel {\r\n    position: absolute;\r\n    z-index: 
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div id=\"datainput-panel\" #dataInputPanelRoot class=\"conatiner\">\r\n    <div class=\"row\">\r\n        <div id=\"input-action-header\" class=\"col-xs-4 input-action-menu action-close\">\r\n            <a (click)=\"closeDataInputView()\"><span class=\"glyphicon glyphicon-remove-sign close-sign-extra\"></span></a>\r\n        </div>\r\n        <div class=\"col-xs-4 input-action-menu action-go\">\r\n            <a (click)=\"processInput()\">Go</a>\r\n        </div>\r\n        <div class=\"col-xs-4 input-action-menu action-type\">\r\n            <select class=\"select-button\" (change)=\"onInputTypeChange($event.target.value)\">\r\n                <option *ngFor=\"let opt of inputTypesOpt\" [value]=\"opt\">{{opt}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"neuronsModel\" class=\"row\" >\r\n        <table id=\"input-table\" border=\"1\" class=\"input-table-x\">\r\n            <thead>\r\n            <tr>\r\n               <th *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   {{cell.getDescription()}}\r\n               </th>\r\n               <th>expected</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n               <td *ngFor=\"let cell of neuronsModel.layers[0].cellList; let i = index\">\r\n                   <input id=\"input-value-{{cell.seqIndex}}\" autocomplete=\"off\" />\r\n               </td>\r\n               <td id=\"expected-input-td\" [ngClass]=\"{'input-disabled': expectedDisabled}\"><input id=\"expected-input\" [disabled]=\"expectedDisabled\" /></td>\r\n            </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n</div>"
+module.exports = "<div id=\"datainput-panel\" #dataInputPanelRoot class=\"conatiner\">\r\n    <div class=\"row\">\r\n        <div id=\"input-action-header\" class=\"col-xs-4 input-action-menu action-close\">\r\n            <a (click)=\"closeDataInputView()\"><span class=\"glyphicon glyphicon-remove-sign close-sign-extra\"></span></a>\r\n        </div>\r\n        <div class=\"col-xs-4 input-action-menu action-go\">\r\n            <a (click)=\"processInput()\">Go</a>\r\n        </div>\r\n        <div class=\"col-xs-4 input-action-menu action-type\">\r\n            <select class=\"select-button\" (change)=\"onInputTypeChange($event.target.value)\">\r\n                <option *ngFor=\"let opt of inputTypesOpt\" [value]=\"opt\">{{opt}}</option>\r\n            </select>\r\n        </div>\r\n    </div>\r\n    <div *ngIf=\"neuronsModel\" class=\"row\" >\r\n        <table id=\"input-table\" border=\"1\" class=\"input-table-x\">\r\n            <thead>\r\n            <tr>\r\n               <th *ngFor=\"let cell of inputCellList; let i = index\">\r\n                   {{cell.getDescription()}}\r\n               </th>\r\n               <th>expected</th>\r\n            </tr>\r\n            </thead>\r\n            <tbody>\r\n            <tr>\r\n               <td *ngFor=\"let cell of inputCellList; let i = index\">\r\n                   <input id=\"input-value-{{cell.seqIndex}}\" autocomplete=\"off\" />\r\n               </td>\r\n               <td id=\"expected-input-td\" [ngClass]=\"{'input-disabled': expectedDisabled}\"><input id=\"expected-input\" [disabled]=\"expectedDisabled\" /></td>\r\n            </tr>\r\n            </tbody>\r\n        </table>\r\n    </div>\r\n</div>"
 
 /***/ }),
 
@@ -1598,6 +1679,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _services_app_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../services/app-service */ "../src/app/services/app-service.ts");
 /* harmony import */ var _services_app_states__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../services/app-states */ "../src/app/services/app-states.ts");
 /* harmony import */ var _model_neurons_model__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../model/neurons-model */ "../src/app/components/model/neurons-model.ts");
+/* harmony import */ var _model_model_cell__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../model/model-cell */ "../src/app/components/model/model-cell.ts");
+
 
 
 
@@ -1611,11 +1694,26 @@ var DataInputPanelComponent = /** @class */ (function () {
         this.inputTypesOpt = ['Predict', 'Learn', 'Test'];
         this.inputType = 'Predict';
         this.expectedDisabled = true;
+        this.inputCellList = [];
     }
+    DataInputPanelComponent.prototype.init = function () {
+        this.inputCellList = [];
+        if (!this.neuronsModel) {
+            //console.error('inputPanel has no neurons model');
+            return;
+        }
+        this.inputLayer = this.neuronsModel.layers[0];
+        for (var index = 0; index < this.inputLayer.cellList.length; index++) {
+            var cell = this.inputLayer.cellList[index];
+            if (cell.cellType !== _model_model_cell__WEBPACK_IMPORTED_MODULE_5__["ModelCell"].BIAS) {
+                this.inputCellList.push(cell);
+            }
+        }
+    };
     DataInputPanelComponent.prototype.ngAfterViewInit = function () {
-        //this.inputLayer = this.neuronsModel.layers[0];
     };
     DataInputPanelComponent.prototype.ngAfterContentChecked = function () {
+        this.init();
     };
     DataInputPanelComponent.prototype.ngOnDestroy = function () {
     };
@@ -2623,6 +2721,8 @@ __webpack_require__.r(__webpack_exports__);
 var AppService = /** @class */ (function () {
     function AppService(http) {
         this.http = http;
+        this.modelPathList = ['/assets/default-neurons-model.json', '/assets/iris-model-4+3@10+3.json'];
+        this.defaultModelPath = this.modelPathList[1];
     }
     AppService.prototype.getAboutHtml = function () {
         var reqHeaders = new _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpHeaders"]({
@@ -2633,7 +2733,7 @@ var AppService = /** @class */ (function () {
         return this.http.get(url, { headers: reqHeaders, responseType: 'text' });
     };
     AppService.prototype.loadDefaultModel = function () {
-        var path = this.getBaseUrl() + '/assets/default-neurons-model.json';
+        var path = this.getBaseUrl() + this.defaultModelPath;
         return this.loadNeuronsModel(path);
     };
     AppService.prototype.loadNeuronsModel = function (path) {
@@ -2641,7 +2741,7 @@ var AppService = /** @class */ (function () {
         return this.http.get(path);
     };
     AppService.prototype.loadDefaultModelSrc = function () {
-        var path = this.getBaseUrl() + '/assets/default-neurons-model.json';
+        var path = this.getBaseUrl() + this.defaultModelPath;
         return this.loadNeuronsModelSrc(path);
     };
     AppService.prototype.loadNeuronsModelSrc = function (path) {
@@ -2906,13 +3006,17 @@ var environment = {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/platform-browser-dynamic */ "../node_modules/@angular/platform-browser-dynamic/fesm5/platform-browser-dynamic.js");
-/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app/app.module */ "../src/app/app.module.ts");
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./environments/environment */ "../src/environments/environment.ts");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "../node_modules/three/build/three.module.js");
+/* harmony import */ var _app_app_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app/app.module */ "../src/app/app.module.ts");
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./environments/environment */ "../src/environments/environment.ts");
+/* harmony import */ var _app_app_config__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./app/app.config */ "../src/app/app.config.ts");
 
 
 
 
-if (_environments_environment__WEBPACK_IMPORTED_MODULE_3__["environment"].production) {
+
+
+if (_environments_environment__WEBPACK_IMPORTED_MODULE_4__["environment"].production) {
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["enableProdMode"])();
 }
 var entryUrl = new URL(window.document.location.href);
@@ -2922,10 +3026,17 @@ if (hash != null && hash.startsWith('#/model')) {
     entryUrl.hash = '';
     window.location.href = entryUrl.href;
 }
-var delay = Promise.resolve();
-delay.then(function () {
-    Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_2__["AppModule"]);
-}).catch(function (err) { return console.error('iclearn app bootstrap error, ' + err); });
+/*
+let delay = Promise.resolve();
+delay.then(() => {
+   platformBrowserDynamic().bootstrapModule(AppModule);
+}).catch(err => console.error('iclearn app bootstrap error, ' + err));
+*/
+var loader = new three__WEBPACK_IMPORTED_MODULE_2__["FontLoader"]();
+loader.load('/assets/fonts/helvetiker_regular_typeface.json', function (font) {
+    _app_app_config__WEBPACK_IMPORTED_MODULE_5__["AppConfig"].labelFont = font;
+    Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformBrowserDynamic"])().bootstrapModule(_app_app_module__WEBPACK_IMPORTED_MODULE_3__["AppModule"]);
+});
 
 
 /***/ }),
